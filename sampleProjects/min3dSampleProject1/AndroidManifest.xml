@@ -9,16 +9,37 @@
     <application android:debuggable="true" android:icon="@drawable/icon" android:label="@string/app_name">
         
         <activity android:name=".SplashActivity" android:label="@string/app_name">
-        </activity>
-
-        <activity android:name=".ExampleWithPrimitives" android:label="@string/app_name">
-        </activity>
-
-        <activity android:name=".ExampleWithChildren" android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".ExampleRotatingPlanets" android:label="@string/app_name">
+        </activity>
+
+        <activity android:name=".ExampleMostMinimal" android:label="@string/app_name">
+        </activity>
+
+        <activity android:name=".ExampleVertexColors" android:label="@string/app_name">
+        </activity>
+
+        <activity android:name=".ExampleTextures" android:label="@string/app_name">
+        </activity>
+
+        <activity android:name=".ExamplePointsVersusTriangles" android:label="@string/app_name">
+        </activity>
+
+        <activity android:name=".ExampleCamera" android:label="@string/app_name">
+        </activity>
+
+        <activity android:name=".ExampleAssigningTexturesDynamically" android:label="@string/app_name">
+        </activity>
+
+        <activity android:name=".ExampleAnimatingVertices" android:label="@string/app_name">
+        </activity>
+
+        <activity android:name=".ExampleSubsetOfFaces" android:label="@string/app_name">
         </activity>
 
     </application>

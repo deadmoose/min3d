@@ -5,8 +5,20 @@ import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Sphere;
 import android.graphics.Bitmap;
+import android.util.Log;
 
-public class ExampleWithChildren extends RendererActivity
+/**
+ * This is the "demo" example.
+ * It shows how to add children to Object3dContainers.  
+ * 
+ * If you're familiar with Flash, this similar to using DisplayObjects in the Flash API.
+ * 
+ * If you're familiar with Papervision3D or Away3D for Flash, this is similar to using 
+ * DisplayObject3D's or Object3D's within those respective libraries.
+ * 
+ * @author Lee
+ */
+public class ExampleRotatingPlanets extends RendererActivity
 {
 	Object3dContainer _jupiter;
 	Object3dContainer _earth;
@@ -15,6 +27,7 @@ public class ExampleWithChildren extends RendererActivity
 	
 	public void initScene() 
 	{
+		Log.i("x", "initScene");
 		scene.light().ambient.setAll((short)32, (short)32, (short)32, (short)255);
 		scene.light().position.setAll(3, 3, 3);
 		
