@@ -69,7 +69,6 @@ public class Sphere extends Object3dContainer
 				this.verticies().addVertex(posFull.x,posFull.y,posFull.z,  u,v,  pos.x,pos.y,pos.z,  colr,colg,colb,cola);
 			}
 		}
-		Log.v("x", "verts "+this.verticies().size() + "versus" + this.verticies().capacity());
 
 
 		// Add faces
@@ -90,7 +89,5 @@ public class Sphere extends Object3dContainer
 				Utils.addQuad(this, ul,ur,br,bl);
 			}
 		}
-		
-		Log.v("x", "faces "+this.faces().size() + "versus" + this.faces().capacity());
 	}
 }

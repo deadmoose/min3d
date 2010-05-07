@@ -13,22 +13,52 @@ public class Scene implements IObject3dContainer
 {
 	private ArrayList<Object3d> _children = new ArrayList<Object3d>();
 
-	private Light _light = new Light();
-	private CameraVo _camera = new CameraVo();
+	private Light _light;
+	private CameraVo _camera;
 	
-	private Color4Managed _backgroundColor = new Color4Managed(0,0,0,255);
-	private boolean _lightingEnabled = true;
+	private Color4Managed _backgroundColor;
+	private boolean _lightingEnabled;
 
 	private ISceneController _sceneController;
-	private Renderer _renderer;
 	
 
-	public Scene(ISceneController $sceneObjectUpdater) 
+	public Scene(ISceneController $sceneController) 
 	{
-		_sceneController = $sceneObjectUpdater;
+		_sceneController = $sceneController;
 	}
 
+	/**
+	 * Allows you to use any Class implementing ISceneController
+	 * to drive the Scene...
+	 * @return
+	 */
+	public ISceneController sceneController()
+	{
+		return _sceneController;
+	}
+	public void sceneController(ISceneController $sceneController)
+	{
+		_sceneController = $sceneController;
+	}
+	
 	//
+	
+	/**
+	 * Resets Scene to default settings.
+	 * Removes and clears any attached Object3ds.
+	 */
+	public void reset()
+	{
+		clearChildren(this);
+
+		_children = new ArrayList<Object3d>();
+
+		_light = new Light();
+		_camera = new CameraVo();
+		
+		_backgroundColor = new Color4Managed(0,0,0,255);
+		_lightingEnabled = true;
+	}
 	
 	/**
 	 * Adds Object3d to Scene. Object3d's must be added to Scene in order to be rendered
@@ -41,7 +71,6 @@ public class Scene implements IObject3dContainer
 		
 		$o.parent(this);
 		$o.scene(this);
-		$o.renderer(_renderer);
 	}
 	
 	@Override
@@ -59,7 +88,6 @@ public class Scene implements IObject3dContainer
 	{
 		$o.parent(null);
 		$o.scene(null);
-		$o.renderer(null);
 		return _children.remove($o);
 	}
 	
@@ -71,7 +99,6 @@ public class Scene implements IObject3dContainer
 		if (o != null) {
 			o.parent(null);
 			o.scene(null);
-			o.renderer(null);
 		}
 		return o;
 	}
@@ -151,26 +178,11 @@ public class Scene implements IObject3dContainer
 	//
 
 	/**
-	 * Called by Object3d instances
-	 */
-	Renderer renderer() /*package-private*/
-	{
-		return _renderer;
-	}
-	/**
-	 * Called by Renderer instance right after its instantiation
-	 */
-	void renderer(Renderer $ren) /*package-private*/
-	{
-		_renderer = $ren;
-		_renderer.setSceneController(_sceneController);
-	}
-	
-	/**
 	 * Called by Renderer instance
 	 */
-	void initObjects() /*package-private*/ 
+	void init() /*package-private*/ 
 	{
+		this.reset();
 		_sceneController.initScene();
 	}
 	
@@ -181,4 +193,18 @@ public class Scene implements IObject3dContainer
 	{
 		return _children;
 	}
+	
+	private void clearChildren(IObject3dContainer $c)
+	{
+		for (int i = $c.numChildren() - 1; i >= 0; i--)
+		{
+			Object3d o = $c.getChildAt(i);
+			o.clear();
+			
+			if (o instanceof Object3dContainer)
+			{
+				clearChildren((Object3dContainer)o);
+			}
+		}
+	}	
 }

@@ -6,6 +6,6 @@ import android.graphics.Bitmap;
 
 public interface IBitmapManagable 
 {
-    public int initTexture(Object3d $o, Bitmap $b);
+    public int uploadTextureAndReturnId(Bitmap $b);
     public void deleteTexture(int $textureId);
 }

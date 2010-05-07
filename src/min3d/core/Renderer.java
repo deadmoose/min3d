@@ -28,7 +28,6 @@ public class Renderer implements GLSurfaceView.Renderer, IBitmapManagable
 
 	private GL10 _gl;
 	private Scene _scene;
-	private ISceneController _sceneController;
 
 	private boolean _isGl10Only;
 	
@@ -61,7 +60,7 @@ public class Renderer implements GLSurfaceView.Renderer, IBitmapManagable
 	 * (3) importer!...
 	 */
 	
-	public Renderer(Context context, Scene $scene)
+	public Renderer(Scene $scene)
 	{
 		_scene = $scene;
 		
@@ -117,13 +116,11 @@ public class Renderer implements GLSurfaceView.Renderer, IBitmapManagable
 	    
 	    _gl.glEnable(GL10.GL_TEXTURE_2D);
 
-	    //
-	    
 		//
-		// Object init only happens here, when we get GL for the first time
+		// Scene object init only happens here, when we get GL for the first time
 		//
 		
-		_scene.initObjects();
+		_scene.init();
 	}
 	
 	public void onSurfaceChanged(GL10 gl, int w, int h) 
@@ -141,7 +138,7 @@ public class Renderer implements GLSurfaceView.Renderer, IBitmapManagable
 	public void onDrawFrame(GL10 gl)
 	{
 		// Update 'model'
-		_sceneController.updateScene();
+		_scene.sceneController().updateScene();
 		
 		// Update 'view'
 		drawSetup();
@@ -312,7 +309,7 @@ public class Renderer implements GLSurfaceView.Renderer, IBitmapManagable
 
 		// Backface culling 
 		
-		if ($o.enableDoubleSided()) {
+		if ($o.doubleSidedEnabled()) {
 		    _gl.glDisable(GL10.GL_CULL_FACE);
 		} 
 		else {
@@ -393,10 +390,7 @@ public class Renderer implements GLSurfaceView.Renderer, IBitmapManagable
 		_gl.glPopMatrix();
 	}
 	
-	/**
-	 * Called by Object3d.initTexture()
-	 */
-	public int initTexture(Object3d $o, Bitmap $bitmap)
+	public int uploadTextureAndReturnId(Bitmap $bitmap)
 	{
 		int textureId;
 		
@@ -464,14 +458,6 @@ public class Renderer implements GLSurfaceView.Renderer, IBitmapManagable
 			_time = System.currentTimeMillis();
 			_timeCount = 0;
 		}
-	}
-	
-	/**
-	 * Called by Scene on startup
-	 */
-	void setSceneController(ISceneController $sceneController) /*package-private*/
-	{
-		_sceneController = $sceneController;
 	}
 	
 	private void setGl(GL10 $gl)

@@ -38,7 +38,11 @@ public class Utils
 	      
 		return bitmap;
 	}
-
+	
+	public static Bitmap makeBitmapFromResourceId(int $id)
+	{
+		return makeBitmapFromResourceId(Shared.context(), $id);
+	}
 	
 	public static FloatBuffer makeFloatBuffer4(float $a, float $b, float $c, float $d)
 	{

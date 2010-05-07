@@ -1,24 +1,17 @@
 package min3d.core;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import min3d.interfaces.IBitmapManagable;
+import min3d.Shared;
+import min3d.Utils;
 import min3d.interfaces.IObject3dContainer;
+import min3d.sampleProject1.R;
 import min3d.vos.Color4;
 import min3d.vos.Number3d;
 import min3d.vos.RenderType;
-
-
-
-
 import android.graphics.Bitmap;
-import android.util.Log;
 
 /**
  * sadfsadfsadfsdflkjsdaf lbleat!
@@ -52,7 +45,6 @@ public class Object3d
 	
 	protected FacesBufferedList _faces;
 	
-	private IBitmapManagable _ren;
 	private Scene _scene;
 	private IObject3dContainer _parent;
 
@@ -100,11 +92,11 @@ public class Object3d
 	 * Determines if backfaces will be rendered (ie, doublesided = true).
 	 * Default is false.
 	 */
-	public boolean enableDoubleSided()
+	public boolean doubleSidedEnabled()
 	{
 		return _doubleSidedEnabled;
 	}
-	public void enableDoubleSided(boolean $b)
+	public void doubleSidedEnabled(boolean $b)
 	{
 		_doubleSidedEnabled = $b;
 	}
@@ -216,6 +208,8 @@ public class Object3d
 		this.verticies().uvs().clear();
 		this.verticies().normals().clear();
 		this.verticies().colors().clear();
+		
+		if (this.parent() != null) this.parent().removeChild(this);
 	}
 
 	//
@@ -267,24 +261,39 @@ public class Object3d
 	
 	/**
 	 * Apply texture to object. 
-	 * Object3d must be added to Scene before calling this!
 	 */
 	public boolean initTexture(Bitmap $b)
 	{
-		if (_ren == null) return false;
-		
-		_textureId = _ren.initTexture(this, $b);
+		_textureId = Shared.renderer().uploadTextureAndReturnId($b);
+		return true;
+	}
+	
+	public boolean initTextureUsingResourceId(int $resourceId)
+	{
+		Bitmap b = Utils.makeBitmapFromResourceId($resourceId);
+		_textureId = Shared.renderer().uploadTextureAndReturnId(b);
+		b.recycle();
 		return true;
 	}
 	
 	public void deleteTexture()
 	{
-		if (_textureId == 0 || _ren == null) return;
+		if (_textureId == 0) return;
 		
-		_ren.deleteTexture(_textureId);
+		Shared.renderer().deleteTexture(_textureId);
 		_textureId = 0;
 	}
 
+	public int textureId()
+	{
+		return _textureId;
+	}
+	
+	public void textureId(int $id)
+	{
+		_textureId = $id;
+	}
+	
 	/**
 	 * Convenience property for debugging purposes 
 	 */
@@ -313,7 +322,6 @@ public class Object3d
 	void scene(Scene $scene) /*package-private*/
 	{
 		_scene = $scene;
-		_ren = (_scene != null) ? _scene.renderer() : null;
 	}
 	/**
 	 * Called by DisplayObjectContainer
@@ -321,22 +329,6 @@ public class Object3d
 	Scene scene() /*package-private*/
 	{
 		return _scene;
-	}
-	
-	/**
-	 * Called by Scene
-	 */
-	void renderer(IBitmapManagable $r) /*package-private*/
-	{
-		_ren = $r;
-	}
-
-	/**
-	 * Used by Renderer
-	 */
-	int textureId() /*package-private*/
-	{
-		return _textureId;
 	}
 	
 	/**
