@@ -2,7 +2,6 @@ package min3d.sampleProject1;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;

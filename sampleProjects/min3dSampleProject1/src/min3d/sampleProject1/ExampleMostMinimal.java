@@ -1,12 +1,8 @@
 package min3d.sampleProject1;
 
-import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Box;
-import min3d.objectPrimitives.Sphere;
-import android.graphics.Bitmap;
-import android.util.Log;
 
 /**
  * Most minimal example I could think of.
