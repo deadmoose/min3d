@@ -34,7 +34,7 @@
 		<link>
 			<name>src_min3d</name>
 			<type>2</type>
-			<location>C:/d/android/min3dSvn/src</location>
+			<location>C:/d/android/min3dSvn/trunk/src</location>
 		</link>
 	</linkedResources>
 </projectDescription>
