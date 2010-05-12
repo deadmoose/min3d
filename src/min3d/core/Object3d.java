@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import min3d.Min3d;
 import min3d.Shared;
 import min3d.Utils;
 import min3d.interfaces.IObject3dContainer;
@@ -12,6 +13,7 @@ import min3d.vos.Color4;
 import min3d.vos.Number3d;
 import min3d.vos.RenderType;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 /**
  * sadfsadfsadfsdflkjsdaf lbleat!
@@ -28,7 +30,7 @@ public class Object3d
 	private boolean _isVisible = true;
 	private boolean _useVertColors = true;
 	private boolean _doubleSidedEnabled = false;
-	private boolean _useTexture = true;
+	private boolean _useTextures = true;
 	private boolean _useNormals = true;
 	
 	private Number3d _position = new Number3d(0,0,0);
@@ -41,30 +43,32 @@ public class Object3d
 
 	protected ArrayList<Object3d> _children;
 	
-	protected VertexInfo _verticies; 
+	protected MeshData _vertices; 
 	
 	protected FacesBufferedList _faces;
 	
 	private Scene _scene;
 	private IObject3dContainer _parent;
 
-	private int _textureId;
+	
+	private TextureList _textures;
 	
 	/**
-	 * Maximum number of verticies and faces must be specified at instantiation (unfortunately).
+	 * Maximum number of vertices and faces must be specified at instantiation (unfortunately).
 	 */
-	public Object3d(int $maxVerticies, int $maxFaces)
+	public Object3d(int $maxVertices, int $maxFaces)
 	{
-		_verticies = new VertexInfo($maxVerticies);
+		_vertices = new MeshData($maxVertices);
 		_faces = new FacesBufferedList($maxFaces);
+		_textures = new TextureList();
 	}
 	
 	/**
 	 * Holds references to vertex position list, vertex u/v mappings list, vertex normals list, and vertex colors list
 	 */
-	public VertexInfo verticies()
+	public MeshData meshData()
 	{
-		return _verticies;
+		return _vertices;
 	}
 
 	/**
@@ -73,6 +77,11 @@ public class Object3d
 	public FacesBufferedList faces()
 	{
 		return _faces;
+	}
+	
+	public TextureList textures()
+	{
+		return _textures;
 	}
 	
 	/**
@@ -116,16 +125,16 @@ public class Object3d
 	}
 
 	/**
-	 * Determines if texture (if one is initialized) will used for rendering object.
+	 * Determines if textures (if any) will used for rendering object.
 	 * Default is true.  
 	 */
-	public boolean textureEnabled()
+	public boolean texturesEnabled()
 	{
-		return _useTexture;
+		return _useTextures;
 	}
-	public void textureEnabled(Boolean $b)
+	public void texturesEnabled(Boolean $b)
 	{
-		_useTexture = $b;
+		_useTextures = $b;
 	}
 	
 	/**
@@ -169,7 +178,7 @@ public class Object3d
 	 */
 	public Number3dBufferList points()
 	{
-		return _verticies.points();
+		return _vertices.points();
 	}
 	
 	/**
@@ -177,7 +186,7 @@ public class Object3d
 	 */
 	public UvBufferList uvs()
 	{
-		return _verticies.uvs();
+		return _vertices.uvs();
 	}
 	
 	/**
@@ -185,7 +194,7 @@ public class Object3d
 	 */
 	public Number3dBufferList normals()
 	{
-		return _verticies.normals();
+		return _vertices.normals();
 	}
 	
 	/**
@@ -193,22 +202,20 @@ public class Object3d
 	 */
 	public Color4BufferList colors()
 	{
-		return _verticies.colors();
+		return _vertices.colors();
 	}
-	
+
 
 	/**
-	 * Clear object in preparation for garbage collection.
+	 * Clear object for garbage collection.
 	 */
 	public void clear()
 	{
-		deleteTexture();
-		
-		this.verticies().points().clear();
-		this.verticies().uvs().clear();
-		this.verticies().normals().clear();
-		this.verticies().colors().clear();
-		
+		this.meshData().points().clear();
+		this.meshData().uvs().clear();
+		this.meshData().normals().clear();
+		this.meshData().colors().clear();
+		_textures.clear();
 		if (this.parent() != null) this.parent().removeChild(this);
 	}
 
@@ -262,38 +269,28 @@ public class Object3d
 	/**
 	 * Apply texture to object. 
 	 */
-	public boolean initTexture(Bitmap $b)
-	{
-		_textureId = Shared.renderer().uploadTextureAndReturnId($b);
-		return true;
-	}
-	
-	public boolean initTextureUsingResourceId(int $resourceId)
-	{
-		Bitmap b = Utils.makeBitmapFromResourceId($resourceId);
-		_textureId = Shared.renderer().uploadTextureAndReturnId(b);
-		b.recycle();
-		return true;
-	}
-	
-	public void deleteTexture()
-	{
-		if (_textureId == 0) return;
-		
-		Shared.renderer().deleteTexture(_textureId);
-		_textureId = 0;
-	}
+//	public boolean initTexture(Bitmap $b)
+//	{
+//		_textures = Shared.renderer().uploadTextureAndReturnId($b);
+//		return true;
+//	}
+//	
+//	public boolean initTextureUsingResourceId(int $resourceId)
+//	{
+//		Bitmap b = Utils.makeBitmapFromResourceId($resourceId);
+//		_textures = Shared.renderer().uploadTextureAndReturnId(b);
+//		b.recycle();
+//		return true;
+//	}
+//	
+//	public void deleteTexture()
+//	{
+//		if (_textures == 0) return;
+//		
+//		Shared.renderer().deleteTexture(_textures);
+//		_textures = 0;
+//	}
 
-	public int textureId()
-	{
-		return _textureId;
-	}
-	
-	public void textureId(int $id)
-	{
-		_textureId = $id;
-	}
-	
 	/**
 	 * Convenience property for debugging purposes 
 	 */

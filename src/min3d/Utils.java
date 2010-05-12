@@ -39,9 +39,21 @@ public class Utils
 		return bitmap;
 	}
 	
+	/**
+	 * Convenience method to create a Bitmap given a drawable resource ID from the application Context. 
+	 */
 	public static Bitmap makeBitmapFromResourceId(int $id)
 	{
 		return makeBitmapFromResourceId(Shared.context(), $id);
+	}
+	
+	/**
+	 * Add two triangles to the Object3d's faces using the supplied indices
+	 */
+	public static void addQuad(Object3d $o, int $upperLeft, int $upperRight, int $lowerRight, int $lowerLeft)
+	{
+		$o.faces().add((short)$upperLeft, (short)$lowerRight, (short)$upperRight);
+		$o.faces().add((short)$upperLeft, (short)$lowerLeft, (short)$lowerRight);
 	}
 	
 	public static FloatBuffer makeFloatBuffer4(float $a, float $b, float $c, float $d)
@@ -55,14 +67,5 @@ public class Utils
 		buffer.put($d);
 		buffer.position(0);
 		return buffer;
-	}
-
-	/**
-	 * Add two triangles to the Object3d's faces using the supplied indices
-	 */
-	public static void addQuad(Object3d $o, int $upperLeft, int $upperRight, int $lowerRight, int $lowerLeft)
-	{
-		$o.faces().add((short)$upperLeft, (short)$lowerRight, (short)$upperRight);
-		$o.faces().add((short)$upperLeft, (short)$lowerLeft, (short)$lowerRight);
 	}
 }

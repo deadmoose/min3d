@@ -1,16 +1,17 @@
 package min3d;
 
+import min3d.core.TextureManager;
 import min3d.core.Renderer;
 import android.content.Context;
 
 /**
- * Holds references to Context and Renderer instances
- * for framework's convenience
+ * Holds static references to TextureManager, Renderer, and the application Context. 
  */
 public class Shared 
 {
 	private static Context _context;
 	private static Renderer _renderer;
+	private static TextureManager _textureManager;
 
 	
 	public static Context context()
@@ -31,4 +32,15 @@ public class Shared
 		_renderer = $r;
 	}
 	
+	/**
+	 * You must access the TextureManager instance through this accessor
+	 */
+	public static TextureManager textureManager()
+	{
+		return _textureManager;
+	}
+	public static void textureManager(TextureManager $bm)
+	{
+		_textureManager = $bm;
+	}
 }

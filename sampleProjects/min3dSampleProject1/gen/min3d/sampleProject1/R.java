@@ -16,7 +16,11 @@ public final class R {
         public static final int icon=0x7f020002;
         public static final int jupiter=0x7f020003;
         public static final int moon=0x7f020004;
-        public static final int uglysquares=0x7f020005;
+        public static final int rgb=0x7f020005;
+        public static final int rgb_with_alpha_hole=0x7f020006;
+        public static final int transparent_red_dot=0x7f020007;
+        public static final int uglysquares=0x7f020008;
+        public static final int white_with_alpha_hole=0x7f020009;
     }
     public static final class id {
         public static final int listActivity=0x7f050000;

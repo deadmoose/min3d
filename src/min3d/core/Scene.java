@@ -2,6 +2,9 @@ package min3d.core;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
+import min3d.Min3d;
 import min3d.interfaces.IObject3dContainer;
 import min3d.interfaces.ISceneController;
 import min3d.vos.CameraVo;
@@ -182,6 +185,8 @@ public class Scene implements IObject3dContainer
 	 */
 	void init() /*package-private*/ 
 	{
+		Log.i(Min3d.TAG, "Scene.init()");
+		
 		this.reset();
 		_sceneController.initScene();
 	}

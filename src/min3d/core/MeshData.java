@@ -10,7 +10,7 @@ import min3d.vos.Uv;
 
 
 
-public class VertexInfo
+public class MeshData
 {
 	private Number3dBufferList _points;
 	private UvBufferList _uvs;
@@ -25,7 +25,7 @@ public class VertexInfo
 	 * Direct manipulation of position, UV, normal, or color data can be done directly through the associated 
 	 * 'buffer list' instances contained herein.
 	 */
-	public VertexInfo(int $maxElements)
+	public MeshData(int $maxElements)
 	{
 		_points = new Number3dBufferList($maxElements);
 		_uvs = new UvBufferList($maxElements);

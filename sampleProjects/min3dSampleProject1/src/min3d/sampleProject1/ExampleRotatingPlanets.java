@@ -1,5 +1,6 @@
 package min3d.sampleProject1;
 
+import min3d.Shared;
 import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
@@ -11,10 +12,10 @@ import android.util.Log;
  * This is the "demo" example.
  * It shows how to add children to Object3dContainers.  
  * 
- * If you're familiar with Flash, this similar to using DisplayObjects in the Flash API.
+ * If you're familiar with Flash, this is similar to adding DisplayObjects to the displaylist.
  * 
  * If you're familiar with Papervision3D or Away3D for Flash, this is similar to using 
- * DisplayObject3D's or Object3D's within those respective libraries.
+ * DisplayObject3D's or Object3D's to the Scene.
  * 
  * @author Lee
  */
@@ -35,33 +36,48 @@ public class ExampleRotatingPlanets extends RendererActivity
 		_jupiter = new Sphere(0.8f, 15, 10);
 		scene.addChild(_jupiter);
 
-		Bitmap b = Utils.makeBitmapFromResourceId(this, R.drawable.jupiter);
-		_jupiter.initTexture(b);
-		b.recycle();
-
 		// Add Earth as a child of Jupiter
 		_earth = new Sphere(0.4f, 12, 9);
 		_earth.position().x = 1.6f;
 		_earth.rotation().x = 23;
 		_jupiter.addChild(_earth);
  
-		b = Utils.makeBitmapFromResourceId(this, R.drawable.earth);
-		_earth.initTexture(b);
-		b.recycle();
-			
 		// Add the Moon as a child of Earth
 		_moon = new Sphere(0.2f, 10, 8);
 		_moon.position().x = 0.6f;
 		_earth.addChild(_moon);
 
-		b = Utils.makeBitmapFromResourceId(this, R.drawable.moon);
-		_moon.initTexture(b);
+		// Add textures to TextureManager		
+		Bitmap b = Utils.makeBitmapFromResourceId(this, R.drawable.jupiter);
+		Shared.textureManager().addTextureId(b, "jupiter");
 		b.recycle();
+
+		b = Utils.makeBitmapFromResourceId(this, R.drawable.earth);
+		Shared.textureManager().addTextureId(b, "earth");
+		b.recycle();
+			
+		b = Utils.makeBitmapFromResourceId(this, R.drawable.moon);
+		Shared.textureManager().addTextureId(b, "moon");
+		b.recycle();
+
+		// Add textures to objects based on on the id's we assigned the textures in the texture manager
+		_jupiter.textures().addById("jupiter");
+		_earth.textures().addById("earth");
+		_moon.textures().addById("moon");
 	}
+	
+	private boolean _no;
 	
 	@Override 
 	public void updateScene() 
 	{
+		if (_no) return;
+		
+		if (_count == 100) {
+//			_no = true;
+//			Shared.renderer().
+		}
+		
 		// Spin spheres
 		_jupiter.rotation().y += 1.0f;
 		_earth.rotation().y += 3.0f;

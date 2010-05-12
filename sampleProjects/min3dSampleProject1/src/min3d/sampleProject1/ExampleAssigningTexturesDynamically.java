@@ -5,17 +5,25 @@ import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Sphere;
+import min3d.vos.TextureVo;
 import android.graphics.Bitmap;
 
 /**
- * @author Lee
+ * Shows how objects can be assigned textures dynamically.
+ * 
+ * Also demonstrates how the same texture can be assigned to multiple objects 
+ * (rather than, say, needing to create two instances of a texture 
+ * for two separate objects) 
  */
 public class ExampleAssigningTexturesDynamically extends RendererActivity
 {
-	Object3dContainer _object;
-	int _textureId1;
-	int _textureId2;
-	int _textureId3;
+	Object3dContainer _object1;
+	Object3dContainer _object2;
+	
+	TextureVo _jupiterTexture;
+	TextureVo _earthTexture;
+	TextureVo _moonTexture;
+	
 	int _count;
 	
 	
@@ -23,38 +31,63 @@ public class ExampleAssigningTexturesDynamically extends RendererActivity
 	{
 		_count = 0;
 		
+		// Add three textures to TextureManager 
+		
 		Bitmap b;
 		
 		b = Utils.makeBitmapFromResourceId(R.drawable.jupiter);
-		_textureId1 = Shared.renderer().uploadTextureAndReturnId(b);
+		Shared.textureManager().addTextureId(b, "jupiter");
 		b.recycle();
 		
 		b = Utils.makeBitmapFromResourceId(R.drawable.earth);
-		_textureId2 = Shared.renderer().uploadTextureAndReturnId(b);
+		Shared.textureManager().addTextureId(b, "earth");
 		b.recycle();
 		
 		b = Utils.makeBitmapFromResourceId(R.drawable.moon);
-		_textureId3 = Shared.renderer().uploadTextureAndReturnId(b);
+		Shared.textureManager().addTextureId(b, "moon");
 		b.recycle();
 		
-		_object = new Sphere(1f, 15, 10);
-		scene.addChild(_object);
-	}
+		// Create three TextureVo's
+		
+		_jupiterTexture = new TextureVo("jupiter");
+		_earthTexture = new TextureVo("earth");
+		_moonTexture = new TextureVo("moon");
+		
+		_object1 = new Sphere(0.8f, 15, 10);
+		_object1.position().y = 0.9f;
+		scene.addChild(_object1);
+
+		_object2 = new Sphere(0.8f, 15, 10);
+		_object2.position().y = -0.9f;
+		scene.addChild(_object2);
+}
 	
 	@Override 
 	public void updateScene() 
 	{
 		_count++;
 		
-		if (_count % 240 == 0)
-			_object.textureId(0);
-		else if (_count % 240 == 60) 
-			_object.textureId(_textureId1);
-		else if (_count % 240 == 120) 
-			_object.textureId(_textureId2);
-		else if (_count % 240 == 180) 
-			_object.textureId(_textureId3);
+		// Assign a different texture to the two objects
+		// every second or so
 		
-		_object.rotation().y +=1;
+		if (_count % 240 == 0) {
+			_object1.textures().clear(); // ie, no texture
+			_object2.textures().clear();
+		}
+		else if (_count % 240 == 60) { 
+			_object1.textures().addReplace(_jupiterTexture);
+			_object2.textures().addReplace(_jupiterTexture);
+		}
+		else if (_count % 240 == 120) { 
+			_object1.textures().addReplace(_earthTexture);
+			_object2.textures().addReplace(_earthTexture);
+		}
+		else if (_count % 240 == 180) { 
+			_object1.textures().addReplace(_moonTexture);
+			_object2.textures().addReplace(_moonTexture);
+		}
+		
+		_object1.rotation().y +=1;
+		_object2.rotation().y -=1;
 	}
 }

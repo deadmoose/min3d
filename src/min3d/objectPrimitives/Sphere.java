@@ -39,7 +39,7 @@ public class Sphere extends Object3dContainer
 		Number3d pos = new Number3d();
 		Number3d posFull = new Number3d();
 
-		// Build verticies
+		// Build vertices
 		
 		for (r = 0; r <= _rows; r++)
 		{
@@ -66,7 +66,7 @@ public class Sphere extends Object3dContainer
 				posFull.multiply(_radius);
 				
 				
-				this.verticies().addVertex(posFull.x,posFull.y,posFull.z,  u,v,  pos.x,pos.y,pos.z,  colr,colg,colb,cola);
+				this.meshData().addVertex(posFull.x,posFull.y,posFull.z,  u,v,  pos.x,pos.y,pos.z,  colr,colg,colb,cola);
 			}
 		}
 

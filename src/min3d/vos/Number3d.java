@@ -2,8 +2,8 @@ package min3d.vos;
 
 /**
  * Simple VO holding x,y, and z values. Plus helper math functions.
- * Care should be taken to avoid creating Number3d's unnecessarily. 
- * Its use is not required for the construction of verticies.
+ * Care should be taken to avoid creating Number3d instances unnecessarily. 
+ * Its use is not required for the construction of vertices.
  */
 public class Number3d 
 {

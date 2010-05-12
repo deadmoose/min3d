@@ -1,10 +1,12 @@
 package min3d.sampleProject1;
 
+import min3d.Shared;
 import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Rectangle;
 import min3d.vos.Number3d;
+import min3d.vos.TextureVo;
 import android.graphics.Bitmap;
 
 /**
@@ -27,38 +29,35 @@ public class ExampleAnimatingVertices extends RendererActivity
 	
 	public void initScene() 
 	{
-		// Set size of the plane using the same aspect ratio of source image
-		
-		Bitmap b = Utils.makeBitmapFromResourceId(this, R.drawable.deadmickey);
-		float w = 2f;
-		float h = w * (float)b.getHeight() / (float)b.getWidth();; 
-		_plane = new Rectangle(w, h);
-		_plane.initTexture(b);
-		b.recycle();
-
-		_plane.doubleSidedEnabled(true); // ... so the back of the plane is visible
-		
-		scene.addChild(_plane);
-
 		// Ramp up the light's ambient color so the back of the plane isn't too dark
 		scene.light().ambient.setAll(0xffffffff);
 
-
-		/*
-			Get the coordinates of the point at vertex number 0 (the upper-left vertex of the plane)
-			and put its values in a Number3d. Same for lower-right vertex.
-		*/
+		// Set size of the plane using the same aspect ratio of source image
+		Bitmap b = Utils.makeBitmapFromResourceId(this, R.drawable.deadmickey);
+		float w = 2f;
+		float h = w * (float)b.getHeight() / (float)b.getWidth();; 
 		
+		_plane = new Rectangle(w, h);
+		_plane.doubleSidedEnabled(true); // ... so the back of the plane is visible
+		scene.addChild(_plane);
+
+		Shared.textureManager().addTextureId(b, "mickey");
+		_plane.textures().addById("mickey");
+		
+		b.recycle();
+
+		//	Get the coordinates of the point at vertex number 0 (the upper-left vertex of the plane)
+		//	and put its values in a Number3d. Same for lower-right vertex.
 		_defaultPosUL = _plane.points().getAsNumber3d(0);
 		_defaultPosLR = _plane.points().getAsNumber3d(2);
-		
+
 		_count = 0;
 	}
 
 	@Override 
 	public void updateScene() 
 	{
-		// Change the values for the positions of the upperleft and lower right verticies
+		// Change the values for the positions of the upperleft and lower right vertices
 		
 		float offset = (25f - (float)(_count % 25)) * 0.02f; // ... sure wish I knew of a nice Java tweener class
 		offset *= offset;

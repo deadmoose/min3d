@@ -5,7 +5,7 @@ import min3d.interfaces.IDirtyManaged;
 /**
  * 'Managed' VO for the view frustrum. Used by Camera.
  */
-public class FrustrumManaged implements IDirtyManaged 
+public class FrustumManaged implements IDirtyManaged 
 {
 	private float _shortSideLength;
 	private float _horizontalCenter;
@@ -16,7 +16,7 @@ public class FrustrumManaged implements IDirtyManaged
 	private boolean _dirty;
 	
 	
-	public FrustrumManaged()
+	public FrustumManaged()
 	{
 		_horizontalCenter = 0f;
 		_verticalCenter = 0f;
@@ -26,7 +26,7 @@ public class FrustrumManaged implements IDirtyManaged
 		_zFar = 100.0f;
 	}
 
-	public FrustrumManaged(float $horizontalCenter, float $verticalCenter, float $shortSideLength, float $zNear, float $zFar)
+	public FrustumManaged(float $horizontalCenter, float $verticalCenter, float $shortSideLength, float $zNear, float $zFar)
 	{
 		_horizontalCenter = $horizontalCenter;
 		_verticalCenter = $verticalCenter;

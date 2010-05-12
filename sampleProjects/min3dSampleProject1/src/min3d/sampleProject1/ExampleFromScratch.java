@@ -15,7 +15,7 @@ import min3d.core.RendererActivity;
  * adding vertices post-construction is not bad for performance.
  * 
  * Also note that based on the shape of the object made here, it'd be 
- * optimal to the faces to share verticies, which I'm not bothering
+ * optimal to the faces to share vertices, which I'm not bothering
  * with here...
  * 
  * @author Lee
@@ -52,7 +52,7 @@ public class ExampleFromScratch extends RendererActivity
 		float z1 = (float)(Math.cos(count * Utils.DEG * 3) * rad);
 		float y1 = count / 500f;
 		
-		// _currentObject.verticies().addVertex($pointX, $pointY, $pointZ, $textureU, $textureV, $normalX, $normalY, $normalZ, $colorR, $colorG, $colorB, $colorA);
+		// _currentObject.vertices().addVertex($pointX, $pointY, $pointZ, $textureU, $textureV, $normalX, $normalY, $normalZ, $colorR, $colorG, $colorB, $colorA);
 		
 		// .. not bothering with U/V info 
 	}

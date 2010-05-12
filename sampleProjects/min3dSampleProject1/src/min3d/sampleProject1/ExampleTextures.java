@@ -1,11 +1,15 @@
 package min3d.sampleProject1;
 
+import min3d.Shared;
+import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Box;
+import min3d.vos.TextureVo;
+import android.graphics.Bitmap;
 
 /**
- * @author Lee
+ * Basic example using a texture on an object
  */
 public class ExampleTextures extends RendererActivity
 {
@@ -13,22 +17,33 @@ public class ExampleTextures extends RendererActivity
 	
 	public void initScene() 
 	{
-		/*
-		 * Example of adding a texture to an Object3d by simply passing a (drawable) resource id.
-		 * 
-		 * initTextureUsingResourceId() creates a Bitmap using the application's embedded resource, 
-		 * 'uploads' it to the GPU, and then promptly disposes of it.   
-		 */
-	
 		_cube = new Box(1.5f,1.5f,1.5f);
-		_cube.initTextureUsingResourceId(R.drawable.uglysquares);
 		scene.addChild(_cube);
+
+		// Create a Bitmap. Here we're generating it from an embedded resource,
+		// but the Bitmap could be created in any manner (eg, dynamically).
 		
-		/*
-		 * A more conventional approach might be to pass a Bitmap using "initTexture(bitmap)"
-		 * Be sure to call "bitmap.dispose()" after init'ing the texture, whenever that's appropriate,
-		 * to free up system memory.  
-		 */
+		Bitmap b = Utils.makeBitmapFromResourceId(this, R.drawable.uglysquares);
+		
+		// * NEW: Upload the Bitmap via TextureManager and assign it a 
+		// textureId ("uglysquares").
+		
+		Shared.textureManager().addTextureId(b, "uglysquares");
+		
+		// Unless you have a specific reason for doing so, recycle the Bitmap,
+		// as it is no longer necessary.
+		
+		b.recycle();
+
+		// Create a TextureVo using the textureId that was previously added 
+		// to the TextureManager ("uglysquares").
+		
+		TextureVo texture = new TextureVo("uglysquares");
+		
+		// Add it to the TexturesList held by the Object3d, 
+		// and it will be duly rendered.
+		
+		_cube.textures().add(texture);
 	}
 	
 	@Override 

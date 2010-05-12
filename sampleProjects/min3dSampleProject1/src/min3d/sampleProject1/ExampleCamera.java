@@ -60,13 +60,13 @@ public class ExampleCamera extends RendererActivity
 		
 		if (_dy != 0)
 		{
-			// When trackball moves vertically, change camera's frustrum "shortSideLength" property 
+			// When trackball moves vertically, change camera's frustum "shortSideLength" property 
 			// This effectively changes field of view. (??)
 			
-			float len = scene.camera().frustrum.shortSideLength() + _dy;
+			float len = scene.camera().frustum.shortSideLength() + _dy;
 			if (len < 0.1f) len = 0.1f;
 			if (len > 50f) len = 50f;
-			scene.camera().frustrum.shortSideLength(len);
+			scene.camera().frustum.shortSideLength(len);
 			
 			_dy = 0;
 		}

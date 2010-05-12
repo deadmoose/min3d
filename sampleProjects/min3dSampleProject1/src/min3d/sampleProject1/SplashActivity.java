@@ -4,11 +4,13 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 /**
@@ -22,12 +24,13 @@ public class SplashActivity extends ListActivity
 		"\"Hello, Jupiter\"", 
 		"Minimal example", 
 		"Vertex colors", 
-		"Textures",
+		"Texture",
 		"Points versus triangles",
-		"Camera, frustrum (trackball)",
-		"Assigning textures dynamically",
+		"Camera, frustum (trackball)",
 		"Animating vertices",
-		"Subset of faces"
+		"Rendering subset of faces",
+		"Assigning textures dynamically",
+		"Multiple textures"
 		// "Object from scratch"
 	};
 	
@@ -38,9 +41,10 @@ public class SplashActivity extends ListActivity
 		ExampleTextures.class,
 		ExamplePointsVersusTriangles.class,
 		ExampleCamera.class,
-		ExampleAssigningTexturesDynamically.class,
 		ExampleAnimatingVertices.class,
-		ExampleSubsetOfFaces.class
+		ExampleSubsetOfFaces.class,
+		ExampleAssigningTexturesDynamically.class,
+		ExampleMultiTexture.class
 		// ExampleFromScratch.class
 	};
 	
@@ -50,6 +54,9 @@ public class SplashActivity extends ListActivity
 	    super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
 	    setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, _strings));
+	    
+	    TextView tv = (TextView) this.findViewById(R.id.splashTitle);
+	    Linkify.addLinks(tv, 0x07);
     }
     
     @Override
@@ -93,6 +100,4 @@ public class SplashActivity extends ListActivity
         }
         return false;
     }
-    
-    
 }

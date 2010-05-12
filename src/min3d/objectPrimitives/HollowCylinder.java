@@ -51,7 +51,7 @@ public class HollowCylinder extends Object3dContainer
 	
 	private void addHorizontalSurface(boolean $isTopSide, float $zOffset)
 	{
-		int indexOffset = _verticies.size();
+		int indexOffset = _vertices.size();
 		float step = (float)((360.0 / _segs) * DEG);
 
 		// verts
@@ -68,7 +68,7 @@ public class HollowCylinder extends Object3dContainer
 			float z1 		= $zOffset; 
 			Uv uv1 			= new Uv(x1,y1);
 			Number3d n1 	= new Number3d(0,0, $isTopSide ? -1 : +1);
-			this.verticies().addVertex(new Number3d(x1,y1,z1), uv1, n1, col);
+			this.meshData().addVertex(new Number3d(x1,y1,z1), uv1, n1, col);
 
 			// inner 
 			float x2 		= (float) Math.sin(angle) * _radiusInner;
@@ -76,7 +76,7 @@ public class HollowCylinder extends Object3dContainer
 			float z2 		= $zOffset; 
 			Uv uv2			= new Uv(x2,y2);
 			Number3d n2	= new Number3d(0,0, $isTopSide ? -1 : +1);
-			this.verticies().addVertex(new Number3d(x2,y2,z2), uv2, n2, col);
+			this.meshData().addVertex(new Number3d(x2,y2,z2), uv2, n2, col);
 		}
 		
 		// indicies
@@ -100,7 +100,7 @@ public class HollowCylinder extends Object3dContainer
 	// 
 	private void addVerticalSurface(boolean $isOuter)
 	{
-		int off = (int)(_verticies.size() / 2); 
+		int off = (int)(_vertices.size() / 2); 
 		
 		for (int i = 0; i < _segs - 1; i++)
 		{

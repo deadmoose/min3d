@@ -9,7 +9,7 @@ public class CameraVo
 	public Number3d target = new Number3d(0,0,0);
 	public Number3d upAxis = new Number3d(0,1,0);
 	
-	public FrustrumManaged frustrum = new FrustrumManaged();
+	public FrustumManaged frustum = new FrustumManaged();
 
 	
 	public CameraVo()

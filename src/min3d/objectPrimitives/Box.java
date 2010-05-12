@@ -17,7 +17,7 @@ import android.opengl.GLUtils;
 import android.util.Log;
 
 /**
- * Note how each 'face' (quad) of the box uses its own set of 4 verticies each, 
+ * Note how each 'face' (quad) of the box uses its own set of 4 vertices each, 
  * rather than sharing with adjacent faces.  This allows for each face to be 
  * texture mapped, normal'ed, and colored independently of the others. 
  * 
@@ -71,45 +71,45 @@ public class Box extends Object3dContainer
 		short ul, ur, lr, ll;
 		
 		// front
-		ul = this.verticies().addVertex(-w,+h,+d,	0f,0f,	0,0,1,	_cols[0].r,_cols[0].g,_cols[0].b,_cols[0].a);
-		ur = this.verticies().addVertex(+w,+h,+d,	1f,0f,	0,0,1,	_cols[0].r,_cols[0].g,_cols[0].b,_cols[0].a);
-		lr = this.verticies().addVertex(+w,-h,+d,	1f,1f,	0,0,1,	_cols[0].r,_cols[0].g,_cols[0].b,_cols[0].a);
-		ll = this.verticies().addVertex(-w,-h,+d,	0f,1f,	0,0,1,	_cols[0].r,_cols[0].g,_cols[0].b,_cols[0].a);
+		ul = this.meshData().addVertex(-w,+h,+d,	0f,0f,	0,0,1,	_cols[0].r,_cols[0].g,_cols[0].b,_cols[0].a);
+		ur = this.meshData().addVertex(+w,+h,+d,	1f,0f,	0,0,1,	_cols[0].r,_cols[0].g,_cols[0].b,_cols[0].a);
+		lr = this.meshData().addVertex(+w,-h,+d,	1f,1f,	0,0,1,	_cols[0].r,_cols[0].g,_cols[0].b,_cols[0].a);
+		ll = this.meshData().addVertex(-w,-h,+d,	0f,1f,	0,0,1,	_cols[0].r,_cols[0].g,_cols[0].b,_cols[0].a);
 		Utils.addQuad(this, ul,ur,lr,ll);
 		
 		// right
-		ul = this.verticies().addVertex(+w,+h,+d,	0f,0f,	1,0,0,	_cols[1].r,_cols[1].g,_cols[1].b,_cols[1].a);
-		ur = this.verticies().addVertex(+w,+h,-d,	1f,0f,	1,0,0,	_cols[1].r,_cols[1].g,_cols[1].b,_cols[1].a);
-		lr = this.verticies().addVertex(+w,-h,-d,	1f,1f,	1,0,0,	_cols[1].r,_cols[1].g,_cols[1].b,_cols[1].a);
-		ll = this.verticies().addVertex(+w,-h,+d,	0f,1f,	1,0,0,	_cols[1].r,_cols[1].g,_cols[1].b,_cols[1].a);
+		ul = this.meshData().addVertex(+w,+h,+d,	0f,0f,	1,0,0,	_cols[1].r,_cols[1].g,_cols[1].b,_cols[1].a);
+		ur = this.meshData().addVertex(+w,+h,-d,	1f,0f,	1,0,0,	_cols[1].r,_cols[1].g,_cols[1].b,_cols[1].a);
+		lr = this.meshData().addVertex(+w,-h,-d,	1f,1f,	1,0,0,	_cols[1].r,_cols[1].g,_cols[1].b,_cols[1].a);
+		ll = this.meshData().addVertex(+w,-h,+d,	0f,1f,	1,0,0,	_cols[1].r,_cols[1].g,_cols[1].b,_cols[1].a);
 		Utils.addQuad(this, ul,ur,lr,ll);
 
 		// back
-		ul = this.verticies().addVertex(+w,+h,-d,	0f,0f,	0,0,-1,	_cols[2].r,_cols[2].g,_cols[2].b,_cols[2].a);
-		ur = this.verticies().addVertex(-w,+h,-d,	1f,0f,	0,0,-1,	_cols[2].r,_cols[2].g,_cols[2].b,_cols[2].a);
-		lr = this.verticies().addVertex(-w,-h,-d,	1f,1f,	0,0,-1,	_cols[2].r,_cols[2].g,_cols[2].b,_cols[2].a);
-		ll = this.verticies().addVertex(+w,-h,-d,	0f,1f,	0,0,-1,	_cols[2].r,_cols[2].g,_cols[2].b,_cols[2].a);
+		ul = this.meshData().addVertex(+w,+h,-d,	0f,0f,	0,0,-1,	_cols[2].r,_cols[2].g,_cols[2].b,_cols[2].a);
+		ur = this.meshData().addVertex(-w,+h,-d,	1f,0f,	0,0,-1,	_cols[2].r,_cols[2].g,_cols[2].b,_cols[2].a);
+		lr = this.meshData().addVertex(-w,-h,-d,	1f,1f,	0,0,-1,	_cols[2].r,_cols[2].g,_cols[2].b,_cols[2].a);
+		ll = this.meshData().addVertex(+w,-h,-d,	0f,1f,	0,0,-1,	_cols[2].r,_cols[2].g,_cols[2].b,_cols[2].a);
 		Utils.addQuad(this, ul,ur,lr,ll);
 	
 		// left
-		ul = this.verticies().addVertex(-w,+h,-d,	0f,0f,	-1,0,0,	_cols[3].r,_cols[3].g,_cols[3].b,_cols[3].a);
-		ur = this.verticies().addVertex(-w,+h,+d,	1f,0f,	-1,0,0,	_cols[3].r,_cols[3].g,_cols[3].b,_cols[3].a);
-		lr = this.verticies().addVertex(-w,-h,+d,	1f,1f,	-1,0,0,	_cols[3].r,_cols[3].g,_cols[3].b,_cols[3].a);
-		ll = this.verticies().addVertex(-w,-h,-d,	0f,1f,	-1,0,0,	_cols[3].r,_cols[3].g,_cols[3].b,_cols[3].a);
+		ul = this.meshData().addVertex(-w,+h,-d,	0f,0f,	-1,0,0,	_cols[3].r,_cols[3].g,_cols[3].b,_cols[3].a);
+		ur = this.meshData().addVertex(-w,+h,+d,	1f,0f,	-1,0,0,	_cols[3].r,_cols[3].g,_cols[3].b,_cols[3].a);
+		lr = this.meshData().addVertex(-w,-h,+d,	1f,1f,	-1,0,0,	_cols[3].r,_cols[3].g,_cols[3].b,_cols[3].a);
+		ll = this.meshData().addVertex(-w,-h,-d,	0f,1f,	-1,0,0,	_cols[3].r,_cols[3].g,_cols[3].b,_cols[3].a);
 		Utils.addQuad(this, ul,ur,lr,ll);
 		
 		// top
-		ul = this.verticies().addVertex(-w,+h,-d,	0f,0f,	0,1,0,	_cols[4].r,_cols[4].g,_cols[4].b,_cols[4].a);
-		ur = this.verticies().addVertex(+w,+h,-d,	1f,0f,	0,1,0,	_cols[4].r,_cols[4].g,_cols[4].b,_cols[4].a);
-		lr = this.verticies().addVertex(+w,+h,+d,	1f,1f,	0,1,0,	_cols[4].r,_cols[4].g,_cols[4].b,_cols[4].a);
-		ll = this.verticies().addVertex(-w,+h,+d,	0f,1f,	0,1,0,	_cols[4].r,_cols[4].g,_cols[4].b,_cols[4].a);
+		ul = this.meshData().addVertex(-w,+h,-d,	0f,0f,	0,1,0,	_cols[4].r,_cols[4].g,_cols[4].b,_cols[4].a);
+		ur = this.meshData().addVertex(+w,+h,-d,	1f,0f,	0,1,0,	_cols[4].r,_cols[4].g,_cols[4].b,_cols[4].a);
+		lr = this.meshData().addVertex(+w,+h,+d,	1f,1f,	0,1,0,	_cols[4].r,_cols[4].g,_cols[4].b,_cols[4].a);
+		ll = this.meshData().addVertex(-w,+h,+d,	0f,1f,	0,1,0,	_cols[4].r,_cols[4].g,_cols[4].b,_cols[4].a);
 		Utils.addQuad(this, ul,ur,lr,ll);
 
 		// bottom
-		ul = this.verticies().addVertex(-w,-h,+d,	0f,0f,	0,-1,0,	_cols[5].r,_cols[5].g,_cols[5].b,_cols[5].a);
-		ur = this.verticies().addVertex(+w,-h,+d,	1f,0f,	0,-1,0,	_cols[5].r,_cols[5].g,_cols[5].b,_cols[5].a);
-		lr = this.verticies().addVertex(+w,-h,-d,	1f,1f,	0,-1,0,	_cols[5].r,_cols[5].g,_cols[5].b,_cols[5].a);
-		ll = this.verticies().addVertex(-w,-h,-d,	0f,1f,	0,-1,0,	_cols[5].r,_cols[5].g,_cols[5].b,_cols[5].a);
+		ul = this.meshData().addVertex(-w,-h,+d,	0f,0f,	0,-1,0,	_cols[5].r,_cols[5].g,_cols[5].b,_cols[5].a);
+		ur = this.meshData().addVertex(+w,-h,+d,	1f,0f,	0,-1,0,	_cols[5].r,_cols[5].g,_cols[5].b,_cols[5].a);
+		lr = this.meshData().addVertex(+w,-h,-d,	1f,1f,	0,-1,0,	_cols[5].r,_cols[5].g,_cols[5].b,_cols[5].a);
+		ll = this.meshData().addVertex(-w,-h,-d,	0f,1f,	0,-1,0,	_cols[5].r,_cols[5].g,_cols[5].b,_cols[5].a);
 		Utils.addQuad(this, ul,ur,lr,ll);
 	}
 }
