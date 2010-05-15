@@ -24,11 +24,10 @@ public class ExampleRotatingPlanets extends RendererActivity
 	Object3dContainer _jupiter;
 	Object3dContainer _earth;
 	Object3dContainer _moon;
-	int _count = 0;
+	int _count;
 	
 	public void initScene() 
 	{
-		Log.i("x", "initScene");
 		scene.light().ambient.setAll((short)32, (short)32, (short)32, (short)255);
 		scene.light().position.setAll(3, 3, 3);
 		
@@ -64,20 +63,13 @@ public class ExampleRotatingPlanets extends RendererActivity
 		_jupiter.textures().addById("jupiter");
 		_earth.textures().addById("earth");
 		_moon.textures().addById("moon");
+		
+		_count = 0;
 	}
-	
-	private boolean _no;
 	
 	@Override 
 	public void updateScene() 
 	{
-		if (_no) return;
-		
-		if (_count == 100) {
-//			_no = true;
-//			Shared.renderer().
-		}
-		
 		// Spin spheres
 		_jupiter.rotation().y += 1.0f;
 		_earth.rotation().y += 3.0f;

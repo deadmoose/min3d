@@ -22,7 +22,6 @@ public class ExampleSubsetOfFaces extends RendererActivity
 	public void initScene() 
 	{
 		_cylinder = new HollowCylinder(1f, 0.5f, 0.66f, 25); 
-		_cylinder.name("cylinder");
 		_cylinder.scale().setAll(1.2f,1.2f,1.2f);
 		_cylinder.normalsEnabled(false);
 		_cylinder.colorsEnabled(true);

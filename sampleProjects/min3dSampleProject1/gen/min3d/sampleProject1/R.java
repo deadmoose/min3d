@@ -11,14 +11,14 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int deadmickey=0x7f020000;
-        public static final int earth=0x7f020001;
-        public static final int icon=0x7f020002;
-        public static final int jupiter=0x7f020003;
-        public static final int moon=0x7f020004;
-        public static final int rgb=0x7f020005;
-        public static final int rgb_with_alpha_hole=0x7f020006;
-        public static final int transparent_red_dot=0x7f020007;
+        public static final int clouds=0x7f020000;
+        public static final int clouds_alpha2=0x7f020001;
+        public static final int clouds_alpha2b=0x7f020002;
+        public static final int deadmickey=0x7f020003;
+        public static final int earth=0x7f020004;
+        public static final int icon=0x7f020005;
+        public static final int jupiter=0x7f020006;
+        public static final int moon=0x7f020007;
         public static final int uglysquares=0x7f020008;
         public static final int white_with_alpha_hole=0x7f020009;
     }

@@ -112,6 +112,9 @@ public class ExampleMultiTexture extends RendererActivity
 			_alphaTextureEnv.setAll(GL10.GL_TEXTURE_ENV_MODE, GL10.GL_ADD);
 		}
 		else if (_count % 1000 == 600) {
+			// Note, this is the correct setting if you're just interested  
+			// in layering one bitmap that has some transparency on top of another,
+			// without altering the color or alpha of the either.
 			_alphaTextureEnv.setAll(GL10.GL_TEXTURE_ENV_MODE, GL10.GL_DECAL);
 		}
 		else if (_count % 1000 == 800) {

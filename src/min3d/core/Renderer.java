@@ -276,7 +276,7 @@ public class Renderer implements GLSurfaceView.Renderer
 		
 		_gl.glScalef($o.scale().x, $o.scale().y, $o.scale().z);
 		
-		// Textures - iterate thru each 'texture environment'
+		// iterate thru object's textures
 		
 		for (int i = 0; i < _maxTextureUnits; i++)
 		{
@@ -292,21 +292,33 @@ public class Renderer implements GLSurfaceView.Renderer
 
 				if (textureVo != null)
 				{
+					// activate texture
 					int glId = _textureManager.getGlTextureId(textureVo.textureId);
 					_gl.glBindTexture(GL10.GL_TEXTURE_2D, glId);
 				    _gl.glEnable(GL10.GL_TEXTURE_2D);
 					_gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-				    
+
+					_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST); // (OpenGL default is GL_NEAREST_MIPMAP)
+					_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR); // (is OpenGL default)
+					
+
+					// do texture environment settings
 					for (int j = 0; j < textureVo.textureEnvs.size(); j++)
 					{
 						_gl.glTexEnvx(GL10.GL_TEXTURE_ENV, textureVo.textureEnvs.get(j).pname, textureVo.textureEnvs.get(j).param);
-						
-//						if ($o.name()=="sphere")
-//							Log.v("x", i + "  " + textureVo.textureEnvs.get(j).pname + "  " + textureVo.textureEnvs.get(j).param);
 					}
 					
-					_gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_REPEAT);
-					_gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);					
+					// texture wrapping settings
+					_gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, (textureVo.repeatU ? GL10.GL_REPEAT : GL10.GL_CLAMP_TO_EDGE));
+					_gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, (textureVo.repeatV ? GL10.GL_REPEAT : GL10.GL_CLAMP_TO_EDGE));		
+
+					// texture offset, if any
+					if (textureVo.offsetU != 0 || textureVo.offsetV != 0)
+					{
+						_gl.glMatrixMode(GL10.GL_TEXTURE);
+						_gl.glLoadIdentity();
+						_gl.glTranslatef(textureVo.offsetU, textureVo.offsetV, 0);
+					}
 				}
 				else
 				{
@@ -322,6 +334,8 @@ public class Renderer implements GLSurfaceView.Renderer
 				_gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 			}
 		}
+		_gl.glMatrixMode(GL10.GL_MODELVIEW);
+		
 
 		// Draw
 
@@ -395,180 +409,12 @@ public class Renderer implements GLSurfaceView.Renderer
 		glTextureId = a[0];
 		_gl.glBindTexture(GL10.GL_TEXTURE_2D, glTextureId);
 		
-		_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
-		_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-		_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
-		_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
-		_gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_REPLACE);		
-		
 		// 'upload' to gpu
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, $bitmap, 0);
 		
 		return glTextureId;
 	}
 	
-	protected void drawObject_ORIG(Object3d $o)
-	{
-		if ($o.isVisible() == false) return;		
-
-		// Normals
-		
-		if ($o.normalsEnabled()) {
-			$o.meshData().normals().buffer().position(0);
-			_gl.glNormalPointer(GL10.GL_FLOAT, 0, $o.meshData().normals().buffer());
-			_gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
-			_gl.glEnable(GL10.GL_LIGHTING);
-		}
-		else {
-			_gl.glDisableClientState(GL10.GL_NORMAL_ARRAY);
-			_gl.glDisable(GL10.GL_LIGHTING);
-		}
-		
-		// Colors: either per-vertex, or per-object
-
-		if ($o.colorsEnabled()) {
-			$o.meshData().colors().buffer().position(0);
-			_gl.glColorPointer(4, GL10.GL_UNSIGNED_BYTE, 0, $o.meshData().colors().buffer());
-			_gl.glEnableClientState(GL10.GL_COLOR_ARRAY); 
-		}
-		else {
-			_gl.glColor4f(
-				(float)$o.defaultColor().r / 255f, 
-				(float)$o.defaultColor().g / 255f, 
-				(float)$o.defaultColor().b / 255f, 
-				(float)$o.defaultColor().a / 255f
-			);
-			_gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
-		}
-		
-		// Backface culling 
-		
-		if ($o.doubleSidedEnabled()) {
-		    _gl.glDisable(GL10.GL_CULL_FACE);
-		} 
-		else {
-		    _gl.glEnable(GL10.GL_CULL_FACE);
-		}
-		
-		// Matrix operations
-
-		_gl.glPushMatrix();
-		
-		_gl.glTranslatef($o.position().x, $o.position().y, $o.position().z);
-		
-		_gl.glRotatef($o.rotation().x, 1,0,0);
-		_gl.glRotatef($o.rotation().y, 0,1,0);
-		_gl.glRotatef($o.rotation().z, 0,0,1);
-		
-		_gl.glScalef($o.scale().x, $o.scale().y, $o.scale().z);
-		
-		// Texture
-		
-		for (int i = 0; i < _maxTextureUnits; i++)
-		{
-			if ($o.texturesEnabled())
-			{
-				int glTextureName = (i < $o.textures().size())  ?  _textureManager.getGlTextureId( $o.textures().get(i).textureId )  :  0;
-
-				$o.meshData().uvs().buffer().position(0);
-				_gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, $o.meshData().uvs().buffer());
-	
-				_gl.glActiveTexture(GL10.GL_TEXTURE0 + i);
-				_gl.glClientActiveTexture(GL10.GL_TEXTURE0 + i); 
-			    _gl.glEnable(GL10.GL_TEXTURE_2D);
-			    
-				_gl.glBindTexture(GL10.GL_TEXTURE_2D, glTextureName);
-				
-				_gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-	
-				
-				//_gl.glTexEnvx(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
-
-//				if (i == 0)
-//					_gl.glTexEnvx(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
-//				else
-//					_gl.glTexEnvx(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_DECAL);
-				
-				if (i == 0)
-					_gl.glTexEnvx(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
-				else
-					_gl.glTexEnvx(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_BLEND);
-				
-				
-				_gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_REPEAT);
-				_gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
-			}
-			else
-			{
-				_gl.glActiveTexture(GL10.GL_TEXTURE0 + i);
-				_gl.glClientActiveTexture(GL10.GL_TEXTURE0 + i); 
-			    _gl.glDisable(GL10.GL_TEXTURE_2D);
-				_gl.glBindTexture(GL10.GL_TEXTURE_2D, 0); // .. ensures texture isn't reused on subsequent non-textured object
-				_gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-			}
-		}
-
-		// Draw
-
-		$o.meshData().points().buffer().position(0);
-		_gl.glVertexPointer(3, GL10.GL_FLOAT, 0, $o.meshData().points().buffer());
-
-		if ($o.renderType() == RenderType.TRIANGLES)
-		{
-			if ($o.faces().renderSubsetEnabled())
-			{
-				int pos = $o.faces().renderSubsetStartIndex() * FacesBufferedList.PROPERTIES_PER_ELEMENT;
-				
-				$o.faces().buffer().position(pos);
-				
-				_gl.glDrawElements(
-					$o.renderTypeInt(), 
-					$o.faces().renderSubsetLength() * FacesBufferedList.PROPERTIES_PER_ELEMENT, 
-					GL10.GL_UNSIGNED_SHORT, 
-					$o.faces().buffer());
-			}
-			else
-			{
-				$o.faces().buffer().position(0);
-				
-				_gl.glDrawElements(
-					$o.renderTypeInt(), 
-					$o.faces().size() * FacesBufferedList.PROPERTIES_PER_ELEMENT, 
-					GL10.GL_UNSIGNED_SHORT, 
-					$o.faces().buffer());
-			}
-			
-		}
-		else
-		{
-			if ($o.renderType() == RenderType.POINTS) {
-				_gl.glPointSize($o.pointSize());
-			}
-			
-			_gl.glDrawArrays($o.renderTypeInt(), 0, $o.meshData().size());
-		}
-		
-		
-		
-		//
-		// Recurse on children
-		//
-		
-		if ($o instanceof Object3dContainer)
-		{
-			Object3dContainer container = (Object3dContainer)$o;
-			
-			for (int i = 0; i < container.children().size(); i++)
-			{
-				Object3d o = container.children().get(i);
-				drawObject(o);
-			}
-		}
-		
-		// Restore matrix
-		
-		_gl.glPopMatrix();
-	}
 
 	/**
 	 * Used by TextureManager
@@ -645,25 +491,28 @@ public class Renderer implements GLSurfaceView.Renderer
 	{
 		// Reset TextureManager
 		Shared.textureManager().reset();
+
+		// Do OpenGL settings which we are using as defaults, or which we will not be changing on-draw
 		
-	    // Depth - explicit settings
-	    
+	    // Explicit depth settings
 		_gl.glEnable(GL10.GL_DEPTH_TEST);									
-		_gl.glClearDepthf(1.0f);											
+		_gl.glClearDepthf(1.0f);
 		_gl.glDepthFunc(GL10.GL_LESS);										
 		_gl.glDepthRangef(0,1f);											
 		_gl.glDepthMask(true);												
 
 		// Alpha enabled
-		
 		_gl.glEnable(GL10.GL_BLEND);										
 		_gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA); 	
 		
 		// "Transparency is best implemented using glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) 
 		// with primitives sorted from farthest to nearest."
+
+		// Texture
+		_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST); // (OpenGL default is GL_NEAREST_MIPMAP)
+		_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR); // (is OpenGL default)
 		
 		// CCW frontfaces only, by default
-
 		_gl.glFrontFace(GL10.GL_CCW);
 	    _gl.glCullFace(GL10.GL_BACK);
 	    _gl.glEnable(GL10.GL_CULL_FACE);

@@ -4,15 +4,10 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import min3d.Min3d;
-import min3d.Shared;
-import min3d.Utils;
 import min3d.interfaces.IObject3dContainer;
-import min3d.sampleProject1.R;
 import min3d.vos.Color4;
 import min3d.vos.Number3d;
 import min3d.vos.RenderType;
-import android.graphics.Bitmap;
 import android.util.Log;
 
 /**

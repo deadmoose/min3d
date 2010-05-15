@@ -30,7 +30,9 @@ public class SplashActivity extends ListActivity
 		"Animating vertices",
 		"Rendering subset of faces",
 		"Assigning textures dynamically",
-		"Multiple textures"
+		"Texture wrapping",
+		"Multiple textures",
+		"Texture offset"
 		// "Object from scratch"
 	};
 	
@@ -44,7 +46,9 @@ public class SplashActivity extends ListActivity
 		ExampleAnimatingVertices.class,
 		ExampleSubsetOfFaces.class,
 		ExampleAssigningTexturesDynamically.class,
-		ExampleMultiTexture.class
+		ExampleTextureWrap.class,
+		ExampleMultiTexture.class,
+		ExampleTextureOffset.class
 		// ExampleFromScratch.class
 	};
 	
