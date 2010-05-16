@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import min3d.Min3d;
 import min3d.Shared;
@@ -62,6 +64,8 @@ public class ObjParser extends AParser implements IParser {
 	
 	@Override
 	public void parse() {
+		long startTime = Calendar.getInstance().getTimeInMillis();
+		
 		InputStream fileIn = resources.openRawResource(resources.getIdentifier(resourceID, null, null));
 		BufferedReader buffer = new BufferedReader(new InputStreamReader(fileIn));
 		String line;
@@ -72,51 +76,58 @@ public class ObjParser extends AParser implements IParser {
 		materialMap = new HashMap<String, ObjMaterial>();
 		textureAtlas = new TextureAtlas();
 		
-		Log.d(Min3d.TAG, "Start parsing object" + resourceID);
+		Log.d(Min3d.TAG, "Start parsing object " + resourceID);
+		Log.d(Min3d.TAG, "Start time " + startTime);
 		
 		try {
 			while((line = buffer.readLine()) != null)
 			{
 				// remove duplicate whitespace
-				line = line.replaceAll("\\s+", " ");
-				String[] parts = line.split(" ");
-				if(parts.length == 0) continue;
-				String type = parts[0];
+				//line = line.replaceAll("\\s+", " ");
+				//String[] parts = line.split(" ");
+				StringTokenizer parts = new StringTokenizer(line, " ");
+				int numTokens = parts.countTokens();
+				if(numTokens == 0) continue;
+				String type = parts.nextToken();
 				
 				if(type.equals(VERTEX))
 				{
 					Number3d vertex = new Number3d();
-					vertex.x = Float.valueOf(parts[1]).floatValue(); 
-					vertex.y = Float.valueOf(parts[2]).floatValue();
-					vertex.z = Float.valueOf(parts[3]).floatValue();
+					vertex.x = Float.parseFloat(parts.nextToken()); 
+					vertex.y = Float.parseFloat(parts.nextToken());
+					vertex.z = Float.parseFloat(parts.nextToken());
 					vertices.add(vertex);
+				} else if(type.equals(FACE)) {
+					if(numTokens == 4) {
+						numFaces++;
+						faces.add(new ObjFace(parts, currentMaterialKey, 3));
+					} else if(numTokens == 5) {
+						numFaces+=2;
+						faces.add(new ObjFace(parts, currentMaterialKey, 4));
+					}
 				} else if(type.equals(TEXCOORD)) {
 					Uv texCoord = new Uv();
-					texCoord.u = Float.valueOf(parts[1]).floatValue();
-					texCoord.v = Float.valueOf(parts[2]).floatValue() * -1f;
+					texCoord.u = Float.parseFloat(parts.nextToken());
+					texCoord.v = Float.parseFloat(parts.nextToken()) * -1f;
 					texCoords.add(texCoord);
 				} else if(type.equals(NORMAL)) {
 					Number3d normal = new Number3d();
-					normal.x = Float.valueOf(parts[1]).floatValue(); 
-					normal.y = Float.valueOf(parts[2]).floatValue();
-					normal.z = Float.valueOf(parts[3]).floatValue();
+					normal.x = Float.parseFloat(parts.nextToken()); 
+					normal.y = Float.parseFloat(parts.nextToken());
+					normal.z = Float.parseFloat(parts.nextToken());
 					normals.add(normal);
-				} else if(type.equals(FACE)) {
-					faces.add(new ObjFace(parts, currentMaterialKey));
-					if(parts.length == 4) {
-						numFaces++;
-					} else if(parts.length == 5) {
-						numFaces+=2;
-					}
 				} else if(type.equals(MATERIAL_LIB)) {
-					readMaterialLib(parts[1]);
+					readMaterialLib(parts.nextToken());
 				} else if(type.equals(USE_MATERIAL)) {
-					currentMaterialKey = parts[1];
+					currentMaterialKey = parts.nextToken();
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		long endTime = Calendar.getInstance().getTimeInMillis();
+		Log.d(Min3d.TAG, "End time " + (endTime-startTime));
 	}
 
 	public Object3dContainer getParsedObject()
@@ -260,14 +271,15 @@ public class ObjParser extends AParser implements IParser {
 		public boolean hasvn;
 		public String materialKey;
 
-        public ObjFace(String[] parts, String materialKey)
+        public ObjFace(StringTokenizer parts, String materialKey, int faceLength)
         {
         	this.materialKey = materialKey;
-        	faceLength = parts.length - 1;
-        	int partLength = parts[1].split("/").length;
-        	boolean emptyVt = parts[1].indexOf("//") > -1;
+        	this.faceLength = faceLength;
+        	StringTokenizer subParts = new StringTokenizer(parts.nextToken(), "/");
+        	int partLength = subParts.countTokens();
+        	boolean emptyVt = false;//parts[1].indexOf("//") > -1;
         	hasvt = partLength >= 2 && !emptyVt;
-        	hasvn = partLength == 3;        	
+        	hasvn = partLength == 3;       	
         	
         	v = new short[faceLength];
         	if(hasvt) vt = new short[faceLength];
@@ -275,11 +287,13 @@ public class ObjParser extends AParser implements IParser {
         	
         	for(int i=1; i<faceLength+1; i++)
         	{
-        		String[] subParts = parts[i].split("/");
+        		if(i > 1)
+        			subParts = new StringTokenizer(parts.nextToken(), "/");
+
         		int index = i-1;
-        		v[index] = (short) (Short.valueOf(subParts[0]).shortValue() - (short)1);
-        		if(hasvt) vt[index] = (short) (Short.valueOf(subParts[1]).shortValue() - (short)1);
-        		if(hasvn) vn[index] = (short) (Short.valueOf(subParts[2]).shortValue() - (short)1);
+        		v[index] = (short) (Short.parseShort(subParts.nextToken()) - 1);
+        		if(hasvt) vt[index] = (short) (Short.parseShort(subParts.nextToken()) - 1);
+        		if(hasvn) vn[index] = (short) (Short.parseShort(subParts.nextToken()) - 1);
         	}
         }
     }
