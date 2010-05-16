@@ -20,5 +20,9 @@ public class Uv
 		v = $v;
 	}
 	
+	public Uv clone()
+	{
+		return new Uv(u, v);
+	}
 	// Rem, v == 0 @ 'bottom', v == 1 @ 'top'
 }
