@@ -11,28 +11,35 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int clouds=0x7f020000;
-        public static final int clouds_alpha2=0x7f020001;
-        public static final int clouds_alpha2b=0x7f020002;
-        public static final int deadmickey=0x7f020003;
-        public static final int earth=0x7f020004;
-        public static final int icon=0x7f020005;
-        public static final int jupiter=0x7f020006;
-        public static final int moon=0x7f020007;
-        public static final int uglysquares=0x7f020008;
-        public static final int white_with_alpha_hole=0x7f020009;
+        public static final int camaro=0x7f020000;
+        public static final int clouds_alpha2b=0x7f020001;
+        public static final int deadmickey=0x7f020002;
+        public static final int earth=0x7f020003;
+        public static final int icon=0x7f020004;
+        public static final int jupiter=0x7f020005;
+        public static final int moon=0x7f020006;
+        public static final int t_leet=0x7f020007;
+        public static final int t_leet_glass=0x7f020008;
+        public static final int uglysquares=0x7f020009;
+        public static final int white_with_alpha_hole=0x7f02000a;
     }
     public static final class id {
-        public static final int listActivity=0x7f050000;
-        public static final int splashTitle=0x7f050001;
+        public static final int listActivity=0x7f060000;
+        public static final int splashTitle=0x7f060001;
     }
     public static final class layout {
         public static final int splash_activity=0x7f030000;
     }
+    public static final class raw {
+        public static final int camaro_mtl=0x7f040000;
+        public static final int camaro_obj=0x7f040001;
+        public static final int liit_mtl=0x7f040002;
+        public static final int liit_obj=0x7f040003;
+    }
     public static final class string {
-        public static final int app_name=0x7f040000;
-        public static final int myBlogUrl=0x7f040003;
-        public static final int projectUrl=0x7f040002;
-        public static final int splashTitle=0x7f040001;
+        public static final int app_name=0x7f050000;
+        public static final int myBlogUrl=0x7f050003;
+        public static final int projectUrl=0x7f050002;
+        public static final int splashTitle=0x7f050001;
     }
 }

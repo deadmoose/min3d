@@ -32,7 +32,8 @@ public class SplashActivity extends ListActivity
 		"Assigning textures dynamically",
 		"Texture wrapping",
 		"Multiple textures",
-		"Texture offset"
+		"Texture offset",
+		"Load model from .obj file"
 		// "Object from scratch"
 	};
 	
@@ -48,7 +49,8 @@ public class SplashActivity extends ListActivity
 		ExampleAssigningTexturesDynamically.class,
 		ExampleTextureWrap.class,
 		ExampleMultiTexture.class,
-		ExampleTextureOffset.class
+		ExampleTextureOffset.class,
+		ExampleLoadObjFile.class
 		// ExampleFromScratch.class
 	};
 	

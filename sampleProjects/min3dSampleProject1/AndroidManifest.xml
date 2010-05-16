@@ -51,6 +51,7 @@
         <activity android:name=".ExampleTextureOffset" android:label="@string/app_name">
         </activity>
 
-    </application>
+    <activity android:name="ExampleLoadObjFile"></activity>
+</application>
     
 </manifest> 
