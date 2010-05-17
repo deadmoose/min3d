@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="min3d.sampleProject1"
-      android:versionCode="3"
-      android:versionName="May_14_2010">
+      android:versionCode="4"
+      android:versionName="May_16_2010">
     
     <uses-sdk android:minSdkVersion="3" />
 
