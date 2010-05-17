@@ -27,14 +27,18 @@ public class Object3d
 	private boolean _doubleSidedEnabled = false;
 	private boolean _useTextures = true;
 	private boolean _useNormals = true;
-	
+	private boolean _ignoreFaces = false;
+
 	private Number3d _position = new Number3d(0,0,0);
 	private Number3d _rotation = new Number3d(0,0,0);
 	private Number3d _scale = new Number3d(1,1,1);
 
 	private Color4 _defaultColor = new Color4();
 	
-	private float _pointSize = 3;
+	private float _pointSize = 3f;
+	private boolean _pointSmoothing = true;
+	private float _lineWidth = 1f;
+	private boolean _lineSmoothing = false;
 
 	protected ArrayList<Object3d> _children;
 	
@@ -145,29 +149,35 @@ public class Object3d
 	{
 		_useNormals = $b;
 	}
+
+	/**
+	 * When true, Renderer draws using vertex points list, rather than faces list.
+	 * (ie, using glDrawArrays instead of glDrawElements) 
+	 * Default is false.
+	 */
+	public boolean ignoreFaces()
+	{
+		return _ignoreFaces;
+	}
+	public void ignoreFaces(boolean $b)
+	{
+		_ignoreFaces = $b;
+	}	
 	
 	/**
-	 * Default is TRIANGLES
+	 * Options are: TRIANGLES, LINES, and POINTS
+	 * Default is TRIANGLES.
 	 */
-	public void renderType(RenderType $type)
-	{
-		_renderType = $type;
-		
-		switch (_renderType) 
-		{
-			case TRIANGLES:
-				_renderTypeInt = GL10.GL_TRIANGLES;
-				break;
-			case POINTS:
-				_renderTypeInt = GL10.GL_POINTS;
-				break;
-		}
-	}
 	public RenderType renderType()
 	{
 		return _renderType;
 	}
-
+	public void renderType(RenderType $type)
+	{
+		_renderType = $type;
+		_renderTypeInt = renderTypeToInt(_renderType);
+	}
+	
 	/**
 	 * Convenience 'pass-thru' method  
 	 */
@@ -250,7 +260,8 @@ public class Object3d
 	}
 	
 	/**
-	 * Point size (applicable only when renderType is POINT) 
+	 * Point size (applicable when renderType is POINT)
+	 * Default is 3. 
 	 */
 	public float pointSize()
 	{
@@ -260,34 +271,53 @@ public class Object3d
 	{
 		_pointSize = $n;
 	}
-	
-	/**
-	 * Apply texture to object. 
-	 */
-//	public boolean initTexture(Bitmap $b)
-//	{
-//		_textures = Shared.renderer().uploadTextureAndReturnId($b);
-//		return true;
-//	}
-//	
-//	public boolean initTextureUsingResourceId(int $resourceId)
-//	{
-//		Bitmap b = Utils.makeBitmapFromResourceId($resourceId);
-//		_textures = Shared.renderer().uploadTextureAndReturnId(b);
-//		b.recycle();
-//		return true;
-//	}
-//	
-//	public void deleteTexture()
-//	{
-//		if (_textures == 0) return;
-//		
-//		Shared.renderer().deleteTexture(_textures);
-//		_textures = 0;
-//	}
 
 	/**
-	 * Convenience property for debugging purposes 
+	 * Point smoothing (anti-aliasing), applicable when renderType is POINT.
+	 * When true, points look like circles rather than squares.
+	 * Default is true.
+	 */
+	public boolean pointSmoothing()
+	{
+		return _pointSmoothing;
+	}
+	public void pointSmoothing(boolean $b)
+	{
+		_pointSmoothing = $b;
+	}
+
+	/**
+	 * Line width (applicable when renderType is LINE)
+	 * Default is 1. 
+	 * 
+	 * Remember that maximum line width is OpenGL-implementation specific, and varies depending 
+	 * on whether lineSmoothing is enabled or not. Eg, on Nexus One,  lineWidth can range from
+	 * 1 to 8 without smoothing, and can only be 1f with smoothing. 
+	 */
+	public float lineWidth()
+	{
+		return _lineWidth;
+	}
+	public void lineWidth(float $n)
+	{
+		_lineWidth = $n;
+	}
+	
+	/**
+	 * Line smoothing (anti-aliasing), applicable when renderType is LINE
+	 * Default is false.
+	 */
+	public boolean lineSmoothing()
+	{
+		return _lineSmoothing;
+	}
+	public void lineSmoothing(boolean $b)
+	{
+		_lineSmoothing = $b;
+	}
+	
+	/**
+	 * Convenience property 
 	 */
 	public String name()
 	{
@@ -302,6 +332,8 @@ public class Object3d
 	{
 		return _parent;
 	}
+	
+	//
 	
 	void parent(IObject3dContainer $container) /*package-private*/
 	{
@@ -324,11 +356,34 @@ public class Object3d
 	}
 	
 	/**
-	 * Used by Renderer
+	 * Called by Renderer
 	 */
 	int renderTypeInt() /*package-private*/
 	{
 		return _renderTypeInt;
+	}
+
+	/**
+	 * Called by Renderer 
+	 */
+	static int renderTypeToInt(RenderType $rt) /* package-private */
+	{
+		int i = 0;
+		
+		switch ($rt) 
+		{
+			case TRIANGLES:
+				i = GL10.GL_TRIANGLES;
+				break;
+			case POINTS:
+				i = GL10.GL_POINTS;
+				break;
+			case LINES:
+				i = GL10.GL_LINES;
+				break;
+		}
+		
+		return i;
 	}
 
 	//

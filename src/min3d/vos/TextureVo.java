@@ -16,8 +16,6 @@ import javax.microedition.khronos.opengles.GL10;
  *  
  *  TODO: Allow for adding glTexEnvf commands (float instead of int)
  *  
- *  TODO: Add more properties, like glTexParameterx-related things, etc.
- *  
  *  TODO: Ability to assign arbitrary UV lists per-TextureVo? (Non-trivial...)
  */
 public class TextureVo 

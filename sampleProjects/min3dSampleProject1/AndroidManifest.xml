@@ -27,7 +27,7 @@
         <activity android:name=".ExampleTextures" android:label="@string/app_name">
         </activity>
 
-        <activity android:name=".ExamplePointsVersusTriangles" android:label="@string/app_name">
+        <activity android:name=".ExampleRenderType" android:label="@string/app_name">
         </activity>
 
         <activity android:name=".ExampleCamera" android:label="@string/app_name">
@@ -51,7 +51,9 @@
         <activity android:name=".ExampleTextureOffset" android:label="@string/app_name">
         </activity>
 
-    <activity android:name="ExampleLoadObjFile"></activity>
+    	<activity android:name="ExampleLoadObjFile" android:label="@string/app_name">
+    	</activity>
+    	
 </application>
     
 </manifest> 

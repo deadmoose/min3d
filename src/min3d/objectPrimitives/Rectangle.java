@@ -16,24 +16,52 @@ import min3d.vos.Vertex3d;
 import android.opengl.GLUtils;
 import android.util.Log;
 
-/**
- * Origin is center of rectangle.
- * A good minimal-example of setting up an Object3d
- */
 public class Rectangle extends Object3dContainer
 {
-	public Rectangle(float $width, float $height)
+	public Rectangle(float $width, float $height, int $segsW, int $segsH, long $colorRgba)
 	{
-		super(4, 2);
+		super(4 * $segsW * $segsH, 2 * $segsW * $segsH);
 
-		float w = $width / 2f;
-		float h = $height / 2f;
+		int row, col;
 
-		short ul = this.meshData().addVertex(-w,+h,0f,	0f,0f,	0,0,1,	(short)255,(short)255,(short)255,(short)255);
-		short ur = this.meshData().addVertex(+w,+h,0f,	1f,0f,	0,0,1,	(short)255,(short)255,(short)255,(short)255);
-		short lr = this.meshData().addVertex(+w,-h,0f,	1f,1f,	0,0,1,	(short)255,(short)255,(short)255,(short)255);
-		short ll = this.meshData().addVertex(-w,-h,0f,	0f,1f,	0,0,1,	(short)255,(short)255,(short)255,(short)255);
+		float w = $width / $segsW;
+		float h = $height / $segsH;
+
+		float width5 = $width/2f;
+		float height5 = $height/2f;
 		
-		Utils.addQuad(this, ul,ur,lr,ll);
+		Color4 c = new Color4();
+		c.setAll($colorRgba);
+		
+		// Add verticies
+		
+		for (row = 0; row <= $segsH; row++)
+		{
+			for (col = 0; col <= $segsW; col++)
+			{
+				this.meshData().addVertex(
+					(float)col*w - width5, (float)row*h - height5,0f,	
+					(float)col/(float)$segsW, 1 - (float)row/(float)$segsH,	
+					0,0,1f,	
+					c.r, c.g, c.b, c.a
+				);
+			}
+		}
+		
+		// Add faces
+		
+		int colspan = $segsW + 1;
+		
+		for (row = 1; row <= $segsH; row++)
+		{
+			for (col = 1; col <= $segsW; col++)
+			{
+				int lr = row * colspan + col;
+				int ll = lr - 1;
+				int ur = lr - colspan;
+				int ul = ur - 1;
+				Utils.addQuad(this, ul,ur,lr,ll);
+			}
+		}
 	}
 }

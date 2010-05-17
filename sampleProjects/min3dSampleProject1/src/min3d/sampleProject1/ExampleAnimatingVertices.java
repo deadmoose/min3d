@@ -37,7 +37,7 @@ public class ExampleAnimatingVertices extends RendererActivity
 		float w = 2f;
 		float h = w * (float)b.getHeight() / (float)b.getWidth();; 
 		
-		_plane = new Rectangle(w, h);
+		_plane = new Rectangle(w, h, 1,1, 0xffffffff);
 		_plane.doubleSidedEnabled(true); // ... so the back of the plane is visible
 		scene.addChild(_plane);
 

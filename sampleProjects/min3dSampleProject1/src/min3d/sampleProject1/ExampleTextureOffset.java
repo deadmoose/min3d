@@ -44,15 +44,15 @@ public class ExampleTextureOffset extends RendererActivity
 		Shared.textureManager().addTextureId(b, "clouds");
 		b.recycle();
 
-		TextureVo t1 = new TextureVo("jupiter");
-		_earth.textures().add(t1);
+		TextureVo t = new TextureVo("jupiter");
+		_earth.textures().add(t);
 
 		_cloudTexture = new TextureVo("clouds");
 		_cloudTexture.textureEnvs.get(0).param = GL10.GL_DECAL; 
 		_cloudTexture.repeatU = true; // .. this is the default, but just to be explicit
 
 		_earth.textures().add(_cloudTexture);
-		
+
 		_count = 0;
 	}
 	

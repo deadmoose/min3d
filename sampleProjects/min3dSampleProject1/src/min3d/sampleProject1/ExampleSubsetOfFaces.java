@@ -3,6 +3,7 @@ package min3d.sampleProject1;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.HollowCylinder;
+import min3d.vos.RenderType;
 
 /**
  * Example of rendering a 'subset' of index buffer list (list of triangle faces)

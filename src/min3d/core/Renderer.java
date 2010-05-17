@@ -1,6 +1,5 @@
 package min3d.core;
 
-import java.nio.IntBuffer;
 import java.util.Comparator;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -28,9 +27,6 @@ public class Renderer implements GLSurfaceView.Renderer
 	private Scene _scene;
 	private TextureManager _textureManager;
 
-	private boolean _isGl10Only;
-	private int _maxTextureUnits;
-	
 	private long _time;
 	private long _timeWas;
 	private long _timeCount;
@@ -69,20 +65,10 @@ public class Renderer implements GLSurfaceView.Renderer
 	{
 		Log.i(Min3d.TAG, "Renderer.onSurfaceCreated()");
 		
+		RenderCaps.setRenderCaps($gl);
+		
 		setGl($gl);
 
-		// Log OpenGL version		
-		String strVersion = _gl.glGetString(GL10.GL_VERSION);
-	    String[] a = strVersion.split("\\ ");
-	    float n = Float.parseFloat(a[a.length-1]);
-	    Log.v(Min3d.TAG, "OpenGL ES version: " + n);
-
-	    // Get max texture units
-		IntBuffer i = IntBuffer.allocate(1);
-		_gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_UNITS, i);
-		_maxTextureUnits = i.get(0);
-		Log.v(Min3d.TAG, "Max texture units: " + _maxTextureUnits);
-		
 		reset();
 		
 		_scene.init();
@@ -225,8 +211,10 @@ public class Renderer implements GLSurfaceView.Renderer
 	{
 		if ($o.isVisible() == false) return;		
 
-		// Normals
+		// Various per-object settings:
 		
+		// Normals
+
 		if ($o.normalsEnabled()) {
 			$o.meshData().normals().buffer().position(0);
 			_gl.glNormalPointer(GL10.GL_FLOAT, 0, $o.meshData().normals().buffer());
@@ -237,7 +225,7 @@ public class Renderer implements GLSurfaceView.Renderer
 			_gl.glDisableClientState(GL10.GL_NORMAL_ARRAY);
 			_gl.glDisable(GL10.GL_LIGHTING);
 		}
-		
+
 		// Colors: either per-vertex, or per-object
 
 		if ($o.colorsEnabled()) {
@@ -255,6 +243,32 @@ public class Renderer implements GLSurfaceView.Renderer
 			_gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
 		}
 		
+		// Point size
+		
+		if ($o.renderType() == RenderType.POINTS) 
+		{
+			if ($o.pointSmoothing()) 
+				_gl.glEnable(GL10.GL_POINT_SMOOTH);
+			else
+				_gl.glDisable(GL10.GL_POINT_SMOOTH);
+			
+			_gl.glPointSize($o.pointSize());
+		}
+
+		// Line properties
+		
+		if ($o.renderType() == RenderType.LINES) 
+		{
+			if ( $o.lineSmoothing() == true) {
+				_gl.glEnable(GL10.GL_LINE_SMOOTH);
+			}
+			else {
+				_gl.glDisable(GL10.GL_LINE_SMOOTH);
+			}
+
+			_gl.glLineWidth($o.lineWidth());
+		}
+
 		// Backface culling 
 		
 		if ($o.doubleSidedEnabled()) {
@@ -264,7 +278,11 @@ public class Renderer implements GLSurfaceView.Renderer
 		    _gl.glEnable(GL10.GL_CULL_FACE);
 		}
 		
-		// Matrix operations
+
+		drawObject_textures($o);
+
+		
+		// Matrix operations in modelview
 
 		_gl.glPushMatrix();
 		
@@ -276,9 +294,62 @@ public class Renderer implements GLSurfaceView.Renderer
 		
 		_gl.glScalef($o.scale().x, $o.scale().y, $o.scale().z);
 		
+		// Draw
+
+		$o.meshData().points().buffer().position(0);
+		_gl.glVertexPointer(3, GL10.GL_FLOAT, 0, $o.meshData().points().buffer());
+
+		if (! $o.ignoreFaces())
+		{
+			int pos, len;
+			
+			if (! $o.faces().renderSubsetEnabled()) {
+				pos = 0;
+				len = $o.faces().size();
+			}
+			else {
+				pos = $o.faces().renderSubsetStartIndex() * FacesBufferedList.PROPERTIES_PER_ELEMENT;
+				len = $o.faces().renderSubsetLength();
+			}
+				
+			$o.faces().buffer().position(pos);
+
+			_gl.glDrawElements(
+					$o.renderTypeInt(), 
+					len * FacesBufferedList.PROPERTIES_PER_ELEMENT, 
+					GL10.GL_UNSIGNED_SHORT, 
+					$o.faces().buffer());
+		}
+		else
+		{
+			_gl.glDrawArrays($o.renderTypeInt(), 0, $o.meshData().size());
+		}
+		
+		//
+		// Recurse on children
+		//
+		
+		if ($o instanceof Object3dContainer)
+		{
+			Object3dContainer container = (Object3dContainer)$o;
+			
+			for (int i = 0; i < container.children().size(); i++)
+			{
+				Object3d o = container.children().get(i);
+				drawObject(o);
+			}
+		}
+		
+		// Restore matrix
+		
+		_gl.glPopMatrix();
+	}
+	
+	private void drawObject_textures(Object3d $o)
+	{
 		// iterate thru object's textures
 		
-		for (int i = 0; i < _maxTextureUnits; i++)
+		for (int i = 0; i < RenderCaps.maxTextureUnits(); i++)
 		{
 			_gl.glActiveTexture(GL10.GL_TEXTURE0 + i);
 			_gl.glClientActiveTexture(GL10.GL_TEXTURE0 + i); 
@@ -301,7 +372,6 @@ public class Renderer implements GLSurfaceView.Renderer
 					_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST); // (OpenGL default is GL_NEAREST_MIPMAP)
 					_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR); // (is OpenGL default)
 					
-
 					// do texture environment settings
 					for (int j = 0; j < textureVo.textureEnvs.size(); j++)
 					{
@@ -318,6 +388,7 @@ public class Renderer implements GLSurfaceView.Renderer
 						_gl.glMatrixMode(GL10.GL_TEXTURE);
 						_gl.glLoadIdentity();
 						_gl.glTranslatef(textureVo.offsetU, textureVo.offsetV, 0);
+						_gl.glMatrixMode(GL10.GL_MODELVIEW); // .. restore matrixmode
 					}
 				}
 				else
@@ -334,67 +405,6 @@ public class Renderer implements GLSurfaceView.Renderer
 				_gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 			}
 		}
-		_gl.glMatrixMode(GL10.GL_MODELVIEW);
-		
-
-		// Draw
-
-		$o.meshData().points().buffer().position(0);
-		_gl.glVertexPointer(3, GL10.GL_FLOAT, 0, $o.meshData().points().buffer());
-
-		if ($o.renderType() == RenderType.TRIANGLES)
-		{
-			if ($o.faces().renderSubsetEnabled())
-			{
-				int pos = $o.faces().renderSubsetStartIndex() * FacesBufferedList.PROPERTIES_PER_ELEMENT;
-				
-				$o.faces().buffer().position(pos);
-				
-				_gl.glDrawElements(
-					$o.renderTypeInt(), 
-					$o.faces().renderSubsetLength() * FacesBufferedList.PROPERTIES_PER_ELEMENT, 
-					GL10.GL_UNSIGNED_SHORT, 
-					$o.faces().buffer());
-			}
-			else
-			{
-				$o.faces().buffer().position(0);
-				
-				_gl.glDrawElements(
-					$o.renderTypeInt(), 
-					$o.faces().size() * FacesBufferedList.PROPERTIES_PER_ELEMENT, 
-					GL10.GL_UNSIGNED_SHORT, 
-					$o.faces().buffer());
-			}
-		}
-		else
-		{
-			if ($o.renderType() == RenderType.POINTS) {
-				_gl.glPointSize($o.pointSize());
-			}
-			
-			_gl.glDrawArrays($o.renderTypeInt(), 0, $o.meshData().size());
-		}
-		
-		
-		//
-		// Recurse on children
-		//
-		
-		if ($o instanceof Object3dContainer)
-		{
-			Object3dContainer container = (Object3dContainer)$o;
-			
-			for (int i = 0; i < container.children().size(); i++)
-			{
-				Object3d o = container.children().get(i);
-				drawObject(o);
-			}
-		}
-		
-		// Restore matrix
-		
-		_gl.glPopMatrix();
 	}
 	
 	/**
@@ -468,7 +478,6 @@ public class Renderer implements GLSurfaceView.Renderer
 	private void setGl(GL10 $gl)
 	{
 		_gl = $gl;
-		_isGl10Only = ! ($gl instanceof GL11);
 	}
 	
 	private void doFps()
