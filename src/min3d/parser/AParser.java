@@ -140,6 +140,8 @@ public abstract class AParser implements IParser {
 		public void generate() {
 			Collections.sort(bitmaps, new BitmapHeightComparer());
 
+			if(bitmaps.size() == 0) return;
+			
 			BitmapAsset largestBitmap = bitmaps.get(0);
 			int totalWidth = 0;
 			int numBitmaps = bitmaps.size();

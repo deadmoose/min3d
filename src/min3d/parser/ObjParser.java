@@ -93,10 +93,10 @@ public class ObjParser extends AParser implements IParser {
 				} else if (type.equals(FACE)) {
 					if (numTokens == 4) {
 						co.numFaces++;
-						co.faces.add(new ObjFace(parts, currentMaterialKey, 3));
+						co.faces.add(new ObjFace(line, currentMaterialKey, 3));
 					} else if (numTokens == 5) {
 						co.numFaces += 2;
-						co.faces.add(new ObjFace(parts, currentMaterialKey, 4));
+						co.faces.add(new ObjFace(line, currentMaterialKey, 4));
 					}
 				} else if (type.equals(TEXCOORD)) {
 					Uv texCoord = new Uv();
@@ -142,19 +142,26 @@ public class ObjParser extends AParser implements IParser {
 		Log.d(Min3d.TAG, "Start object creation");
 		Object3dContainer obj = new Object3dContainer(0, 0);
 		int numObjects = parseObjects.size();
+		Bitmap texture = null;
 
-		textureAtlas.generate();
-		Bitmap texture = textureAtlas.getBitmap();
-		Shared.textureManager().addTextureId(texture, "atlas");
+		if(textureAtlas.hasBitmaps())
+		{
+			textureAtlas.generate();
+			texture = textureAtlas.getBitmap();
+			Shared.textureManager().addTextureId(texture, "atlas");
+		}
 		
 		for (int i = 0; i < numObjects; i++) {
 			ParseObjectData o = parseObjects.get(i);
 			Log.d(Min3d.TAG, "Creating object " + o.name);
 			obj.addChild(o.getParsedObject(textureAtlas));
 		}
-
-		texture.recycle();
-		textureAtlas.cleanup();
+		
+		if(textureAtlas.hasBitmaps())
+		{
+			if(texture != null) texture.recycle();
+			textureAtlas.cleanup();
+		}
 		Log.d(Min3d.TAG, "Object creation finished");
 		
 		cleanup();
@@ -223,16 +230,18 @@ public class ObjParser extends AParser implements IParser {
 	}
 
 	private class ObjFace extends ParseObjectFace {
-		public ObjFace(StringTokenizer parts, String materialKey, int faceLength) {
+		public ObjFace(String line, String materialKey, int faceLength) {
 			super();
 			this.materialKey = materialKey;
 			this.faceLength = faceLength;
-			StringTokenizer subParts = new StringTokenizer(parts.nextToken(),
-					"/");
+			boolean emptyVt = line.indexOf("//") > -1;
+			if(emptyVt) line = line.replace("//", "/");
+			StringTokenizer parts = new StringTokenizer(line);
+			parts.nextToken();
+			StringTokenizer subParts = new StringTokenizer(parts.nextToken(), "/");
 			int partLength = subParts.countTokens();
-			boolean emptyVt = parts.toString().indexOf("//") > -1;
 			hasuv = partLength >= 2 && !emptyVt;
-			hasn = partLength == 3;
+			hasn = partLength == 3 || (partLength == 2 && emptyVt);
 
 			v = new short[faceLength];
 			if (hasuv)
