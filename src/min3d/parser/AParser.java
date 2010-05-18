@@ -17,17 +17,29 @@ import android.graphics.Bitmap.Config;
  * @author dennis.ippel
  *
  */
-public class AParser implements IParser {
+public abstract class AParser implements IParser {
 	protected Resources resources;
 	protected String resourceID;
 	protected String packageID;
 	protected String currentMaterialKey;
+	protected ArrayList<ParseObjectData> parseObjects;
+	protected ParseObjectData co;
+	protected boolean firstObject;
+	protected TextureAtlas textureAtlas;
 	protected ArrayList<Number3d> vertices;
 	protected ArrayList<Uv> texCoords;
 	protected ArrayList<Number3d> normals;
-	protected int numFaces = 0;	
-	protected TextureAtlas textureAtlas;
-
+	
+	public AParser()
+	{
+		vertices = new ArrayList<Number3d>();
+		texCoords = new ArrayList<Uv>();
+		normals = new ArrayList<Number3d>();
+		parseObjects = new ArrayList<ParseObjectData>();
+		textureAtlas = new TextureAtlas();
+		firstObject = true;
+	}
+	
 	/**
 	 * Override this in the concrete parser
 	 */
@@ -90,15 +102,13 @@ public class AParser implements IParser {
 	}
 	
 	/**
-	 * When a model contains per-face textures a texture atlas is created.
-	 * This combines multiple textures into one and re-calculates the 
-	 * UV coordinates.
+	 * When a model contains per-face textures a texture atlas is created. This
+	 * combines multiple textures into one and re-calculates the UV coordinates.
 	 * 
 	 * @author dennis.ippel
-	 *
+	 * 
 	 */
-	protected class TextureAtlas
-	{
+	protected class TextureAtlas {
 		/**
 		 * The texture bitmaps that should be combined into one.
 		 */
@@ -107,97 +117,98 @@ public class AParser implements IParser {
 		 * The texture atlas bitmap
 		 */
 		private Bitmap atlas;
-		
+
 		/**
 		 * Creates a new texture atlas instance.
 		 */
-		public TextureAtlas()
-		{
+		public TextureAtlas() {
 			bitmaps = new ArrayList<BitmapAsset>();
 		}
-		
+
 		/**
 		 * Adds a bitmap to the atlas
+		 * 
 		 * @param bitmap
 		 */
-		public void addBitmapAsset(BitmapAsset bitmap)
-		{
+		public void addBitmapAsset(BitmapAsset bitmap) {
 			bitmaps.add(bitmap);
 		}
-		
+
 		/**
 		 * Generates a new texture atlas
 		 */
-		public void generate()
-		{
+		public void generate() {
 			Collections.sort(bitmaps, new BitmapHeightComparer());
-			
+
 			BitmapAsset largestBitmap = bitmaps.get(0);
 			int totalWidth = 0;
 			int numBitmaps = bitmaps.size();
-			
-			for(int i=0; i<numBitmaps; i++)
-			{
+
+			for (int i = 0; i < numBitmaps; i++) {
 				totalWidth += bitmaps.get(i).bitmap.getWidth();
 			}
-			
-			atlas = Bitmap.createBitmap(totalWidth, largestBitmap.bitmap.getHeight(), Config.ARGB_8888);
+
+			atlas = Bitmap.createBitmap(totalWidth, largestBitmap.bitmap
+					.getHeight(), Config.ARGB_8888);
 			int uOffset = 0;
 			int vOffset = 0;
-			
-			for(int i=0; i<numBitmaps; i++)
-			{
+
+			for (int i = 0; i < numBitmaps; i++) {
 				BitmapAsset ba = bitmaps.get(i);
 				Bitmap b = ba.bitmap;
 				int w = b.getWidth();
 				int h = b.getHeight();
 				int[] pixels = new int[w * h];
-				
+
 				b.getPixels(pixels, 0, w, 0, 0, w, h);
 				atlas.setPixels(pixels, 0, w, uOffset, vOffset, w, h);
-				
-				ba.uOffset = (float)uOffset / totalWidth;
+
+				ba.uOffset = (float) uOffset / totalWidth;
 				ba.vOffset = 0;
-				ba.uScale = (float)w / (float)totalWidth;
-				ba.vScale = (float)h / (float)largestBitmap.bitmap.getHeight();		
-				
+				ba.uScale = (float) w / (float) totalWidth;
+				ba.vScale = (float) h
+						/ (float) largestBitmap.bitmap.getHeight();
+
 				uOffset += w;
-				
+
 				b.recycle();
 			}
 		}
-		
+
 		/**
 		 * Returns the generated texture atlas bitmap
+		 * 
 		 * @return
 		 */
-		public Bitmap getBitmap()
-		{
+		public Bitmap getBitmap() {
 			return atlas;
 		}
-		
+
+		/**
+		 * Indicates whether bitmaps have been added to the atlas.
+		 * 
+		 * @return
+		 */
+		public boolean hasBitmaps() {
+			return bitmaps.size() > 0;
+		}
+
 		/**
 		 * Compares the height of two BitmapAsset objects.
+		 * 
 		 * @author dennis.ippel
-		 *
+		 * 
 		 */
-		private class BitmapHeightComparer implements Comparator<BitmapAsset>
-		{
-			public int compare(BitmapAsset b1, BitmapAsset b2)
-			{
+		private class BitmapHeightComparer implements Comparator<BitmapAsset> {
+			public int compare(BitmapAsset b1, BitmapAsset b2) {
 				int height1 = b1.bitmap.getHeight();
 				int height2 = b2.bitmap.getHeight();
-				
-				if(height1 < height2)
-				{
+
+				if (height1 < height2) {
 					return 1;
-				}
-				else if(height1 == height2)
-				{
+				} else if (height1 == height2) {
 					return 0;
-				}
-				else
-				{
+				} else {
 					return -1;
 				}
 			}
@@ -205,19 +216,34 @@ public class AParser implements IParser {
 
 		/**
 		 * Returns a bitmap asset with a specified name.
+		 * 
 		 * @param materialKey
 		 * @return
 		 */
 		public BitmapAsset getBitmapAssetByName(String materialKey) {
 			int numBitmaps = bitmaps.size();
-			
-			for(int i=0; i<numBitmaps; i++)
-			{
-				if(bitmaps.get(i).key.equals(materialKey))
+
+			for (int i = 0; i < numBitmaps; i++) {
+				if (bitmaps.get(i).key.equals(materialKey))
 					return bitmaps.get(i);
 			}
-			
+
 			return null;
+		}
+		
+		public void cleanup()
+		{
+			int numBitmaps = bitmaps.size();
+
+			for (int i = 0; i < numBitmaps; i++) {
+				bitmaps.get(i).bitmap.recycle();
+			}
+			
+			atlas.recycle();
+			bitmaps.clear();
+			vertices.clear();
+			texCoords.clear();
+			normals.clear();
 		}
 	}
 }

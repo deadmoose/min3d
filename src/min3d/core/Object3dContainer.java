@@ -74,7 +74,7 @@ public class Object3dContainer extends Object3d implements IObject3dContainer
 	{
 		for (int i = 0; i < _children.size(); i++)
 		{
-			if (_children.get(0).name() == $name) return _children.get(0); 
+			if (_children.get(i).name().equals($name)) return _children.get(i); 
 		}
 		return null;
 	}
