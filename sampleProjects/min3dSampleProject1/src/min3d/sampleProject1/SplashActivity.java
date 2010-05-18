@@ -25,7 +25,7 @@ public class SplashActivity extends ListActivity
 		"Minimal example", 
 		"Vertex colors", 
 		"Texture",
-		"Triangles/lines/points",
+		//"Points versus triangles",
 		"Camera, frustum (trackball)",
 		"Animating vertices",
 		"Rendering subset of faces",
@@ -33,7 +33,8 @@ public class SplashActivity extends ListActivity
 		"Texture wrapping",
 		"Multiple textures",
 		"Texture offset",
-		"Load model from .obj file"
+		"Load model from .obj file",
+		"Load multiple models from .obj file"
 		// "Object from scratch"
 	};
 	
@@ -42,7 +43,7 @@ public class SplashActivity extends ListActivity
 		ExampleMostMinimal.class,
 		ExampleVertexColors.class,
 		ExampleTextures.class,
-		ExampleRenderType.class,
+		//ExamplePointsVersusTriangles.class,
 		ExampleCamera.class,
 		ExampleAnimatingVertices.class,
 		ExampleSubsetOfFaces.class,
@@ -50,7 +51,8 @@ public class SplashActivity extends ListActivity
 		ExampleTextureWrap.class,
 		ExampleMultiTexture.class,
 		ExampleTextureOffset.class,
-		ExampleLoadObjFile.class
+		ExampleLoadObjFile.class,
+		ExampleLoadObjFileMultiple.class
 		// ExampleFromScratch.class
 	};
 	
