@@ -14,7 +14,7 @@ public class Parser {
 	 * @author dennis.ippel
 	 *
 	 */
-	public static enum Type { OBJ, MAX_3DS, COLLADA };
+	public static enum Type { OBJ, MAX_3DS };
 	
 	/**
 	 * Create a parser of the specified type.
@@ -29,6 +29,8 @@ public class Parser {
 		{
 			case OBJ:
 				return new ObjParser(resources, resourceID);
+			case MAX_3DS:
+				return new Max3DSParser(resources, resourceID);
 		}
 		
 		return null;

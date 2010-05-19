@@ -49,11 +49,7 @@ public class ObjParser extends AParser implements IParser {
 	 * @param resourceID
 	 */
 	public ObjParser(Resources resources, String resourceID) {
-		super();
-		this.resources = resources;
-		this.resourceID = resourceID;
-		if (resourceID.indexOf(":") > -1)
-			this.packageID = resourceID.split(":")[0];
+		super(resources, resourceID);
 	}
 
 	@Override
@@ -160,7 +156,6 @@ public class ObjParser extends AParser implements IParser {
 		if(textureAtlas.hasBitmaps())
 		{
 			if(texture != null) texture.recycle();
-			textureAtlas.cleanup();
 		}
 		Log.d(Min3d.TAG, "Object creation finished");
 		
@@ -215,8 +210,7 @@ public class ObjParser extends AParser implements IParser {
 						int bmResourceID = resources.getIdentifier(texture
 								.toString(), null, null);
 						Bitmap b = Utils.makeBitmapFromResourceId(bmResourceID);
-						textureAtlas.addBitmapAsset(new BitmapAsset(b,
-								currentMaterial));
+						textureAtlas.addBitmapAsset(new BitmapAsset(currentMaterial, texture.toString()));
 					}
 				}
 			}
@@ -225,7 +219,9 @@ public class ObjParser extends AParser implements IParser {
 		}
 	}
 
-	private void cleanup() {
+	@Override
+	protected void cleanup() {
+		super.cleanup();
 		materialMap.clear();
 	}
 
@@ -243,11 +239,11 @@ public class ObjParser extends AParser implements IParser {
 			hasuv = partLength >= 2 && !emptyVt;
 			hasn = partLength == 3 || (partLength == 2 && emptyVt);
 
-			v = new short[faceLength];
+			v = new int[faceLength];
 			if (hasuv)
-				uv = new short[faceLength];
+				uv = new int[faceLength];
 			if (hasn)
-				n = new short[faceLength];
+				n = new int[faceLength];
 
 			for (int i = 1; i < faceLength + 1; i++) {
 				if (i > 1)

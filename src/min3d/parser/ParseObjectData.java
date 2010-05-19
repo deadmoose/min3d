@@ -2,6 +2,9 @@ package min3d.parser;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
+import min3d.Min3d;
 import min3d.core.Object3d;
 import min3d.parser.AParser.BitmapAsset;
 import min3d.parser.AParser.TextureAtlas;
@@ -18,6 +21,15 @@ public class ParseObjectData {
 	protected ArrayList<Number3d> normals;
 	
 	public String name;
+	
+	public ParseObjectData()
+	{
+		this.vertices = new ArrayList<Number3d>();
+		this.texCoords = new ArrayList<Uv>();
+		this.normals = new ArrayList<Number3d>();
+		this.name = "";
+		faces = new ArrayList<ParseObjectFace>();
+	}
 
 	public ParseObjectData(ArrayList<Number3d> vertices, ArrayList<Uv> texCoords, ArrayList<Number3d> normals)
 	{
@@ -43,6 +55,7 @@ public class ParseObjectData {
 
 			for (int j = 0; j < face.faceLength; j++) {
 				Number3d newVertex = vertices.get(face.v[j]);
+				
 				Uv newUv = face.hasuv ? texCoords.get(face.uv[j]).clone()
 						: new Uv();
 				Number3d newNormal = face.hasn ? normals.get(face.n[j])
@@ -79,6 +92,37 @@ public class ParseObjectData {
 
 		return obj;
 	}
+	
+	public void calculateFaceNormal(ParseObjectFace face)
+	{
+		Number3d v1 = vertices.get(face.v[0]);
+		Number3d v2 = vertices.get(face.v[1]);
+		Number3d v3 = vertices.get(face.v[2]);
+		
+		Number3d vector1 = Number3d.subtract(v2, v1);
+		Number3d vector2 = Number3d.subtract(v3, v1);
+		
+		Number3d normal = new Number3d();
+		normal.x = (vector1.y * vector2.z) - (vector1.z * vector2.y);
+		normal.y = -((vector2.z * vector1.x) - (vector2.x * vector1.z));
+		normal.z = (vector1.x * vector2.y) - (vector1.y * vector2.x);
+		
+		double normFactor = Math.sqrt((normal.x * normal.x) + (normal.y * normal.y) + (normal.z * normal.z));
+		
+		normal.x /= normFactor;
+		normal.y /= normFactor;
+		normal.z /= normFactor;
+		
+        normals.add(normal);
+        
+        int index = normals.size() - 1;
+        face.n = new int[3];
+        face.n[0] = index;
+        face.n[1] = index;
+        face.n[2] = index;
+        face.hasn = true;
+	}
+
 	
 	protected void cleanup() {
 		faces.clear();

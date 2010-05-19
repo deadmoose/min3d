@@ -1,15 +1,21 @@
 package min3d.parser;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import min3d.Min3d;
+import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.vos.Number3d;
 import min3d.vos.Uv;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.util.Log;
 
 /**
  * Abstract parser class with basic parsing functionality.
@@ -40,6 +46,24 @@ public abstract class AParser implements IParser {
 		firstObject = true;
 	}
 	
+	public AParser(Resources resources, String resourceID)
+	{
+		this();
+		this.resources = resources;
+		this.resourceID = resourceID;
+		if (resourceID.indexOf(":") > -1)
+			this.packageID = resourceID.split(":")[0];
+	}
+	
+	protected void cleanup()
+	{
+		parseObjects.clear();
+		textureAtlas.cleanup();
+		vertices.clear();
+		texCoords.clear();
+		normals.clear();
+	}
+	
 	/**
 	 * Override this in the concrete parser
 	 */
@@ -55,6 +79,7 @@ public abstract class AParser implements IParser {
 	public void parse() {
 	}
 	
+
 	/**
 	 * Contains texture information. UV offsets and scaling is stored here.
 	 * This is used with texture atlases.
@@ -73,6 +98,10 @@ public abstract class AParser implements IParser {
 		 */
 		public String key;
 		/**
+		 * Resource ID
+		 */
+		public String resourceID;
+		/**
 		 * U-coordinate offset
 		 */
 		public float uOffset;
@@ -88,16 +117,18 @@ public abstract class AParser implements IParser {
 		 * V-coordinate scaling value
 		 */
 		public float vScale;
+		public boolean useForAtlasDimensions;
 		
 		/**
 		 * Creates a new BitmapAsset object
 		 * @param bitmap
 		 * @param key
 		 */
-		public BitmapAsset(Bitmap bitmap, String key)
+		public BitmapAsset(String key, String resourceID)
 		{
-			this.bitmap = bitmap;
 			this.key = key;
+			this.resourceID = resourceID;
+			useForAtlasDimensions = false;
 		}
 	}
 	
@@ -130,8 +161,43 @@ public abstract class AParser implements IParser {
 		 * 
 		 * @param bitmap
 		 */
-		public void addBitmapAsset(BitmapAsset bitmap) {
-			bitmaps.add(bitmap);
+		public void addBitmapAsset(BitmapAsset ba) {
+			BitmapAsset existingBA = getBitmapAssetByResourceID(ba.resourceID);
+
+			if(existingBA == null)
+			{
+				int bmResourceID = resources.getIdentifier(ba.resourceID, null, null);
+				if(bmResourceID == 0)
+				{
+					Log.d(Min3d.TAG, "Texture not found: " + resourceID);
+					return;
+				}
+
+				Log.d(Min3d.TAG, "Adding texture " + ba.resourceID);
+				
+				Bitmap b = Utils.makeBitmapFromResourceId(bmResourceID);
+				ba.useForAtlasDimensions = true;
+				ba.bitmap = b;
+			}
+			else
+			{
+				ba.bitmap = existingBA.bitmap;
+			}
+
+			bitmaps.add(ba);
+		}
+		
+		public BitmapAsset getBitmapAssetByResourceID(String resourceID)
+		{
+			int numBitmaps = bitmaps.size();
+			
+			for(int i=0; i<numBitmaps; i++)
+			{
+				if(bitmaps.get(i).resourceID.equals(resourceID))
+					return bitmaps.get(i);
+			}
+			
+			return null;
 		}
 
 		/**
@@ -145,36 +211,61 @@ public abstract class AParser implements IParser {
 			BitmapAsset largestBitmap = bitmaps.get(0);
 			int totalWidth = 0;
 			int numBitmaps = bitmaps.size();
-
-			for (int i = 0; i < numBitmaps; i++) {
-				totalWidth += bitmaps.get(i).bitmap.getWidth();
-			}
-
-			atlas = Bitmap.createBitmap(totalWidth, largestBitmap.bitmap
-					.getHeight(), Config.ARGB_8888);
 			int uOffset = 0;
 			int vOffset = 0;
 
 			for (int i = 0; i < numBitmaps; i++) {
-				BitmapAsset ba = bitmaps.get(i);
-				Bitmap b = ba.bitmap;
-				int w = b.getWidth();
-				int h = b.getHeight();
-				int[] pixels = new int[w * h];
-
-				b.getPixels(pixels, 0, w, 0, 0, w, h);
-				atlas.setPixels(pixels, 0, w, uOffset, vOffset, w, h);
-
-				ba.uOffset = (float) uOffset / totalWidth;
-				ba.vOffset = 0;
-				ba.uScale = (float) w / (float) totalWidth;
-				ba.vScale = (float) h
-						/ (float) largestBitmap.bitmap.getHeight();
-
-				uOffset += w;
-
-				b.recycle();
+				if(bitmaps.get(i).useForAtlasDimensions)
+					totalWidth += bitmaps.get(i).bitmap.getWidth();
 			}
+
+			atlas = Bitmap.createBitmap(totalWidth, largestBitmap.bitmap
+					.getHeight(), Config.ARGB_8888);
+
+			for (int i = 0; i < numBitmaps; i++) {
+				BitmapAsset ba = bitmaps.get(i);
+				BitmapAsset existingBA = getBitmapAssetByResourceID(ba.resourceID);				
+				
+				if(ba.useForAtlasDimensions)
+				{
+					Bitmap b = ba.bitmap;
+					int w = b.getWidth();
+					int h = b.getHeight();
+					int[] pixels = new int[w * h];
+					
+					b.getPixels(pixels, 0, w, 0, 0, w, h);
+					atlas.setPixels(pixels, 0, w, uOffset, vOffset, w, h);
+					
+					ba.uOffset = (float) uOffset / totalWidth;
+					ba.vOffset = 0;
+					ba.uScale = (float) w / (float) totalWidth;
+					ba.vScale = (float) h / (float) largestBitmap.bitmap.getHeight();
+					
+					uOffset += w;
+					b.recycle();
+				}
+				else
+				{
+					ba.uOffset = existingBA.uOffset;
+					ba.vOffset = existingBA.vOffset;
+					ba.uScale = existingBA.uScale;
+					ba.vScale = existingBA.vScale;
+				}
+			}
+			/*
+			FileOutputStream fos;
+			try {
+				fos = new FileOutputStream("/data/screenshot.png");
+				atlas.compress(Bitmap.CompressFormat.PNG, 100, fos);
+				fos.flush();
+				fos.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
 		}
 
 		/**
@@ -215,7 +306,7 @@ public abstract class AParser implements IParser {
 				}
 			}
 		}
-
+		
 		/**
 		 * Returns a bitmap asset with a specified name.
 		 * 
@@ -241,7 +332,7 @@ public abstract class AParser implements IParser {
 				bitmaps.get(i).bitmap.recycle();
 			}
 			
-			atlas.recycle();
+			if(atlas != null) atlas.recycle();
 			bitmaps.clear();
 			vertices.clear();
 			texCoords.clear();
