@@ -17,11 +17,12 @@ public final class R {
         public static final int earth=0x7f020003;
         public static final int icon=0x7f020004;
         public static final int jupiter=0x7f020005;
-        public static final int monster=0x7f020006;
-        public static final int moon=0x7f020007;
-        public static final int stonetexture=0x7f020008;
-        public static final int uglysquares=0x7f020009;
-        public static final int white_with_alpha_hole=0x7f02000a;
+        public static final int maqjpg=0x7f020006;
+        public static final int monster=0x7f020007;
+        public static final int moon=0x7f020008;
+        public static final int stonetexture=0x7f020009;
+        public static final int uglysquares=0x7f02000a;
+        public static final int white_with_alpha_hole=0x7f02000b;
     }
     public static final class id {
         public static final int listActivity=0x7f060000;
@@ -35,7 +36,9 @@ public final class R {
         public static final int camaro2_obj=0x7f040001;
         public static final int camaro_mtl=0x7f040002;
         public static final int camaro_obj=0x7f040003;
-        public static final int monster_high=0x7f040004;
+        public static final int maqmtl_mtl=0x7f040004;
+        public static final int maqobj=0x7f040005;
+        public static final int monster_high=0x7f040006;
     }
     public static final class string {
         public static final int app_name=0x7f050000;

@@ -68,7 +68,7 @@ public class HollowCylinder extends Object3dContainer
 			float z1 		= $zOffset; 
 			Uv uv1 			= new Uv(x1,y1);
 			Number3d n1 	= new Number3d(0,0, $isTopSide ? -1 : +1);
-			this.meshData().addVertex(new Number3d(x1,y1,z1), uv1, n1, col);
+			this.vertices().addVertex(new Number3d(x1,y1,z1), uv1, n1, col);
 
 			// inner 
 			float x2 		= (float) Math.sin(angle) * _radiusInner;
@@ -76,7 +76,7 @@ public class HollowCylinder extends Object3dContainer
 			float z2 		= $zOffset; 
 			Uv uv2			= new Uv(x2,y2);
 			Number3d n2	= new Number3d(0,0, $isTopSide ? -1 : +1);
-			this.meshData().addVertex(new Number3d(x2,y2,z2), uv2, n2, col);
+			this.vertices().addVertex(new Number3d(x2,y2,z2), uv2, n2, col);
 		}
 		
 		// indicies

@@ -1,36 +1,58 @@
 package min3d.core;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-
 import min3d.vos.Color4;
 import min3d.vos.Number3d;
 import min3d.vos.Uv;
 
 
-
-public class MeshData
+public class Vertices
 {
 	private Number3dBufferList _points;
 	private UvBufferList _uvs;
 	private Number3dBufferList _normals;
 	private Color4BufferList _colors;
 	
+	private boolean _hasUvs;
+	private boolean _hasNormals;
+	private boolean _hasColors;
+	
 	
 	/**
-	 * Primarily just a 'wrapper' to hold the list of vertex points, texture coordinates (UV), normals, and vertex colors. 
+	 * Used by Object3d to hold the lists of vertex points, texture coordinates (UV), normals, and vertex colors. 
 	 * Use "addVertex()" to build the vertex data for the Object3d instance associated with this instance. 
 	 * 
 	 * Direct manipulation of position, UV, normal, or color data can be done directly through the associated 
 	 * 'buffer list' instances contained herein.
 	 */
-	public MeshData(int $maxElements)
+	public Vertices(int $maxElements)
 	{
 		_points = new Number3dBufferList($maxElements);
-		_uvs = new UvBufferList($maxElements);
-		_normals = new Number3dBufferList($maxElements);
-		_colors = new Color4BufferList($maxElements);
+		
+		_hasUvs = true;
+		_hasNormals = true;
+		_hasColors = true;
+		
+		if (_hasUvs) _uvs = new UvBufferList($maxElements);
+		if (_hasNormals) _normals = new Number3dBufferList($maxElements);
+		if (_hasColors) _colors = new Color4BufferList($maxElements);
+	}
+
+	/**
+	 * This version of the constructor adds 3 boolean arguments determine whether 
+	 * uv, normal, and color lists will be used by this instance.
+	 * Set to false when appropriate to save memory, increase performance. 
+	 */
+	public Vertices(int $maxElements, Boolean $useUvs, Boolean $useNormals, Boolean $useColors)
+	{
+		_points = new Number3dBufferList($maxElements);
+		
+		_hasUvs = $useUvs;
+		_hasNormals = $useNormals;
+		_hasColors = $useColors;
+		
+		if (_hasUvs) _uvs = new UvBufferList($maxElements);
+		if (_hasNormals) _normals = new Number3dBufferList($maxElements);
+		if (_hasColors) _colors = new Color4BufferList($maxElements);
 	}
 	
 	public int size()
@@ -43,9 +65,28 @@ public class MeshData
 		return _points.capacity();
 	}
 	
+	public boolean hasUvs()
+	{
+		return _hasUvs;
+	}
+
+	public boolean hasNormals()
+	{
+		return _hasNormals;
+	}
+	
+	public boolean hasColors()
+	{
+		return _hasColors;
+	}
+	
+	
 	/**
 	 * Use this to populate an Object3d's vertex data.
 	 * Return's newly added vertex's index 
+	 * 
+	 *  	If hasUvs, hasNormals, or hasColors was set to false, 
+	 * 		their corresponding arguments are just ignored.
 	 */
 	public short addVertex(
 		float $pointX, float $pointY, float $pointZ,  
@@ -54,9 +95,9 @@ public class MeshData
 		short $colorR, short $colorG, short $colorB, short $colorA)
 	{
 		_points.add($pointX, $pointY, $pointZ);
-		_uvs.add($textureU, $textureV);
-		_normals.add($normalX, $normalY, $normalZ);
-		_colors.add($colorR, $colorG, $colorB, $colorA);
+		if (_hasUvs) _uvs.add($textureU, $textureV);
+		if (_hasNormals) _normals.add($normalX, $normalY, $normalZ);
+		if (_hasColors) _colors.add($colorR, $colorG, $colorB, $colorA);
 		
 		return (short)(_points.size()-1);
 	}
@@ -66,6 +107,9 @@ public class MeshData
 	 * The VO's taken in as arguments are only used to read the values they hold
 	 * (no references are kept to them).  
 	 * Return's newly added vertex's index 
+	 * 
+	 * 		If hasUvs, hasNormals, or hasColors was set to false, 
+	 * 		their corresponding arguments are just ignored.
 	 */
 	public short addVertex(Number3d $point, Uv $textureUv, Number3d $normal, Color4 $color)
 	{
@@ -84,18 +128,24 @@ public class MeshData
 	}
 	
 	/**
-	 * I.e., texture coordinates
+	 * List of texture coordinates
 	 */
 	UvBufferList uvs() /*package-private*/
 	{
 		return _uvs;
 	}
 	
+	/**
+	 * List of normal values 
+	 */
 	Number3dBufferList normals() /*package-private*/
 	{
 		return _normals;
 	}
 	
+	/**
+	 * List of color values
+	 */
 	Color4BufferList colors() /*package-private*/
 	{
 		return _colors;

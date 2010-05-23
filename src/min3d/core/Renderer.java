@@ -215,9 +215,9 @@ public class Renderer implements GLSurfaceView.Renderer
 		
 		// Normals
 
-		if ($o.normalsEnabled()) {
-			$o.meshData().normals().buffer().position(0);
-			_gl.glNormalPointer(GL10.GL_FLOAT, 0, $o.meshData().normals().buffer());
+		if ($o.hasNormals() && $o.normalsEnabled()) {
+			$o.vertices().normals().buffer().position(0);
+			_gl.glNormalPointer(GL10.GL_FLOAT, 0, $o.vertices().normals().buffer());
 			_gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
 			_gl.glEnable(GL10.GL_LIGHTING);
 		}
@@ -228,9 +228,9 @@ public class Renderer implements GLSurfaceView.Renderer
 
 		// Colors: either per-vertex, or per-object
 
-		if ($o.colorsEnabled()) {
-			$o.meshData().colors().buffer().position(0);
-			_gl.glColorPointer(4, GL10.GL_UNSIGNED_BYTE, 0, $o.meshData().colors().buffer());
+		if ($o.hasColors() && $o.colorsEnabled()) {
+			$o.vertices().colors().buffer().position(0);
+			_gl.glColorPointer(4, GL10.GL_UNSIGNED_BYTE, 0, $o.vertices().colors().buffer());
 			_gl.glEnableClientState(GL10.GL_COLOR_ARRAY); 
 		}
 		else {
@@ -296,8 +296,8 @@ public class Renderer implements GLSurfaceView.Renderer
 		
 		// Draw
 
-		$o.meshData().points().buffer().position(0);
-		_gl.glVertexPointer(3, GL10.GL_FLOAT, 0, $o.meshData().points().buffer());
+		$o.vertices().points().buffer().position(0);
+		_gl.glVertexPointer(3, GL10.GL_FLOAT, 0, $o.vertices().points().buffer());
 
 		if (! $o.ignoreFaces())
 		{
@@ -322,7 +322,7 @@ public class Renderer implements GLSurfaceView.Renderer
 		}
 		else
 		{
-			_gl.glDrawArrays($o.renderTypeInt(), 0, $o.meshData().size());
+			_gl.glDrawArrays($o.renderTypeInt(), 0, $o.vertices().size());
 		}
 		
 		//
@@ -354,10 +354,10 @@ public class Renderer implements GLSurfaceView.Renderer
 			_gl.glActiveTexture(GL10.GL_TEXTURE0 + i);
 			_gl.glClientActiveTexture(GL10.GL_TEXTURE0 + i); 
 
-			if ($o.texturesEnabled())
+			if ($o.hasUvs() && $o.texturesEnabled())
 			{
-				$o.meshData().uvs().buffer().position(0);
-				_gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, $o.meshData().uvs().buffer());
+				$o.vertices().uvs().buffer().position(0);
+				_gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, $o.vertices().uvs().buffer());
 
 				TextureVo textureVo = ((i < $o.textures().size())) ? textureVo = $o.textures().get(i) : null;
 

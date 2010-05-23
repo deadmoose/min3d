@@ -11,9 +11,7 @@ import min3d.vos.RenderType;
 import android.util.Log;
 
 /**
- * sadfsadfsadfsdflkjsdaf lbleat!
  * @author Lee
- *
  */
 public class Object3d
 {
@@ -23,7 +21,7 @@ public class Object3d
 	private int _renderTypeInt = GL10.GL_TRIANGLES;
 	
 	private boolean _isVisible = true;
-	private boolean _useVertColors = true;
+	private boolean _colorsEnabled = true;
 	private boolean _doubleSidedEnabled = false;
 	private boolean _useTextures = true;
 	private boolean _useNormals = true;
@@ -42,22 +40,32 @@ public class Object3d
 
 	protected ArrayList<Object3d> _children;
 	
-	protected MeshData _vertices; 
+	protected Vertices _vertices; 
 	
 	protected FacesBufferedList _faces;
 	
 	private Scene _scene;
 	private IObject3dContainer _parent;
 
-	
 	private TextureList _textures;
 	
+	
 	/**
-	 * Maximum number of vertices and faces must be specified at instantiation (unfortunately).
+	 * Maximum number of vertices and faces must be specified at instantiation.
 	 */
 	public Object3d(int $maxVertices, int $maxFaces)
 	{
-		_vertices = new MeshData($maxVertices);
+		_vertices = new Vertices($maxVertices, true,true,true);
+		_faces = new FacesBufferedList($maxFaces);
+		_textures = new TextureList();
+	}
+	
+	/**
+	 * Adds three arguments 
+	 */
+	public Object3d(int $maxVertices, int $maxFaces, Boolean $useUvs, Boolean $useNormals, Boolean $useColors)
+	{
+		_vertices = new Vertices($maxVertices, $useUvs,$useNormals,$useColors);
 		_faces = new FacesBufferedList($maxFaces);
 		_textures = new TextureList();
 	}
@@ -65,7 +73,7 @@ public class Object3d
 	/**
 	 * Holds references to vertex position list, vertex u/v mappings list, vertex normals list, and vertex colors list
 	 */
-	public MeshData meshData()
+	public Vertices vertices()
 	{
 		return _vertices;
 	}
@@ -110,17 +118,17 @@ public class Object3d
 	}
 
 	/**
-	 * Determines if per-vertex colors will be using for rendering object.
+	 * Determines if per-vertex colors will be used for rendering object.
 	 * If false, defaultColor property will dictate object color.
 	 * Default is true. 
 	 */
 	public boolean colorsEnabled()
 	{
-		return _useVertColors;
+		return _colorsEnabled;
 	}
 	public void colorsEnabled(Boolean $b)
 	{
-		_useVertColors = $b;
+		_colorsEnabled = $b;
 	}
 
 	/**
@@ -209,6 +217,30 @@ public class Object3d
 	{
 		return _vertices.colors();
 	}
+	
+	/**
+	 * Convenience 'pass-thru' method  
+	 */
+	public boolean hasUvs()
+	{
+		return _vertices.hasUvs();
+	}
+
+	/**
+	 * Convenience 'pass-thru' method  
+	 */
+	public boolean hasNormals()
+	{
+		return _vertices.hasNormals();
+	}
+	
+	/**
+	 * Convenience 'pass-thru' method  
+	 */
+	public boolean hasColors()
+	{
+		return _vertices.hasColors();
+	}
 
 
 	/**
@@ -216,10 +248,10 @@ public class Object3d
 	 */
 	public void clear()
 	{
-		this.meshData().points().clear();
-		this.meshData().uvs().clear();
-		this.meshData().normals().clear();
-		this.meshData().colors().clear();
+		this.vertices().points().clear();
+		this.vertices().uvs().clear();
+		this.vertices().normals().clear();
+		this.vertices().colors().clear();
 		_textures.clear();
 		if (this.parent() != null) this.parent().removeChild(this);
 	}

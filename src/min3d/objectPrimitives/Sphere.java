@@ -66,7 +66,7 @@ public class Sphere extends Object3dContainer
 				posFull.multiply(_radius);
 				
 				
-				this.meshData().addVertex(posFull.x,posFull.y,posFull.z,  u,v,  pos.x,pos.y,pos.z,  colr,colg,colb,cola);
+				this.vertices().addVertex(posFull.x,posFull.y,posFull.z,  u,v,  pos.x,pos.y,pos.z,  colr,colg,colb,cola);
 			}
 		}
 

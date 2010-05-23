@@ -7,6 +7,8 @@ import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Rectangle;
+import min3d.parser.IParser;
+import min3d.parser.Parser;
 import min3d.vos.TextureVo;
 
 /**
@@ -14,22 +16,25 @@ import min3d.vos.TextureVo;
  */
 public class Testbed extends RendererActivity
 {
-	Object3dContainer _o;
-	
+	private Object3dContainer objModel;
+
+	@Override
 	public void initScene() 
 	{
-		_o = new Rectangle(2f, 2.5f, 1,1, 0xff00ff00);
-		_o.doubleSidedEnabled(true);
-		_o.normalsEnabled(false);
-		scene.addChild(_o);
+		IParser parser = Parser.createParser(Parser.Type.OBJ,
+				getResources(), "min3d.sampleProject1:raw/maqobj");
 		
-		Shared.textureManager().addTextureId( Utils.makeBitmapFromResourceId(R.drawable.deadmickey), "mickey");
-		_o.textures().addById("mickey");
+		parser.parse();
+
+		objModel = parser.getParsedObject();
+		objModel.scale().x = objModel.scale().y = objModel.scale().z = .7f;
+		scene.addChild(objModel);
 	}
 
-	@Override 
-	public void updateScene() 
-	{
-		_o.rotation().y++;
+	@Override
+	public void updateScene() {
+		objModel.rotation().x++;
+		objModel.rotation().z++;
 	}
 }
+
