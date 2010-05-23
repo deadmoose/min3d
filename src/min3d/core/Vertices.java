@@ -95,6 +95,7 @@ public class Vertices
 		short $colorR, short $colorG, short $colorB, short $colorA)
 	{
 		_points.add($pointX, $pointY, $pointZ);
+		
 		if (_hasUvs) _uvs.add($textureU, $textureV);
 		if (_hasNormals) _normals.add($normalX, $normalY, $normalZ);
 		if (_hasColors) _colors.add($colorR, $colorG, $colorB, $colorA);
@@ -114,9 +115,10 @@ public class Vertices
 	public short addVertex(Number3d $point, Uv $textureUv, Number3d $normal, Color4 $color)
 	{
 		_points.add($point);
-		_uvs.add($textureUv);
-		_normals.add($normal);
-		_colors.add($color);
+		
+		if (_hasUvs) _uvs.add($textureUv);
+		if (_hasNormals) _normals.add($normal);
+		if (_hasColors) _colors.add($color);
 		
 		return (short)(_points.size()-1);
 	}
