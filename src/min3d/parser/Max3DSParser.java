@@ -69,31 +69,9 @@ public class Max3DSParser extends AParser implements IParser {
 		Log.d(Min3d.TAG, "End parsing object");
 	}
 
-	private String getString(InputStream stream) throws IOException {
-		String result = new String();
-		byte inByte;
-		while ((inByte = (byte) stream.read()) != 0)
-			result += (char) inByte;
-		return result;
-
-	}
-
-	private int getInt(InputStream stream) throws IOException {
-		return stream.read() | (stream.read() << 8) | (stream.read() << 16)
-				| (stream.read() << 24);
-	}
-
-	private int getShort(InputStream stream) throws IOException {
-		return (stream.read() | (stream.read() << 8));
-	}
-
-	private float getFloat(InputStream stream) throws IOException {
-		return Float.intBitsToFloat(getInt(stream));
-	}
-
 	private void readHeader(InputStream stream) throws IOException {
-		chunkID = getShort(stream);
-		chunkEndOffset = getInt(stream);
+		chunkID = readShort(stream);
+		chunkEndOffset = readInt(stream);
 		endReached = chunkID < 0;
 	}
 
@@ -104,7 +82,7 @@ public class Max3DSParser extends AParser implements IParser {
 		case MESH_BLOCK:
 			break;
 		case OBJECT_BLOCK:
-			currentObjName = getString(stream);
+			currentObjName = readString(stream);
 			Log.d(Min3d.TAG, "Parsing object " + currentObjName);
 			break;
 		case TRIMESH:
@@ -130,10 +108,10 @@ public class Max3DSParser extends AParser implements IParser {
 			readTexCoords(stream);
 			break;
 		case TEX_NAME:
-			currentMaterialKey = getString(stream);
+			currentMaterialKey = readString(stream);
 			break;
 		case TEX_FILENAME:
-			String fileName = getString(stream);
+			String fileName = readString(stream);
 			StringBuffer texture = new StringBuffer(packageID);
 			texture.append(":drawable/");
 
@@ -147,12 +125,12 @@ public class Max3DSParser extends AParser implements IParser {
 			textureAtlas.addBitmapAsset(new BitmapAsset(currentMaterialKey, texture.toString()));
 			break;
 		case TRI_MATERIAL:
-			String materialName = getString(stream);
-			int numFaces = getShort(stream);
-			Log.d(Min3d.TAG, "tri material: " + materialName);
+			String materialName = readString(stream);
+			int numFaces = readShort(stream);
+
 			for(int i=0; i<numFaces; i++)
 			{
-				int faceIndex = getShort(stream);
+				int faceIndex = readShort(stream);
 				co.faces.get(faceIndex).materialKey = materialName;
 			}
 			break;
@@ -175,12 +153,12 @@ public class Max3DSParser extends AParser implements IParser {
 	
 	private void readVertices(InputStream buffer) throws IOException {
         float x, y, z, tmpy;
-        int numVertices = getShort(buffer);
+        int numVertices = readShort(buffer);
 
         for (int i = 0; i < numVertices; i++) {
-            x = getFloat(buffer);
-            y = getFloat(buffer);
-            z = getFloat(buffer);
+            x = readFloat(buffer);
+            y = readFloat(buffer);
+            z = readFloat(buffer);
             tmpy = y;
             y = z;
             z = -tmpy;
@@ -190,13 +168,13 @@ public class Max3DSParser extends AParser implements IParser {
     }
 	
 	private void readFaces(InputStream buffer) throws IOException {
-        int triangles = getShort(buffer);
+        int triangles = readShort(buffer);
         for (int i = 0; i < triangles; i++) {
             int[] vertexIDs = new int[3];
-            vertexIDs[0] = getShort(buffer);
-            vertexIDs[1] = getShort(buffer);
-            vertexIDs[2] = getShort(buffer);
-            getShort(buffer);
+            vertexIDs[0] = readShort(buffer);
+            vertexIDs[1] = readShort(buffer);
+            vertexIDs[2] = readShort(buffer);
+            readShort(buffer);
             ParseObjectFace face = new ParseObjectFace();
             face.v = vertexIDs;
             face.uv = vertexIDs;
@@ -210,12 +188,12 @@ public class Max3DSParser extends AParser implements IParser {
     }
 	
 	private void readTexCoords(InputStream buffer) throws IOException {
-        int numVertices = getShort(buffer);
+        int numVertices = readShort(buffer);
 
         for (int i = 0; i < numVertices; i++) {
             Uv uv = new Uv();
-            uv.u = getFloat(buffer);
-            uv.v = getFloat(buffer) * -1f;
+            uv.u = readFloat(buffer);
+            uv.v = readFloat(buffer) * -1f;
             co.texCoords.add(uv);
         }
     }

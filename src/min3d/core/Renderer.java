@@ -8,6 +8,7 @@ import javax.microedition.khronos.opengles.GL11;
 
 import min3d.Min3d;
 import min3d.Shared;
+import min3d.animation.AnimationObject3d;
 import min3d.vos.FrustumManaged;
 import min3d.vos.Light;
 import min3d.vos.RenderType;
@@ -198,6 +199,10 @@ public class Renderer implements GLSurfaceView.Renderer
 		for (int i = 0; i < _scene.children().size(); i++)
 		{
 			Object3d o = _scene.children().get(i);
+			if(o.animationEnabled())
+			{
+				((AnimationObject3d)o).update();
+			}
 			drawObject(o);
 		}
 	}
@@ -492,7 +497,7 @@ public class Renderer implements GLSurfaceView.Renderer
 			_fps = 1000f / msPerFrame;
 			_timeCount = 0;
 
-			Log.v(Min3d.TAG, "Renderer FPS " + Math.round(_fps));
+			//Log.v(Min3d.TAG, "Renderer FPS " + Math.round(_fps));
 		}
 	}
 	

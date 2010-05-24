@@ -43,6 +43,8 @@ public class Object3d
 	protected Vertices _vertices; 
 	
 	protected FacesBufferedList _faces;
+
+	protected boolean _animationEnabled = false;
 	
 	private Scene _scene;
 	private IObject3dContainer _parent;
@@ -118,7 +120,21 @@ public class Object3d
 	}
 
 	/**
-	 * Determines if per-vertex colors will be used for rendering object.
+	 * Determines whether animation is enabled or not. If it is enabled
+	 * then this should be an AnimationObject3d instance.
+	 * This is part of the Object3d class so there's no need to cast
+	 * anything during the render loop when it's not necessary.
+	 */
+	public boolean animationEnabled()
+	{
+		return _animationEnabled;
+	}
+	public void animationEnabled(boolean $b)
+	{
+		_animationEnabled = $b;
+	}
+	/**
+	 * Determines if per-vertex colors will be using for rendering object.
 	 * If false, defaultColor property will dictate object color.
 	 * Default is true. 
 	 */

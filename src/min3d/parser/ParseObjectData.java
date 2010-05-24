@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import android.util.Log;
 
 import min3d.Min3d;
+import min3d.animation.AnimationObject3d;
+import min3d.animation.KeyFrame;
 import min3d.core.Object3d;
 import min3d.parser.AParser.BitmapAsset;
 import min3d.parser.AParser.TextureAtlas;
@@ -40,10 +42,28 @@ public class ParseObjectData {
 		faces = new ArrayList<ParseObjectFace>();
 	}
 	
+	public AnimationObject3d getParsedObject(TextureAtlas textureAtlas, KeyFrame[] frames)
+	{
+		AnimationObject3d obj = new AnimationObject3d(numFaces * 3, numFaces, frames.length);
+		obj.name(name);
+		obj.setFrames(frames);
+		
+		parseObject(obj, textureAtlas);
+
+		return obj;
+	}
+	
 	public Object3d getParsedObject(TextureAtlas textureAtlas) {
 		Object3d obj = new Object3d(numFaces * 3, numFaces);
 		obj.name(name);
-
+		
+		parseObject(obj, textureAtlas);
+		
+		return obj;
+	}
+	
+	private void parseObject(Object3d obj, TextureAtlas textureAtlas)
+	{
 		int numFaces = faces.size();
 		int faceIndex = 0;
 		boolean hasBitmaps = textureAtlas.hasBitmaps();
@@ -67,7 +87,6 @@ public class ParseObjectData {
 					newUv.u = ba.uOffset + newUv.u * ba.uScale;
 					newUv.v = ba.vOffset + ((newUv.v + 1) * ba.vScale) - 1;
 				}
-
 				obj.vertices().addVertex(newVertex, newUv, newNormal, newColor);
 			}
 
@@ -89,8 +108,6 @@ public class ParseObjectData {
 		}
 
 		cleanup();
-
-		return obj;
 	}
 	
 	public void calculateFaceNormal(ParseObjectFace face)

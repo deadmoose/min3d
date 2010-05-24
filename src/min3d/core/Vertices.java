@@ -123,6 +123,15 @@ public class Vertices
 		return (short)(_points.size()-1);
 	}
 	
+	public void overwriteVerts(float[] $newVerts)
+	{
+		_points.overwrite($newVerts);
+	}
+	
+	public void overwriteNormals(float[] $newNormals)
+	{
+		_normals.overwrite($newNormals);
+	}
 	
 	Number3dBufferList points() /*package-private*/
 	{

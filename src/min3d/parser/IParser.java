@@ -1,5 +1,6 @@
 package min3d.parser;
 
+import min3d.animation.AnimationObject3d;
 import min3d.core.Object3dContainer;
 
 /**
@@ -18,4 +19,9 @@ public interface IParser {
 	 * @return
 	 */
 	public Object3dContainer getParsedObject();
+	/**
+	 * Returns the parsed animation object
+	 * @return
+	 */
+	public AnimationObject3d getParsedAnimationObject();
 }

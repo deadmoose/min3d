@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import min3d.Min3d;
 import min3d.vos.Number3d;
 
 
@@ -135,5 +136,11 @@ public class Number3dBufferList
 	public FloatBuffer buffer()
 	{
 		return _b;
+	}
+	
+	public void overwrite(float[] $newVals)
+	{
+		_b.position(0);
+		_b.put($newVals);
 	}
 }

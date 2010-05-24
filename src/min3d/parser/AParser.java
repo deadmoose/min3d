@@ -3,12 +3,14 @@ package min3d.parser;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 import min3d.Min3d;
 import min3d.Utils;
+import min3d.animation.AnimationObject3d;
 import min3d.core.Object3dContainer;
 import min3d.vos.Number3d;
 import min3d.vos.Uv;
@@ -70,6 +72,35 @@ public abstract class AParser implements IParser {
 	@Override
 	public Object3dContainer getParsedObject() {
 		return null;
+	}
+	
+	/**
+	 * Override this in the concrete parser if applicable 
+	 */
+	@Override
+	public AnimationObject3d getParsedAnimationObject() {
+		return null;
+	}
+
+	protected String readString(InputStream stream) throws IOException {
+		String result = new String();
+		byte inByte;
+		while ((inByte = (byte) stream.read()) != 0)
+			result += (char) inByte;
+		return result;
+	}
+
+	protected int readInt(InputStream stream) throws IOException {
+		return stream.read() | (stream.read() << 8) | (stream.read() << 16)
+				| (stream.read() << 24);
+	}
+
+	protected int readShort(InputStream stream) throws IOException {
+		return (stream.read() | (stream.read() << 8));
+	}
+
+	protected float readFloat(InputStream stream) throws IOException {
+		return Float.intBitsToFloat(readInt(stream));
 	}
 
 	/**
@@ -169,7 +200,7 @@ public abstract class AParser implements IParser {
 				int bmResourceID = resources.getIdentifier(ba.resourceID, null, null);
 				if(bmResourceID == 0)
 				{
-					Log.d(Min3d.TAG, "Texture not found: " + resourceID);
+					Log.d(Min3d.TAG, "Texture not found: " + ba.resourceID);
 					return;
 				}
 
