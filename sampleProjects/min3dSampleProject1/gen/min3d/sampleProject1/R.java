@@ -14,15 +14,19 @@ public final class R {
         public static final int camaro=0x7f020000;
         public static final int clouds_alpha2b=0x7f020001;
         public static final int deadmickey=0x7f020002;
-        public static final int earth=0x7f020003;
-        public static final int icon=0x7f020004;
-        public static final int jupiter=0x7f020005;
-        public static final int maqjpg=0x7f020006;
-        public static final int monster=0x7f020007;
-        public static final int moon=0x7f020008;
-        public static final int stonetexture=0x7f020009;
-        public static final int uglysquares=0x7f02000a;
-        public static final int white_with_alpha_hole=0x7f02000b;
+        public static final int deadmickey_orig=0x7f020003;
+        public static final int earth=0x7f020004;
+        public static final int earth_orig=0x7f020005;
+        public static final int icon=0x7f020006;
+        public static final int jupiter=0x7f020007;
+        public static final int jupiter_original=0x7f020008;
+        public static final int maqjpg=0x7f020009;
+        public static final int monster=0x7f02000a;
+        public static final int moon=0x7f02000b;
+        public static final int moon_orig=0x7f02000c;
+        public static final int stonetexture=0x7f02000d;
+        public static final int uglysquares=0x7f02000e;
+        public static final int white_with_alpha_hole=0x7f02000f;
     }
     public static final class id {
         public static final int listActivity=0x7f060000;

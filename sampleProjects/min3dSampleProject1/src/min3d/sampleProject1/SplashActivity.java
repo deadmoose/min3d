@@ -26,7 +26,7 @@ public class SplashActivity extends ListActivity
 		"Vertex colors", 
 		"Texture",
 		"Usage of Vertices class",		
-		"Triangles/lines/points",
+		"Triangles, lines, points",
 		"Camera, frustum (trackball)",
 		"Animating vertices",
 		"Rendering subset of faces",
