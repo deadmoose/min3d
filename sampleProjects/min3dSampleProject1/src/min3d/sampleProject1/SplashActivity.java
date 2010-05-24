@@ -38,6 +38,7 @@ public class SplashActivity extends ListActivity
 		"Load model from .obj file",
 		"Load multiple models from .obj file",
 		"Load model from .3ds file",
+		"Load animated .md2 file"
 		// "Object from scratch"
 	};
 	
@@ -59,6 +60,7 @@ public class SplashActivity extends ListActivity
 		ExampleLoadObjFile.class,
 		ExampleLoadObjFileMultiple.class,
 		ExampleLoad3DSFile.class,
+		ExampleLoadMD2File.class
 	};
 	
     @Override

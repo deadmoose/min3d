@@ -63,6 +63,7 @@
 		<activity android:name="ExampleLoadObjFileMultiple"></activity>
 		<activity android:name="ExampleLoad3DSFile"></activity>
 
-	</application>
+	<activity android:name="ExampleLoadMD2File"></activity>
+</application>
     
 </manifest> 
