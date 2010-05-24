@@ -34,9 +34,10 @@ public class SplashActivity extends ListActivity
 		"Texture wrapping",
 		"Multiple textures",
 		"Texture offset",
+		"3D inside layout",
 		"Load model from .obj file",
 		"Load multiple models from .obj file",
-		"Load model from .3ds file"
+		"Load model from .3ds file",
 		// "Object from scratch"
 	};
 	
@@ -54,10 +55,10 @@ public class SplashActivity extends ListActivity
 		ExampleTextureWrap.class,
 		ExampleMultiTexture.class,
 		ExampleTextureOffset.class,
+		ExampleInsideLayout.class,
 		ExampleLoadObjFile.class,
 		ExampleLoadObjFileMultiple.class,
-		ExampleLoad3DSFile.class
-		// ExampleFromScratch.class
+		ExampleLoad3DSFile.class,
 	};
 	
     @Override

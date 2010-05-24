@@ -29,11 +29,15 @@ public final class R {
         public static final int white_with_alpha_hole=0x7f02000f;
     }
     public static final class id {
+        public static final int layoutCancel=0x7f060004;
+        public static final int layoutOkay=0x7f060003;
         public static final int listActivity=0x7f060000;
+        public static final int scene1Holder=0x7f060002;
         public static final int splashTitle=0x7f060001;
     }
     public static final class layout {
-        public static final int splash_activity=0x7f030000;
+        public static final int custom_layout_example=0x7f030000;
+        public static final int splash_activity=0x7f030001;
     }
     public static final class raw {
         public static final int camaro2_mtl=0x7f040000;
