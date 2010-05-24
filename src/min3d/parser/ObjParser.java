@@ -86,30 +86,25 @@ public class ObjParser extends AParser implements IParser {
 					vertex.y = Float.parseFloat(parts.nextToken());
 					vertex.z = Float.parseFloat(parts.nextToken());
 					vertices.add(vertex);
-					Log.v("x", "numverts" + vertices.size());
 				} else if (type.equals(FACE)) {
 					if (numTokens == 4) {
 						co.numFaces++;
 						co.faces.add(new ObjFace(line, currentMaterialKey, 3));
-						Log.v("x", "numfaces" + co.faces.size());
 					} else if (numTokens == 5) {
 						co.numFaces += 2;
 						co.faces.add(new ObjFace(line, currentMaterialKey, 4));
-						Log.v("x", "numfacez" + co.faces.size());
 					}
 				} else if (type.equals(TEXCOORD)) {
 					Uv texCoord = new Uv();
 					texCoord.u = Float.parseFloat(parts.nextToken());
 					texCoord.v = Float.parseFloat(parts.nextToken()) * -1f;
 					texCoords.add(texCoord);
-					Log.v("x", "numtexcos" + co.texCoords.size());
 				} else if (type.equals(NORMAL)) {
 					Number3d normal = new Number3d();
 					normal.x = Float.parseFloat(parts.nextToken());
 					normal.y = Float.parseFloat(parts.nextToken());
 					normal.z = Float.parseFloat(parts.nextToken());
 					normals.add(normal);
-					Log.v("x", "numnomrs" + normals.size());
 				} else if (type.equals(MATERIAL_LIB)) {
 					readMaterialLib(parts.nextToken());
 				} else if (type.equals(USE_MATERIAL)) {
