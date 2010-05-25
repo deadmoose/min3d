@@ -8,7 +8,6 @@ import min3d.interfaces.IObject3dContainer;
 import min3d.vos.Color4;
 import min3d.vos.Number3d;
 import min3d.vos.RenderType;
-import android.util.Log;
 
 /**
  * @author Lee
@@ -41,7 +40,7 @@ public class Object3d
 	protected ArrayList<Object3d> _children;
 	
 	protected Vertices _vertices; 
-	
+	protected TextureList _textures;
 	protected FacesBufferedList _faces;
 
 	protected boolean _animationEnabled = false;
@@ -49,9 +48,6 @@ public class Object3d
 	private Scene _scene;
 	private IObject3dContainer _parent;
 
-	private TextureList _textures;
-	
-	
 	/**
 	 * Maximum number of vertices and faces must be specified at instantiation.
 	 */
@@ -70,6 +66,16 @@ public class Object3d
 		_vertices = new Vertices($maxVertices, $useUvs,$useNormals,$useColors);
 		_faces = new FacesBufferedList($maxFaces);
 		_textures = new TextureList();
+	}
+	
+	/**
+	 * This constructor is convenient for cloning purposes 
+	 */
+	public Object3d(Vertices $vertices, FacesBufferedList $faces, TextureList $textures)
+	{
+		_vertices = $vertices;
+		_faces = $faces;
+		_textures = $textures;
 	}
 	
 	/**

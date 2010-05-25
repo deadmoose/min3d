@@ -1,6 +1,9 @@
 package min3d.animation;
 
+import min3d.core.FacesBufferedList;
 import min3d.core.Object3d;
+import min3d.core.TextureList;
+import min3d.core.Vertices;
 
 public class AnimationObject3d extends Object3d {
 	private int numFrames;
@@ -11,6 +14,7 @@ public class AnimationObject3d extends Object3d {
 	private boolean isPlaying;
 	private float interpolation;
 	private float fps = 70;
+	private boolean updateVertices = true;	
 
 	public AnimationObject3d(int $maxVertices, int $maxFaces, int $numFrames) {
 		super($maxVertices, $maxFaces);
@@ -20,6 +24,13 @@ public class AnimationObject3d extends Object3d {
 		this.isPlaying = false;
 		this.interpolation = 0;
 		this._animationEnabled = true;
+	}
+	
+	public AnimationObject3d(Vertices $vertices, FacesBufferedList $faces, TextureList $textures, KeyFrame[] $frames)
+	{
+		super($vertices, $faces, $textures);
+		numFrames = $frames.length;
+		frames = $frames;
 	}
 
 	public int getCurrentFrame() {
@@ -60,7 +71,7 @@ public class AnimationObject3d extends Object3d {
 	}
 
 	public void update() {
-		if (!isPlaying)
+		if (!isPlaying && !updateVertices)
 			return;
 		currentTime = System.currentTimeMillis();
 		KeyFrame currentFrame = frames[currentFrameIndex];
@@ -105,5 +116,29 @@ public class AnimationObject3d extends Object3d {
 
 	public void setFps(float fps) {
 		this.fps = fps;
+	}
+	
+	public Object3d clone()
+	{
+		AnimationObject3d clone = new AnimationObject3d(_vertices, _faces, _textures, frames);
+		clone.position().x = position().x;
+		clone.position().y = position().y;
+		clone.position().z = position().z;
+		clone.rotation().x = rotation().x;
+		clone.rotation().y = rotation().y;
+		clone.rotation().z = rotation().z;
+		clone.scale().x = scale().x;
+		clone.scale().y = scale().y;
+		clone.scale().z = scale().z;
+		clone.setFps(fps);
+		return clone;
+	}
+
+	public boolean getUpdateVertices() {
+		return updateVertices;
+	}
+
+	public void setUpdateVertices(boolean updateVertices) {
+		this.updateVertices = updateVertices;
 	}
 }
