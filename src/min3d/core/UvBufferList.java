@@ -4,7 +4,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import min3d.vos.Color4;
 import min3d.vos.Uv;
 
 
@@ -16,6 +15,14 @@ public class UvBufferList
 	private FloatBuffer _b;
 	private int _numElements = 0;
 	
+	public UvBufferList(FloatBuffer $b, int $size)
+	{
+		ByteBuffer bb = ByteBuffer.allocateDirect($b.limit() * BYTES_PER_PROPERTY); 
+		bb.order(ByteOrder.nativeOrder());
+		_b = bb.asFloatBuffer();
+		_b.put($b);
+		_numElements = $size;
+	}
 	
 	public UvBufferList(int $maxElements)
 	{
@@ -119,5 +126,12 @@ public class UvBufferList
 	public FloatBuffer buffer()
 	{
 		return _b;
+	}
+	
+	public UvBufferList clone()
+	{
+		_b.position(0);
+		UvBufferList c = new UvBufferList(_b, size());
+		return c;
 	}
 }

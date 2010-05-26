@@ -15,6 +15,12 @@ public class KeyFrame {
 		this.vertices = vertices;
 	}
 
+	public KeyFrame(String name, float[] vertices, float[] normals)
+	{
+		this(name, vertices);
+		this.normals = normals;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -88,5 +94,10 @@ public class KeyFrame {
 		
 		return normal;
 	}
-
+	
+	public KeyFrame clone()
+	{
+		KeyFrame k = new KeyFrame(name, vertices.clone(), normals.clone());
+		return k;
+	}
 }

@@ -5,7 +5,6 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import min3d.vos.Color4;
-import min3d.vos.Number3d;
 
 
 public class Color4BufferList
@@ -15,6 +14,13 @@ public class Color4BufferList
 
 	private ByteBuffer _b;
 	private int _numElements;
+	
+	public Color4BufferList(ByteBuffer $b, int $size)
+	{
+		_b = ByteBuffer.allocate($b.limit() * BYTES_PER_PROPERTY);
+		_b.put($b);
+		_numElements = $size;
+	}
 	
 	public Color4BufferList(int $maxElements)
 	{
@@ -144,5 +150,12 @@ public class Color4BufferList
 	public ByteBuffer buffer()
 	{
 		return _b;
+	}
+	
+	public Color4BufferList clone()
+	{
+		_b.position(0);
+		Color4BufferList c = new Color4BufferList(_b, size());
+		return c;
 	}
 }

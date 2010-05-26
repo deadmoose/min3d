@@ -71,7 +71,7 @@ public class AnimationObject3d extends Object3d {
 	}
 
 	public void update() {
-		if (!isPlaying && !updateVertices)
+		if (!isPlaying || !updateVertices)
 			return;
 		currentTime = System.currentTimeMillis();
 		KeyFrame currentFrame = frames[currentFrameIndex];
@@ -118,9 +118,13 @@ public class AnimationObject3d extends Object3d {
 		this.fps = fps;
 	}
 	
-	public Object3d clone()
+	public Object3d clone(boolean cloneData)
 	{
-		AnimationObject3d clone = new AnimationObject3d(_vertices, _faces, _textures, frames);
+		Vertices v = cloneData ? _vertices.clone() : _vertices;
+		FacesBufferedList f = cloneData ? _faces.clone() : _faces;
+		KeyFrame[] fr = cloneData ? getClonedFrames() : frames;
+		
+		AnimationObject3d clone = new AnimationObject3d(v, f, _textures, fr);
 		clone.position().x = position().x;
 		clone.position().y = position().y;
 		clone.position().z = position().z;
@@ -131,7 +135,21 @@ public class AnimationObject3d extends Object3d {
 		clone.scale().y = scale().y;
 		clone.scale().z = scale().z;
 		clone.setFps(fps);
+		clone.animationEnabled(animationEnabled());
 		return clone;
+	}
+	
+	public KeyFrame[] getClonedFrames()
+	{
+		int len = frames.length;
+		KeyFrame[] cl = new KeyFrame[len];
+		
+		for(int i=0; i<len; i++)
+		{
+			cl[i] = frames[i].clone();
+		}
+		
+		return cl;		
 	}
 
 	public boolean getUpdateVertices() {

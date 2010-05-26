@@ -2,13 +2,9 @@ package min3d.core;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 import min3d.vos.Face;
-
-
-import android.util.Log;
 
 public class FacesBufferedList
 {
@@ -22,6 +18,14 @@ public class FacesBufferedList
 	private int _renderSubsetLength = 1;
 	private boolean _renderSubsetEnabled = false;
 	
+	public FacesBufferedList(ShortBuffer $b, int $size)
+	{
+		ByteBuffer bb = ByteBuffer.allocateDirect($b.limit() * BYTES_PER_PROPERTY); 
+		bb.order(ByteOrder.nativeOrder());
+		_b = bb.asShortBuffer();
+		_b.put($b);
+		_numElements = $size;
+	}
 	
 	public FacesBufferedList(int $maxElements)
 	{
@@ -171,5 +175,12 @@ public class FacesBufferedList
 	public ShortBuffer buffer()
 	{
 		return _b;
+	}
+	
+	public FacesBufferedList clone()
+	{
+		_b.position(0);
+		FacesBufferedList c = new FacesBufferedList(_b, size());
+		return c;
 	}
 }

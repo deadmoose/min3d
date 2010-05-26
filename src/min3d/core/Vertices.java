@@ -55,6 +55,19 @@ public class Vertices
 		if (_hasColors) _colors = new Color4BufferList($maxElements);
 	}
 	
+	public Vertices(Number3dBufferList $points, UvBufferList $uvs, Number3dBufferList $normals,
+			Color4BufferList $colors)
+	{
+		_points = $points;
+		_uvs = $uvs;
+		_normals = $normals;
+		_colors = $colors;
+		
+		_hasUvs = _uvs != null && _uvs.size() > 0;
+		_hasNormals = _normals != null && _normals.size() > 0;
+		_hasColors = _colors != null && _colors.size() > 0;
+	}
+	
 	public int size()
 	{
 		return _points.size();
@@ -162,4 +175,9 @@ public class Vertices
 		return _colors;
 	}
 	
+	public Vertices clone()
+	{
+		Vertices v = new Vertices(_points.clone(), _uvs.clone(), _normals.clone(), _colors.clone());
+		return v;
+	}
 }

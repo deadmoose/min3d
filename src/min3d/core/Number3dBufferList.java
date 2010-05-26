@@ -4,11 +4,10 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import android.util.Log;
+
 import min3d.Min3d;
 import min3d.vos.Number3d;
-
-
-import android.util.Log;
 
 public class Number3dBufferList
 {
@@ -18,6 +17,14 @@ public class Number3dBufferList
 	private FloatBuffer _b;
 	private int _numElements = 0;
 	
+	public Number3dBufferList(FloatBuffer $b, int $size)
+	{
+		ByteBuffer bb = ByteBuffer.allocateDirect($b.limit() * BYTES_PER_PROPERTY); 
+		bb.order(ByteOrder.nativeOrder());
+		_b = bb.asFloatBuffer();
+		_b.put($b);
+		_numElements = $size;
+	}
 	
 	public Number3dBufferList(int $maxElements)
 	{
@@ -142,5 +149,12 @@ public class Number3dBufferList
 	{
 		_b.position(0);
 		_b.put($newVals);
+	}
+	
+	public Number3dBufferList clone()
+	{
+		_b.position(0);
+		Number3dBufferList c = new Number3dBufferList(_b, size());
+		return c;
 	}
 }
