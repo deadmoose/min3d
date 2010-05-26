@@ -122,9 +122,9 @@ public class AnimationObject3d extends Object3d {
 	{
 		Vertices v = cloneData ? _vertices.clone() : _vertices;
 		FacesBufferedList f = cloneData ? _faces.clone() : _faces;
-		KeyFrame[] fr = cloneData ? getClonedFrames() : frames;
+		//KeyFrame[] fr = cloneData ? getClonedFrames() : frames;
 		
-		AnimationObject3d clone = new AnimationObject3d(v, f, _textures, fr);
+		AnimationObject3d clone = new AnimationObject3d(v, f, _textures, frames);
 		clone.position().x = position().x;
 		clone.position().y = position().y;
 		clone.position().z = position().z;
