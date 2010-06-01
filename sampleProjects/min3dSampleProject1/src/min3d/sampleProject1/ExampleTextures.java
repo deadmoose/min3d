@@ -28,7 +28,7 @@ public class ExampleTextures extends RendererActivity
 		// * NEW: Upload the Bitmap via TextureManager and assign it a 
 		// textureId ("uglysquares").
 		
-		Shared.textureManager().addTextureId(b, "uglysquares");
+		Shared.textureManager().addTextureId(b, "uglysquares", false);
 		
 		// Unless you have a specific reason for doing so, recycle the Bitmap,
 		// as it is no longer necessary.

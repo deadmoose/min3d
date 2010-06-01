@@ -21,8 +21,8 @@ public class MD2Parser extends AParser implements IParser {
 	private String currentTextureName;
 	private KeyFrame[] frames;
 
-	public MD2Parser(Resources resources, String resourceID) {
-		super(resources, resourceID);
+	public MD2Parser(Resources resources, String resourceID, boolean generateMipMap) {
+		super(resources, resourceID, generateMipMap);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class MD2Parser extends AParser implements IParser {
 		if (textureAtlas.hasBitmaps()) {
 			textureAtlas.generate();
 			texture = textureAtlas.getBitmap();
-			Shared.textureManager().addTextureId(texture, "atlas");
+			Shared.textureManager().addTextureId(texture, "atlas", generateMipMap);
 		}
 
 		Log.d(Min3d.TAG, "Creating object " + co.name);

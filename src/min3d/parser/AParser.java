@@ -37,6 +37,7 @@ public abstract class AParser implements IParser {
 	protected ArrayList<Number3d> vertices;
 	protected ArrayList<Uv> texCoords;
 	protected ArrayList<Number3d> normals;
+	protected boolean generateMipMap;
 	
 	public AParser()
 	{
@@ -48,13 +49,14 @@ public abstract class AParser implements IParser {
 		firstObject = true;
 	}
 	
-	public AParser(Resources resources, String resourceID)
+	public AParser(Resources resources, String resourceID, Boolean generateMipMap)
 	{
 		this();
 		this.resources = resources;
 		this.resourceID = resourceID;
 		if (resourceID.indexOf(":") > -1)
 			this.packageID = resourceID.split(":")[0];
+		this.generateMipMap = generateMipMap;
 	}
 	
 	protected void cleanup()

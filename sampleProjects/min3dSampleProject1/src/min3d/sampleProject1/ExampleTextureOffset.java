@@ -37,11 +37,11 @@ public class ExampleTextureOffset extends RendererActivity
 		scene.addChild(_earth);
 
 		Bitmap b = Utils.makeBitmapFromResourceId(this, R.drawable.earth);
-		Shared.textureManager().addTextureId(b, "jupiter");
+		Shared.textureManager().addTextureId(b, "jupiter", false);
 		b.recycle();
 
 		b = Utils.makeBitmapFromResourceId(this, R.drawable.clouds_alpha2b);
-		Shared.textureManager().addTextureId(b, "clouds");
+		Shared.textureManager().addTextureId(b, "clouds", false);
 		b.recycle();
 
 		TextureVo t = new TextureVo("jupiter");

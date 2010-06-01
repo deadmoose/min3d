@@ -16,7 +16,7 @@ public class ExampleLoad3DSFile extends RendererActivity {
 	@Override
 	public void initScene() {
 		IParser parser = Parser.createParser(Parser.Type.MAX_3DS,
-				getResources(), "min3d.sampleProject1:raw/monster_high");
+				getResources(), "min3d.sampleProject1:raw/monster_high", false);
 		parser.parse();
 
 		monster = parser.getParsedObject();

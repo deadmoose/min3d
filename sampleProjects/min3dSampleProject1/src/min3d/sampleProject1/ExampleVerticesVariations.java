@@ -31,8 +31,6 @@ public class ExampleVerticesVariations extends RendererActivity
 	
 	public void initScene() 
 	{
-		Shared.renderer().logFps(true);
-		
 		Color4[] colors = new Color4[6];
 		colors[0] = new Color4(255,0,0,255);
 		colors[1] = new Color4(0,255,0,255);
@@ -42,7 +40,7 @@ public class ExampleVerticesVariations extends RendererActivity
 		colors[5] = new Color4(255,0,255,255);
 
 		Bitmap b = Utils.makeBitmapFromResourceId(this, R.drawable.uglysquares);
-		Shared.textureManager().addTextureId(b, "uglysquares");
+		Shared.textureManager().addTextureId(b, "uglysquares", false);
 		b.recycle();
 
 		// _cube1's vertices contain color data, but not U/V or normal data.

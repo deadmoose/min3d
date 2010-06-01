@@ -23,16 +23,16 @@ public class Parser {
 	 * @param resourceID
 	 * @return
 	 */
-	public static IParser createParser(Type type, Resources resources, String resourceID)
+	public static IParser createParser(Type type, Resources resources, String resourceID, boolean generateMipMap)
 	{
 		switch(type)
 		{
 			case OBJ:
-				return new ObjParser(resources, resourceID);
+				return new ObjParser(resources, resourceID, generateMipMap);
 			case MAX_3DS:
-				return new Max3DSParser(resources, resourceID);
+				return new Max3DSParser(resources, resourceID, generateMipMap);
 			case MD2:
-				return new MD2Parser(resources, resourceID);
+				return new MD2Parser(resources, resourceID, generateMipMap);
 		}
 		
 		return null;

@@ -20,7 +20,7 @@ public class ExampleLoadObjFileMultiple extends RendererActivity {
 	@Override
 	public void initScene() {
 		IParser parser = Parser.createParser(Parser.Type.OBJ,
-				getResources(), "min3d.sampleProject1:raw/camaro2_obj");
+				getResources(), "min3d.sampleProject1:raw/camaro2_obj", true);
 		parser.parse();
 
 		car = parser.getParsedObject();

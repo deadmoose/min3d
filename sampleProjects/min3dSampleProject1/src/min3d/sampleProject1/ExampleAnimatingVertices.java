@@ -41,7 +41,7 @@ public class ExampleAnimatingVertices extends RendererActivity
 		_plane.doubleSidedEnabled(true); // ... so the back of the plane is visible
 		scene.addChild(_plane);
 
-		Shared.textureManager().addTextureId(b, "mickey");
+		Shared.textureManager().addTextureId(b, "mickey", false);
 		_plane.textures().addById("mickey");
 		
 		b.recycle();

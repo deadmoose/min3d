@@ -36,15 +36,15 @@ public class ExampleAssigningTexturesDynamically extends RendererActivity
 		Bitmap b;
 		
 		b = Utils.makeBitmapFromResourceId(R.drawable.jupiter);
-		Shared.textureManager().addTextureId(b, "jupiter");
+		Shared.textureManager().addTextureId(b, "jupiter", false);
 		b.recycle();
 		
 		b = Utils.makeBitmapFromResourceId(R.drawable.earth);
-		Shared.textureManager().addTextureId(b, "earth");
+		Shared.textureManager().addTextureId(b, "earth", false);
 		b.recycle();
 		
 		b = Utils.makeBitmapFromResourceId(R.drawable.moon);
-		Shared.textureManager().addTextureId(b, "moon");
+		Shared.textureManager().addTextureId(b, "moon", false);
 		b.recycle();
 		
 		// Create three TextureVo's

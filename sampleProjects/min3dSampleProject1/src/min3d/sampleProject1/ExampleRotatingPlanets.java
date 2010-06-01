@@ -48,15 +48,15 @@ public class ExampleRotatingPlanets extends RendererActivity
 
 		// Add textures to TextureManager		
 		Bitmap b = Utils.makeBitmapFromResourceId(this, R.drawable.jupiter);
-		Shared.textureManager().addTextureId(b, "jupiter");
+		Shared.textureManager().addTextureId(b, "jupiter", false);
 		b.recycle();
 
 		b = Utils.makeBitmapFromResourceId(this, R.drawable.earth);
-		Shared.textureManager().addTextureId(b, "earth");
+		Shared.textureManager().addTextureId(b, "earth", false);
 		b.recycle();
 			
 		b = Utils.makeBitmapFromResourceId(this, R.drawable.moon);
-		Shared.textureManager().addTextureId(b, "moon");
+		Shared.textureManager().addTextureId(b, "moon", false);
 		b.recycle();
 
 		// Add textures to objects based on on the id's we assigned the textures in the texture manager

@@ -13,6 +13,8 @@ import min3d.vos.FrustumManaged;
 import min3d.vos.Light;
 import min3d.vos.RenderType;
 import min3d.vos.TextureVo;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
@@ -22,24 +24,26 @@ import android.util.Log;
 
 public class Renderer implements GLSurfaceView.Renderer
 {
-	private final int FPS_SAMPLE_INTERVAL = 60;
+	public static int FRAMERATE_SAMPLEINTERVAL_MS = 1000; 
 
 	private GL10 _gl;
 	private Scene _scene;
 	private TextureManager _textureManager;
 
-	private long _time;
-	private long _timeWas;
-	private long _timeCount;
-	private float _fps = -1;
-	private boolean _logFps = false;
-	
+	private float _surfaceAspectRatio;
 	
 	private Comparator<Object3d> _zComparator; // not implemented
 	
-	private float _surfaceAspectRatio;
-	
-	
+	// stats-related
+	private boolean _logFps = true; /// false;
+	private long _frameCount = 0;
+	private float _fps = 0;
+	private long _timeLastSample;
+	private ActivityManager _activityManager;
+	private ActivityManager.MemoryInfo _memoryInfo;
+
+
+
 	public Renderer(Scene $scene)
 	{
 		_scene = $scene;
@@ -47,15 +51,17 @@ public class Renderer implements GLSurfaceView.Renderer
 		_textureManager = new TextureManager();
 		Shared.textureManager(_textureManager); // xxx not ideal
 		
-		 _zComparator = new Comparator<Object3d>() 
+		_activityManager = (ActivityManager) Shared.context().getSystemService( Context.ACTIVITY_SERVICE );
+		_memoryInfo = new ActivityManager.MemoryInfo();
+
+		_zComparator = new Comparator<Object3d>() 
 		 {
 			@Override
 			public int compare(Object3d a, Object3d b) 
 			{
 				// Not currently using. 
 				// Should really calc distance from camera, not "z".
-				// Ideally, entire triangle list should be sorted by distance.
-				// Meh, too expensive.
+				// Ideally, entire triangle list should be sorted by distance (too expensive)
 				
 				return (a.position().z > b.position().z) ? 1 : -1;
 			}
@@ -118,6 +124,14 @@ public class Renderer implements GLSurfaceView.Renderer
 	public float fps()
 	{
 		return _fps;
+	}
+	/**
+	 * Return available system memory in bytes
+	 */
+	public long availMem()
+	{
+		_activityManager.getMemoryInfo(_memoryInfo);
+		return _memoryInfo.availMem;
 	}
 	
 	protected void drawSetup()
@@ -374,8 +388,9 @@ public class Renderer implements GLSurfaceView.Renderer
 				    _gl.glEnable(GL10.GL_TEXTURE_2D);
 					_gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 
-					_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST); // (OpenGL default is GL_NEAREST_MIPMAP)
-					_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR); // (is OpenGL default)
+					int minFilterType = _textureManager.hasMipMap(textureVo.textureId) ? GL10.GL_LINEAR_MIPMAP_NEAREST : GL10.GL_NEAREST; 
+					_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, minFilterType);
+					_gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR); // (OpenGL default)
 					
 					// do texture environment settings
 					for (int j = 0; j < textureVo.textureEnvs.size(); j++)
@@ -415,7 +430,7 @@ public class Renderer implements GLSurfaceView.Renderer
 	/**
 	 * Used by TextureManager
 	 */
-	int uploadTextureAndReturnId(Bitmap $bitmap) /*package-private*/
+	int uploadTextureAndReturnId(Bitmap $bitmap, boolean $generateMipMap) /*package-private*/
 	{
 		int glTextureId;
 		
@@ -424,6 +439,12 @@ public class Renderer implements GLSurfaceView.Renderer
 		glTextureId = a[0];
 		_gl.glBindTexture(GL10.GL_TEXTURE_2D, glTextureId);
 		
+		if($generateMipMap && _gl instanceof GL11) {
+			_gl.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
+		} else {
+			_gl.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_GENERATE_MIPMAP, GL11.GL_FALSE);
+		}
+
 		// 'upload' to gpu
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, $bitmap, 0);
 		
@@ -468,15 +489,16 @@ public class Renderer implements GLSurfaceView.Renderer
 	}
 
 	/**
-	 * If true, framerate is periodically calculated and Log'ed 
+	 * If true, framerate and memory is periodically calculated and Log'ed,
+	 * and gettable thru fps() 
 	 */
 	public void logFps(boolean $b)
 	{
 		_logFps = $b;
 		
 		if (_logFps) { // init
-			_time = System.currentTimeMillis();
-			_timeCount = 0;
+			_timeLastSample = System.currentTimeMillis();
+			_frameCount = 0;
 		}
 	}
 	
@@ -487,17 +509,19 @@ public class Renderer implements GLSurfaceView.Renderer
 	
 	private void doFps()
 	{
-		_timeCount++;
+		_frameCount++;
 
-		if (_timeCount == FPS_SAMPLE_INTERVAL) 
+		long now = System.currentTimeMillis();
+		long delta = now - _timeLastSample;
+		if (delta >= FRAMERATE_SAMPLEINTERVAL_MS)
 		{
-			_timeWas = _time;
-			_time = System.currentTimeMillis();
-			float msPerFrame = (float)(_time - _timeWas)/(float)_timeCount;
-			_fps = 1000f / msPerFrame;
-			_timeCount = 0;
+			_fps = _frameCount / (delta/1000f); 
 
-			//Log.v(Min3d.TAG, "Renderer FPS " + Math.round(_fps));
+			_activityManager.getMemoryInfo(_memoryInfo);
+			Log.v(Min3d.TAG, "FPS: " + Math.round(_fps) + ", availMem: " + Math.round(_memoryInfo.availMem/1048576) + "MB");
+
+			_timeLastSample = now;
+			_frameCount = 0;
 		}
 	}
 	

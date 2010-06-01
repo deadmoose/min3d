@@ -10,7 +10,7 @@ public class ExampleLoadMD2File extends RendererActivity {
 	@Override
 	public void initScene() {
 		IParser parser = Parser.createParser(Parser.Type.MD2,
-				getResources(), "min3d.sampleProject1:raw/ogro");
+				getResources(), "min3d.sampleProject1:raw/ogro", false);
 		parser.parse();
 
 		ogre = parser.getParsedAnimationObject();

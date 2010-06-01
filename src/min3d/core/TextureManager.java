@@ -18,7 +18,8 @@ import android.util.Log;
  */
 public class TextureManager 
 {
-	private HashMap<String, Integer> _idMap;
+	private HashMap<String, Integer> _idToTextureName;
+	private HashMap<String, Boolean> _idToHasMipMap;
 	private static int _counter = 1000001;
 	
 	
@@ -31,19 +32,19 @@ public class TextureManager
 	{
 		// Delete any extant textures
 
-		if (_idMap != null) 
+		if (_idToTextureName != null) 
 		{
-			Set<String> s = _idMap.keySet();
+			Set<String> s = _idToTextureName.keySet();
 			Object[] a = s.toArray(); 
 			for (int i = 0; i < a.length; i++) {
 				int glId = getGlTextureId((String)a[i]);
-				Log.v("x", "hello?" + " " + a[i] + glId);
 				Shared.renderer().deleteTexture(glId);
 			}
 			// ...pain
 		}
 		
-		_idMap = new HashMap<String, Integer>();
+		_idToTextureName = new HashMap<String, Integer>();
+		_idToHasMipMap = new HashMap<String, Boolean>();
 	}
 
 	/**
@@ -52,29 +53,39 @@ public class TextureManager
 	 * 
 	 * @return The textureId as added to TextureManager, which is identical to $id 
 	 */
-	public String addTextureId(Bitmap $b, String $id)
+	public String addTextureId(Bitmap $b, String $id, boolean $generateMipMap)
 	{
-		if (_idMap.containsKey($id)) throw new Error("Texture id \"" + $id + "\" already exists."); 
+		if (_idToTextureName.containsKey($id)) throw new Error("Texture id \"" + $id + "\" already exists."); 
 
-		int glId = Shared.renderer().uploadTextureAndReturnId($b);
+		int glId = Shared.renderer().uploadTextureAndReturnId($b, $generateMipMap);
 
 		String s = $id;
-		_idMap.put(s, glId);
-		
+		_idToTextureName.put(s, glId);
+		_idToHasMipMap.put(s, $generateMipMap);
+	
 		_counter++;
 		
 		logContents();
 		
 		return s;
 	}
+
+	/**
+	 * Alternate signature for "addTextureId", with MIP mapping set to false by default.
+	 * Kept for API backward-compatibility. 
+	 */
+	public String addTextureId(Bitmap $b, String $id)
+	{
+		return this.addTextureId($b, $id, false);
+	}
 	
 	/**
 	 * 'Uploads' texture via OpenGL and returns an autoassigned textureId,
 	 * which can be used to assign textures to Object3d's. 
 	 */
-	public String createTextureId(Bitmap $b)
+	public String createTextureId(Bitmap $b, boolean $generateMipMap)
 	{
-		return addTextureId($b, (_counter+""));
+		return addTextureId($b, (_counter+""), $generateMipMap);
 	}
 	
 	/**
@@ -83,9 +94,10 @@ public class TextureManager
 	 */
 	public void deleteTexture(String $textureId)
 	{
-		int glId = _idMap.get($textureId);
+		int glId = _idToTextureName.get($textureId);
 		Shared.renderer().deleteTexture(glId);
-		_idMap.remove($textureId);
+		_idToTextureName.remove($textureId);
+		_idToHasMipMap.remove($textureId);
 		
 		logContents();		
 	}
@@ -95,7 +107,7 @@ public class TextureManager
 	 */
 	public String[] getTextureIds()
 	{
-		Set<String> set = _idMap.keySet();
+		Set<String> set = _idToTextureName.keySet();
 		String[] a = new String[set.size()];
 		set.toArray(a);
 		return a;
@@ -106,12 +118,21 @@ public class TextureManager
 	 */
 	int getGlTextureId(String $textureId) /*package-private*/
 	{
-		return _idMap.get($textureId);
+		return _idToTextureName.get($textureId);
 	}
 	
+	/**
+	 * Used by Renderer
+	 */
+	boolean hasMipMap(String $textureId) /*package-private*/
+	{
+		return _idToHasMipMap.get($textureId);
+	}
+	
+
 	public boolean contains(String $textureId)
 	{
-		return _idMap.containsKey($textureId);
+		return _idToTextureName.containsKey($textureId);
 	}
 	
 	

@@ -32,8 +32,8 @@ public class Max3DSParser extends AParser implements IParser {
 	private boolean endReached;
 	private String currentObjName;
 
-	public Max3DSParser(Resources resources, String resourceID) {
-		super(resources, resourceID);
+	public Max3DSParser(Resources resources, String resourceID, boolean generateMipMap) {
+		super(resources, resourceID, generateMipMap);
 	}
 
 	@Override
@@ -208,7 +208,7 @@ public class Max3DSParser extends AParser implements IParser {
 		{
 			textureAtlas.generate();
 			texture = textureAtlas.getBitmap();
-			Shared.textureManager().addTextureId(texture, "atlas");
+			Shared.textureManager().addTextureId(texture, "atlas", generateMipMap);
 		}
 		
 		for (int i = 0; i < numObjects; i++) {

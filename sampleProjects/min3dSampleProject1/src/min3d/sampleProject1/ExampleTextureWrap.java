@@ -30,7 +30,7 @@ public class ExampleTextureWrap extends RendererActivity
 		scene.addChild(_object);
 		
 		Bitmap b = Utils.makeBitmapFromResourceId(R.drawable.uglysquares);
-		Shared.textureManager().addTextureId(b, "texture");
+		Shared.textureManager().addTextureId(b, "texture", false);
 		b.recycle();
 		
 		_texture = new TextureVo("texture");

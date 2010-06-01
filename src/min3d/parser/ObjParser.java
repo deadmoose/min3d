@@ -48,8 +48,8 @@ public class ObjParser extends AParser implements IParser {
 	 * @param resources
 	 * @param resourceID
 	 */
-	public ObjParser(Resources resources, String resourceID) {
-		super(resources, resourceID);
+	public ObjParser(Resources resources, String resourceID, boolean generateMipMap) {
+		super(resources, resourceID, generateMipMap);
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class ObjParser extends AParser implements IParser {
 		{
 			textureAtlas.generate();
 			texture = textureAtlas.getBitmap();
-			Shared.textureManager().addTextureId(texture, "atlas");
+			Shared.textureManager().addTextureId(texture, "atlas", generateMipMap);
 		}
 		
 		for (int i = 0; i < numObjects; i++) {

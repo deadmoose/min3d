@@ -74,11 +74,11 @@ public class ExampleMultiTexture extends RendererActivity
 		Bitmap b;
 		
 		b = Utils.makeBitmapFromResourceId(R.drawable.jupiter);
-		Shared.textureManager().addTextureId(b, "jupiter");
+		Shared.textureManager().addTextureId(b, "jupiter", false);
 		b.recycle();
 		
 		b = Utils.makeBitmapFromResourceId(R.drawable.white_with_alpha_hole);
-		Shared.textureManager().addTextureId(b, "alpha");
+		Shared.textureManager().addTextureId(b, "alpha", false);
 		b.recycle();
 		
 		// Add textures to sphere
