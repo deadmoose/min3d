@@ -5,12 +5,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.util.Linkify;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 
 /**
@@ -18,29 +22,32 @@ import android.widget.TextView;
  * 
  * @author Lee
  */
-public class SplashActivity extends ListActivity 
+public class SplashActivity extends ListActivity  
 {
-	private String[] _strings = {
-		"\"Hello, Jupiter\"", 
-		"Minimal example", 
-		"Vertex colors", 
-		"Texture",
-		"Usage of Vertices class",		
-		"Triangles, lines, points",
-		"Camera, frustum (trackball)",
-		"Animating vertices",
-		"Rendering subset of faces",
-		"Assigning textures dynamically",
-		"MIP Mapping (on vs. off)",
-		"Texture wrapping",
-		"Multiple textures",
-		"Texture offset",
-		"3D inside layout",
-		"Load model from .obj file",
-		"Load multiple models from .obj file",
-		"Load model from .3ds file",
-		"Load animated .md2 file"
-		// "Object from scratch"
+	private final int ID_VIEWFILE = 0;
+	
+	private String _basePath = "http://code.google.com/p/min3d/source/browse/trunk/sampleProjects/min3dSampleProject1/src/min3d/sampleProject1/"; 
+	
+	private String[] _sourceFiles = {
+			"ExampleRotatingPlanets.java", 
+			"ExampleMostMinimal.java",
+			"ExampleVertexColors.java",
+			"ExampleTextures.java",
+			"ExampleVerticesVariations.java",
+			"ExampleRenderType.java",
+			"ExampleCamera.java",
+			"ExampleAnimatingVertices.java",
+			"ExampleSubsetOfFaces.java",
+			"ExampleAssigningTexturesDynamically.java",
+			"ExampleMipMap.java",
+			"ExampleTextureWrap.java",
+			"ExampleMultiTexture.java",
+			"ExampleTextureOffset.java",
+			"ExampleInsideLayout.java",
+			"ExampleLoadObjFile.java",
+			"ExampleLoadObjFileMultiple.java",
+			"ExampleLoad3DSFile.java",
+			"ExampleLoadMD2File"
 	};
 	
 	private Class<?>[] _classes = { 
@@ -65,6 +72,29 @@ public class SplashActivity extends ListActivity
 		ExampleLoadMD2File.class
 	};
 	
+	private String[] _strings = {
+			"\"Hello, Jupiter\"", 
+			"Minimal example", 
+			"Vertex colors", 
+			"Texture",
+			"Usage of Vertices class",		
+			"Triangles, lines, points",
+			"Camera, frustum (trackball)",
+			"Animating vertices",
+			"Rendering subset of faces",
+			"Assigning textures dynamically",
+			"MIP Mapping (on vs. off)",
+			"Texture wrapping",
+			"Multiple textures",
+			"Texture offset",
+			"3D inside layout",
+			"Load model from .obj file",
+			"Load multiple models from .obj file",
+			"Load model from .3ds file",
+			"Load animated .md2 file"
+			// "Object from scratch"
+		};
+		
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -74,6 +104,8 @@ public class SplashActivity extends ListActivity
 	    
 	    TextView tv = (TextView) this.findViewById(R.id.splashTitle);
 	    Linkify.addLinks(tv, 0x07);
+	    
+	    registerForContextMenu(getListView());	    
     }
     
     @Override
@@ -117,4 +149,30 @@ public class SplashActivity extends ListActivity
         }
         return false;
     }
+    
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) 
+    {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(0, ID_VIEWFILE, 0, "View source on Google Code");
+    }
+
+    @Override
+	public boolean onContextItemSelected(MenuItem item) 
+	{
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		
+		switch (item.getItemId()) 
+		{
+			case ID_VIEWFILE:
+            	Intent i = new Intent(Intent.ACTION_VIEW);
+            	String url = _basePath + _sourceFiles[ (int)info.id ];
+            	i.setData(Uri.parse(url));
+            	startActivity(i);                
+				return true;
+				
+			default:
+				return super.onContextItemSelected(item);
+		}
+	}    
 }
