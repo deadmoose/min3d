@@ -5,6 +5,7 @@ import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Box;
+import min3d.vos.Light;
 import min3d.vos.TextureVo;
 import android.graphics.Bitmap;
 
@@ -17,6 +18,8 @@ public class ExampleTextures extends RendererActivity
 	
 	public void initScene() 
 	{
+		scene.lights().add(new Light());
+		
 		_cube = new Box(1.5f,1.5f,1.5f);
 		scene.addChild(_cube);
 

@@ -11,6 +11,8 @@ import android.util.Log;
 /**
  * Extend this class when creating your min3d-based Activity (application) 
  * Then, override initScene() and updateScene().
+ * 
+ * Override onCreateSetContentView() to change layout, if desired.
  */
 public class RendererActivity extends Activity implements ISceneController
 {

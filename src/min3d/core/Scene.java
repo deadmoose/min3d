@@ -2,21 +2,19 @@ package min3d.core;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
 import min3d.Min3d;
 import min3d.interfaces.IObject3dContainer;
 import min3d.interfaces.ISceneController;
 import min3d.vos.CameraVo;
 import min3d.vos.Color4Managed;
-import min3d.vos.Light;
+import android.util.Log;
 
 
 public class Scene implements IObject3dContainer
 {
 	private ArrayList<Object3d> _children = new ArrayList<Object3d>();
 
-	private Light _light;
+	private ManagedLightList _lights;
 	private CameraVo _camera;
 	
 	private Color4Managed _backgroundColor;
@@ -28,6 +26,7 @@ public class Scene implements IObject3dContainer
 	public Scene(ISceneController $sceneController) 
 	{
 		_sceneController = $sceneController;
+		_lights = new ManagedLightList();
 	}
 
 	/**
@@ -47,8 +46,9 @@ public class Scene implements IObject3dContainer
 	//
 	
 	/**
-	 * Resets Scene to default settings.
+	 * Resets Scene to default settings:
 	 * Removes and clears any attached Object3ds.
+	 * Resets light list, adds single default light.
 	 */
 	public void reset()
 	{
@@ -56,11 +56,11 @@ public class Scene implements IObject3dContainer
 
 		_children = new ArrayList<Object3d>();
 
-		_light = new Light();
 		_camera = new CameraVo();
 		
 		_backgroundColor = new Color4Managed(0,0,0,255);
-		_lightingEnabled = true;
+		
+		lightingEnabled(true);
 	}
 	
 	/**
@@ -70,6 +70,8 @@ public class Scene implements IObject3dContainer
 	@Override
 	public void addChild(Object3d $o)
 	{
+		if (_children.contains($o)) return;
+		
 		_children.add($o);
 		
 		$o.parent(this);
@@ -79,6 +81,8 @@ public class Scene implements IObject3dContainer
 	@Override
 	public void addChildAt(Object3d $o, int $index)
 	{
+		if (_children.contains($o)) return;
+
 		_children.add($index, $o);
 	}
 	
@@ -158,22 +162,22 @@ public class Scene implements IObject3dContainer
 	}
 
 	/**
-	 * Scene instance's Light, holding light settings (just the one, for now) 
+	 * Lights used by the Scene 
 	 */
-	public Light light()
+	public ManagedLightList lights()
 	{
-		return _light;
+		return _lights;
 	}
 
 	/**
-	 * Determines if lighting is enabled for the scene. 
+	 * Determines if lighting is enabled for Scene. 
 	 */
 	public boolean lightingEnabled()
 	{
 		return _lightingEnabled;
 	}
 	
-	public void lightingEnabled(Boolean $b)
+	public void lightingEnabled(boolean $b)
 	{
 		_lightingEnabled = $b;
 	}
@@ -181,7 +185,7 @@ public class Scene implements IObject3dContainer
 	//
 
 	/**
-	 * Called by Renderer instance
+	 * Used by Renderer 
 	 */
 	void init() /*package-private*/ 
 	{
@@ -192,7 +196,7 @@ public class Scene implements IObject3dContainer
 	}
 	
 	/**
-	 * Called by Renderer instance
+	 * Used by Renderer 
 	 */
 	ArrayList<Object3d> children() /*package-private*/ 
 	{

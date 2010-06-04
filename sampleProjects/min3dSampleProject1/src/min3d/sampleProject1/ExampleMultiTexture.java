@@ -12,6 +12,7 @@ import min3d.core.RendererActivity;
 import min3d.core.TextureManager;
 import min3d.objectPrimitives.Box;
 import min3d.objectPrimitives.Sphere;
+import min3d.vos.Light;
 import min3d.vos.TexEnvxVo;
 import min3d.vos.TextureVo;
 import android.graphics.Bitmap;
@@ -45,8 +46,10 @@ public class ExampleMultiTexture extends RendererActivity
 	
 	public void initScene() 
 	{
-		scene.light().ambient.setAll((short)128, (short)128, (short)128, (short)255);
-		scene.light().position.setAll(3, 0, 3);
+		Light light = new Light();
+		light.ambient.setAll(0xff888888);
+		light.position.setAll(3,0,3);
+		scene.lights().add(light);
 
 		// Create objects
 		

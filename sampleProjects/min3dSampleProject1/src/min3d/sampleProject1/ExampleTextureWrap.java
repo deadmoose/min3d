@@ -6,6 +6,7 @@ import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.HollowCylinder;
+import min3d.vos.Light;
 import min3d.vos.TextureVo;
 
 /**
@@ -22,15 +23,13 @@ public class ExampleTextureWrap extends RendererActivity
 	
 	public void initScene() 
 	{
-		scene.light().ambient.setAll(0xffaaaaaa);
-		
 		_object = new HollowCylinder(1f, 0.5f, 0.66f, 25);
-		_object.normalsEnabled(true);
+		_object.normalsEnabled(false);
 		_object.colorsEnabled(false);
 		scene.addChild(_object);
 		
 		Bitmap b = Utils.makeBitmapFromResourceId(R.drawable.uglysquares);
-		Shared.textureManager().addTextureId(b, "texture", false);
+		Shared.textureManager().addTextureId(b, "texture", true);
 		b.recycle();
 		
 		_texture = new TextureVo("texture");
@@ -43,7 +42,7 @@ public class ExampleTextureWrap extends RendererActivity
 	@Override 
 	public void updateScene() 
 	{
-		_object.rotation().y+=1.5f;
+		_object.rotation().y = (float)(Math.sin(_counter*0.02f) * 45);
 		
 		if (_counter % 40 == 0) 
 		{

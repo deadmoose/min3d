@@ -122,21 +122,18 @@ public class Color4Managed implements IDirtyManaged
 	
 	//
 	
-	/**
-	 * Called indirectly by Renderer
-	 */
 	public boolean isDirty()
 	{
 		return _dirty;
 	}
 	
-	/**
-	 * Called indirectly by Renderer
-	 */
+	public void setDirtyFlag()
+	{
+		_dirty = true;
+	}
+	
 	public void clearDirtyFlag()
 	{
 		_dirty = false;
 	}
-	
-	// ... unfortunate duplication of code :(
 }

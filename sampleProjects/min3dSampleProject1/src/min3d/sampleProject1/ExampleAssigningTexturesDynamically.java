@@ -5,13 +5,14 @@ import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Sphere;
+import min3d.vos.Light;
 import min3d.vos.TextureVo;
 import android.graphics.Bitmap;
 
 /**
  * Shows how objects can be assigned textures dynamically.
  * 
- * Also demonstrates how the same texture can be assigned to multiple objects 
+ * Also demonstrates how the same "textureId" can be assigned to multiple objects 
  * (rather than, say, needing to create two instances of a texture 
  * for two separate objects) 
  */
@@ -29,7 +30,7 @@ public class ExampleAssigningTexturesDynamically extends RendererActivity
 	
 	public void initScene() 
 	{
-		_count = 0;
+		scene.lights().add(new Light());
 		
 		// Add three textures to TextureManager 
 		
@@ -60,7 +61,9 @@ public class ExampleAssigningTexturesDynamically extends RendererActivity
 		_object2 = new Sphere(0.8f, 15, 10);
 		_object2.position().y = -0.9f;
 		scene.addChild(_object2);
-}
+		
+		_count = 0;
+	}
 	
 	@Override 
 	public void updateScene() 

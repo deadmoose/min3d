@@ -24,30 +24,32 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
  */
 public class SplashActivity extends ListActivity  
 {
-	private final int ID_VIEWFILE = 0;
+	private final int CONTEXTID_VIEWFILE = 0;
+	private final int CONTEXTID_CANCEL = 1;
 	
 	private String _basePath = "http://code.google.com/p/min3d/source/browse/trunk/sampleProjects/min3dSampleProject1/src/min3d/sampleProject1/"; 
 	
 	private String[] _sourceFiles = {
-			"ExampleRotatingPlanets.java", 
-			"ExampleMostMinimal.java",
-			"ExampleVertexColors.java",
-			"ExampleTextures.java",
-			"ExampleVerticesVariations.java",
-			"ExampleRenderType.java",
-			"ExampleCamera.java",
-			"ExampleAnimatingVertices.java",
-			"ExampleSubsetOfFaces.java",
-			"ExampleAssigningTexturesDynamically.java",
-			"ExampleMipMap.java",
-			"ExampleTextureWrap.java",
-			"ExampleMultiTexture.java",
-			"ExampleTextureOffset.java",
-			"ExampleInsideLayout.java",
-			"ExampleLoadObjFile.java",
-			"ExampleLoadObjFileMultiple.java",
-			"ExampleLoad3DSFile.java",
-			"ExampleLoadMD2File"
+		"ExampleRotatingPlanets.java", 
+		"ExampleMostMinimal.java",
+		"ExampleVertexColors.java",
+		"ExampleTextures.java",
+		"ExampleVerticesVariations.java",
+		"ExampleRenderType.java",
+		"ExampleCamera.java",
+		"ExampleMultipleLights.java",
+		"ExampleAnimatingVertices.java",
+		"ExampleSubsetOfFaces.java",
+		"ExampleAssigningTexturesDynamically.java",
+		"ExampleMipMap.java",
+		"ExampleTextureWrap.java",
+		"ExampleMultiTexture.java",
+		"ExampleTextureOffset.java",
+		"ExampleInsideLayout.java",
+		"ExampleLoadObjFile.java",
+		"ExampleLoadObjFileMultiple.java",
+		"ExampleLoad3DSFile.java",
+		"ExampleLoadMD2File"
 	};
 	
 	private Class<?>[] _classes = { 
@@ -58,6 +60,7 @@ public class SplashActivity extends ListActivity
 		ExampleVerticesVariations.class,
 		ExampleRenderType.class,
 		ExampleCamera.class,
+		ExampleMultipleLights.class,
 		ExampleAnimatingVertices.class,
 		ExampleSubsetOfFaces.class,
 		ExampleAssigningTexturesDynamically.class,
@@ -80,6 +83,7 @@ public class SplashActivity extends ListActivity
 			"Usage of Vertices class",		
 			"Triangles, lines, points",
 			"Camera, frustum (trackball)",
+			"Multiple lights",
 			"Animating vertices",
 			"Rendering subset of faces",
 			"Assigning textures dynamically",
@@ -154,7 +158,8 @@ public class SplashActivity extends ListActivity
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) 
     {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		menu.add(0, ID_VIEWFILE, 0, "View source on Google Code");
+		menu.add(0, CONTEXTID_VIEWFILE, 0, "View source on Google Code");
+		menu.add(0, CONTEXTID_CANCEL, 0, "Cancel");
     }
 
     @Override
@@ -164,11 +169,14 @@ public class SplashActivity extends ListActivity
 		
 		switch (item.getItemId()) 
 		{
-			case ID_VIEWFILE:
+			case CONTEXTID_VIEWFILE:
             	Intent i = new Intent(Intent.ACTION_VIEW);
             	String url = _basePath + _sourceFiles[ (int)info.id ];
             	i.setData(Uri.parse(url));
             	startActivity(i);                
+				return true;
+			case CONTEXTID_CANCEL:
+				// do nothing
 				return true;
 				
 			default:

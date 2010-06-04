@@ -5,6 +5,7 @@ import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Box;
+import min3d.vos.Light;
 import android.graphics.Bitmap;
 
 /**
@@ -25,6 +26,8 @@ public class ExampleMipMap extends RendererActivity
 	
 	public void initScene() 
 	{
+		scene.lights().add(new Light());
+		
 		_holder = new Object3dContainer(0, 0);
 		scene.addChild(_holder);
 		

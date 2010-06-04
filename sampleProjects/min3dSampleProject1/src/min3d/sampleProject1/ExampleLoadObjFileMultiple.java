@@ -5,6 +5,7 @@ import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.parser.IParser;
 import min3d.parser.Parser;
+import min3d.vos.Light;
 
 public class ExampleLoadObjFileMultiple extends RendererActivity {
 	private final float MAX_ROTATION = 40;
@@ -19,6 +20,9 @@ public class ExampleLoadObjFileMultiple extends RendererActivity {
 
 	@Override
 	public void initScene() {
+		
+		scene.lights().add(new Light());
+		
 		IParser parser = Parser.createParser(Parser.Type.OBJ,
 				getResources(), "min3d.sampleProject1:raw/camaro2_obj", true);
 		parser.parse();

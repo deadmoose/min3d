@@ -1,5 +1,6 @@
 package min3d.core;
 
+import java.nio.IntBuffer;
 import java.util.Comparator;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -24,7 +25,8 @@ import android.util.Log;
 
 public class Renderer implements GLSurfaceView.Renderer
 {
-	public static int FRAMERATE_SAMPLEINTERVAL_MS = 1000; 
+	public static final int FRAMERATE_SAMPLEINTERVAL_MS = 1000; 
+	public static final int NUM_GLLIGHTS = 8;
 
 	private GL10 _gl;
 	private Scene _scene;
@@ -32,10 +34,10 @@ public class Renderer implements GLSurfaceView.Renderer
 
 	private float _surfaceAspectRatio;
 	
-	private Comparator<Object3d> _zComparator; // not implemented
+	private IntBuffer _scratchIntBuffer;
 	
 	// stats-related
-	private boolean _logFps = true; /// false;
+	private boolean _logFps = false;
 	private long _frameCount = 0;
 	private float _fps = 0;
 	private long _timeLastSample;
@@ -43,29 +45,17 @@ public class Renderer implements GLSurfaceView.Renderer
 	private ActivityManager.MemoryInfo _memoryInfo;
 
 
-
 	public Renderer(Scene $scene)
 	{
 		_scene = $scene;
 
+		_scratchIntBuffer = IntBuffer.allocate(4);
+		
 		_textureManager = new TextureManager();
-		Shared.textureManager(_textureManager); // xxx not ideal
+		Shared.textureManager(_textureManager); 
 		
 		_activityManager = (ActivityManager) Shared.context().getSystemService( Context.ACTIVITY_SERVICE );
 		_memoryInfo = new ActivityManager.MemoryInfo();
-
-		_zComparator = new Comparator<Object3d>() 
-		 {
-			@Override
-			public int compare(Object3d a, Object3d b) 
-			{
-				// Not currently using. 
-				// Should really calc distance from camera, not "z".
-				// Ideally, entire triangle list should be sorted by distance (too expensive)
-				
-				return (a.position().z > b.position().z) ? 1 : -1;
-			}
-		};
 	}
 
 	public void onSurfaceCreated(GL10 $gl, EGLConfig eglConfig) 
@@ -142,40 +132,16 @@ public class Renderer implements GLSurfaceView.Renderer
 			updateViewFrustrum();
 		}
 		 
-		// Lighting
-
-//		if (_scene.lightingEnabled()) {
-//			_gl.glEnable(GL10.GL_LIGHTING);
-//		} 
-//		else {
-//			_gl.glDisable(GL10.GL_LIGHTING);
-//		}
-
-		// Light (just one for now)
+		// Camera 
 		
-		Light l = _scene.light();
-		
-		if (l.ambient.isDirty()) 
-		{
-			l.commitAmbientBuffer();
-			_gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, l.getAmbientBuffer());
-			l.ambient.clearDirtyFlag();
-		}
-		if (l.diffuse.isDirty()) 
-		{
-			l.commitDiffuseBuffer();
-			_gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, l.getDiffuseBuffer());
-			l.diffuse.clearDirtyFlag();
-		}
-		if (l.position.isDirty())
-		{
-			l.commitPositionBuffer();
-			_gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, l.getPositionBuffer());
-			l.position.clearDirtyFlag();
-		}
+		_gl.glMatrixMode(GL10.GL_MODELVIEW);
+		_gl.glLoadIdentity();
 
-		_gl.glEnable(GL10.GL_LIGHT0);
-	
+		GLU.gluLookAt(_gl, 
+			_scene.camera().position.x,_scene.camera().position.y,_scene.camera().position.z,
+			_scene.camera().target.x,_scene.camera().target.y,_scene.camera().target.z,
+			_scene.camera().upAxis.x,_scene.camera().upAxis.y,_scene.camera().upAxis.z);
+		
 		// Background color
 		
 		if (_scene.backgroundColor().isDirty())
@@ -190,16 +156,64 @@ public class Renderer implements GLSurfaceView.Renderer
 		
 		_gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		
-
-		_gl.glMatrixMode(GL10.GL_MODELVIEW);
-		_gl.glLoadIdentity();
-
-		// Camera 
+		// GL_LIGHTS - enable/disable based on enabledDirty list
 		
-		GLU.gluLookAt(_gl, 
-			_scene.camera().position.x,_scene.camera().position.y,_scene.camera().position.z,
-			_scene.camera().target.x,_scene.camera().target.y,_scene.camera().target.z,
-			_scene.camera().upAxis.x,_scene.camera().upAxis.y,_scene.camera().upAxis.z);
+		for (int glIndex = 0; glIndex < NUM_GLLIGHTS; glIndex++)
+		{
+			if (_scene.lights().glIndexEnabledDirty()[glIndex] == true)
+			{
+				if (_scene.lights().glIndexEnabled()[glIndex] == true) 
+				{
+					_gl.glEnable(GL10.GL_LIGHT0 + glIndex);
+					
+					// make light's properties dirty to force update
+					_scene.lights().getLightByGlIndex(glIndex).setAllDirty();
+				} 
+				else 
+				{
+					_gl.glDisable(GL10.GL_LIGHT0 + glIndex);
+				}
+				
+				_scene.lights().glIndexEnabledDirty()[glIndex] = false; // clear dirtyflag
+			}
+		}
+		
+		// Lights' properties 
+
+		Light[] lights = _scene.lights().toArray();
+		for (int i = 0; i < lights.length; i++)
+		{
+			Light light = lights[i]; 
+			int glLightId = GL10.GL_LIGHT0 + _scene.lights().getGlIndexByLight(light);
+			
+			if (light.ambient.isDirty()) 
+			{
+				light.commitAmbientBuffer();
+				_gl.glLightfv(glLightId, GL10.GL_AMBIENT, light.ambientBuffer());
+				light.ambient.clearDirtyFlag();
+			}
+			if (light.diffuse.isDirty()) 
+			{
+				light.commitDiffuseBuffer();
+				_gl.glLightfv(glLightId, GL10.GL_DIFFUSE, light.diffuseBuffer());
+				light.diffuse.clearDirtyFlag();
+			}
+			if (light.position.isDirty())
+			{
+				light.commitPositionBuffer();
+				_gl.glLightfv(glLightId, GL10.GL_POSITION, light.positionBuffer());
+				light.position.clearDirtyFlag();
+			}
+			if (light.isVisibleDirty()) 
+			{
+				if (light.isVisible()) {
+					_gl.glEnable(glLightId);
+				} else {
+					_gl.glDisable(glLightId);
+				}
+				light.clearIsVisibleDirtyFlag();
+			}
+		}
 		
 		// Always on:
 		_gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
@@ -207,9 +221,6 @@ public class Renderer implements GLSurfaceView.Renderer
 
 	protected void drawScene()
 	{
-		// Works, kind of:
-		// Collections.sort(_objects, _zComparator);
-
 		for (int i = 0; i < _scene.children().size(); i++)
 		{
 			Object3d o = _scene.children().get(i);
@@ -238,12 +249,23 @@ public class Renderer implements GLSurfaceView.Renderer
 			$o.vertices().normals().buffer().position(0);
 			_gl.glNormalPointer(GL10.GL_FLOAT, 0, $o.vertices().normals().buffer());
 			_gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
-			_gl.glEnable(GL10.GL_LIGHTING);
 		}
 		else {
 			_gl.glDisableClientState(GL10.GL_NORMAL_ARRAY);
-			_gl.glDisable(GL10.GL_LIGHTING);
 		}
+		
+		// Lighting enabled for object?
+		int useLighting = (_scene.lightingEnabled() && $o.hasNormals() && $o.normalsEnabled()) ? 1 : 0;
+		_gl.glGetIntegerv(GL10.GL_LIGHTING, _scratchIntBuffer);
+		if (useLighting != _scratchIntBuffer.get(0))
+		{
+			if (useLighting == 1) {
+				_gl.glEnable(GL10.GL_LIGHTING);
+			} else {
+				_gl.glDisable(GL10.GL_LIGHTING);
+			}
+		}
+
 
 		// Colors: either per-vertex, or per-object
 
@@ -554,6 +576,11 @@ public class Renderer implements GLSurfaceView.Renderer
 		_gl.glFrontFace(GL10.GL_CCW);
 	    _gl.glCullFace(GL10.GL_BACK);
 	    _gl.glEnable(GL10.GL_CULL_FACE);
+	    
+	    // Disable lights by default
+	    for (int i = GL10.GL_LIGHT0; i < GL10.GL_LIGHT0 + NUM_GLLIGHTS; i++) {
+	    	_gl.glDisable(i);
+	    }
 
 		//
 		// Scene object init only happens here, when we get GL for the first time

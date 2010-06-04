@@ -5,6 +5,7 @@ import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Sphere;
+import min3d.vos.Light;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -28,8 +29,10 @@ public class ExampleRotatingPlanets extends RendererActivity
 	
 	public void initScene() 
 	{
-		scene.light().ambient.setAll((short)32, (short)32, (short)32, (short)255);
-		scene.light().position.setAll(3, 3, 3);
+		Light light = new Light();
+		light.ambient.setAll((short)32, (short)32, (short)32, (short)255);
+		light.position.setAll(3, 3, 3);
+		scene.lights().add(light);
 		
 		// Add Jupiter to scene
 		_jupiter = new Sphere(0.8f, 15, 10);

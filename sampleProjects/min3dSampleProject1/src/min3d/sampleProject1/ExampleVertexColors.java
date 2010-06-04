@@ -19,7 +19,7 @@ public class ExampleVertexColors extends RendererActivity
 		 */
 		_cube = new Box(1,1,1);
 		_cube.normalsEnabled(false);
-		_cube.colorsEnabled(true);
+//		_cube.colorsEnabled(true); // (colorsEnabled is true by default)
 		
 		scene.addChild(_cube);
 	}

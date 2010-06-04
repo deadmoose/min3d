@@ -7,6 +7,7 @@ import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Box;
 import min3d.vos.Color4;
+import min3d.vos.Light;
 
 /**
  * Demonstrates use of Object3D's constructor parameters "useUvs", "useNormals", and "useColors".
@@ -31,6 +32,8 @@ public class ExampleVerticesVariations extends RendererActivity
 	
 	public void initScene() 
 	{
+		scene.lights().add(new Light());
+		
 		Color4[] colors = new Color4[6];
 		colors[0] = new Color4(255,0,0,255);
 		colors[1] = new Color4(0,255,0,255);
@@ -61,6 +64,7 @@ public class ExampleVerticesVariations extends RendererActivity
 		
 		// _cube3's verticies contain uv and normal data, but not color data  
 		// The result is an shaded box with a texture on each side.
+		// The Scene must of course contain a light for the object to be visible.
 		
 		_cube3 = new Box(.6f,.6f,.6f, colors,  true,true,false);
 		_cube3.position().y = -.4f;

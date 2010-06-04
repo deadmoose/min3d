@@ -37,11 +37,11 @@ public class Number3d
 		z = $z;
 	}
 	
-	public void setAllFrom(Number3d n)
+	public void setAllFrom(Number3d $n)
 	{
-		x = n.x;
-		y = n.y;
-		z = n.z;
+		x = $n.x;
+		y = $n.y;
+		z = $n.z;
 	}
 	
 	public void normalize()

@@ -30,6 +30,7 @@ public class RenderCaps
 	private static int _smoothLineSizeMax;
 	private static int _maxLights;
 	
+	
 	public static float openGlVersion()
 	{
 		return _openGlVersion;

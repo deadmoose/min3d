@@ -64,17 +64,35 @@ public class Number3dManaged implements IDirtyManaged
 		_dirty = true;
 	}
 	
+	public void setAllFrom(Number3d $n)
+	{
+		_x = $n.x;
+		_y = $n.y;
+		_z = $n.z;
+		_dirty = true;
+	}
+
+	public void setAllFrom(Number3dManaged $n)
+	{
+		_x = $n.getX();
+		_y = $n.getY();
+		_z = $n.getZ();
+		_dirty = true;
+	}
+
 	public Number3d toNumber3d()
 	{
 		return new Number3d(_x,_y,_z);
 	}
 
-	
 	public boolean isDirty()
 	{
 		return _dirty;
 	}
-	
+	public void setDirtyFlag()
+	{
+		_dirty = true;
+	}
 	public void clearDirtyFlag()
 	{
 		_dirty = false;

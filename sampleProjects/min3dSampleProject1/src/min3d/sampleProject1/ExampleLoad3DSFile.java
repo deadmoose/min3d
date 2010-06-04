@@ -4,6 +4,7 @@ import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.parser.IParser;
 import min3d.parser.Parser;
+import min3d.vos.Light;
 
 public class ExampleLoad3DSFile extends RendererActivity {
 	private final float CAM_RADIUS_X = 20;
@@ -15,6 +16,9 @@ public class ExampleLoad3DSFile extends RendererActivity {
 
 	@Override
 	public void initScene() {
+		
+		scene.lights().add(new Light());
+
 		IParser parser = Parser.createParser(Parser.Type.MAX_3DS,
 				getResources(), "min3d.sampleProject1:raw/monster_high", false);
 		parser.parse();
