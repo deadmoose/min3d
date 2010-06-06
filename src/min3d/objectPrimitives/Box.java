@@ -20,50 +20,42 @@ public class Box extends Object3dContainer
 	private float _depth;
 	
 
-	public Box(float $width, float $height, float $depth)
+	public Box(float $width, float $height, float $depth, Color4[] $sixColor4s, Boolean $useUvs, Boolean $useNormals, Boolean $useVertexColors)
 	{
-		super(4*6, 2*6, true,true,true);
-
-		_width = $width;
-		_height = $height;
-		_depth = $depth;
-		
-		_cols = new Color4[6];
-		_cols[0] = new Color4(255,0,0,255);
-		_cols[1] = new Color4(0,255,0,255);
-		_cols[2] = new Color4(0,0,255,255);
-		_cols[3] = new Color4(255,255,0,255);
-		_cols[4] = new Color4(0,255,255,255);
-		_cols[5] = new Color4(255,0,255,255);
-		
-		make();
-	}
-
-	public Box(float $width, float $height, float $depth, Color4[] $sixColor4s)
-	{
-		super(4*6, 2*6, true,true,true);
-
-		_width = $width;
-		_height = $height;
-		_depth = $depth;
-		_cols = $sixColor4s;
-		
-		make();
-	}
-
-	public Box(float $width, float $height, float $depth, Color4[] $sixColor4s, Boolean $useUvs, Boolean $useNormals, Boolean $useColors)
-	{
-		super(4*6, 2*6, $useUvs,$useNormals,$useColors);
+		super(4*6, 2*6, $useUvs,$useNormals,$useVertexColors);
 		
 		_width = $width;
 		_height = $height;
 		_depth = $depth;
 		
-		_cols = $sixColor4s;
+		if (_cols != null)
+		{
+			_cols = $sixColor4s;
+		}
+		else
+		{
+			_cols = new Color4[6];
+			_cols[0] = new Color4(255,0,0,255);
+			_cols[1] = new Color4(0,255,0,255);
+			_cols[2] = new Color4(0,0,255,255);
+			_cols[3] = new Color4(255,255,0,255);
+			_cols[4] = new Color4(0,255,255,255);
+			_cols[5] = new Color4(255,0,255,255);
+		}
 		
 		make();
 	}
 	
+	public Box(float $width, float $height, float $depth, Color4[] $sixColor4s)
+	{
+		this($width,$height,$depth, $sixColor4s, true,true,true);
+	}
+
+	public Box(float $width, float $height, float $depth)
+	{
+		this($width,$height,$depth, null,  true,true,true);
+	}
+
 	private void make()
 	{
 		float w = _width / 2f;

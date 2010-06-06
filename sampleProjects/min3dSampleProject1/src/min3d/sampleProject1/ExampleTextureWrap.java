@@ -1,13 +1,12 @@
 package min3d.sampleProject1;
 
-import android.graphics.Bitmap;
 import min3d.Shared;
 import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.HollowCylinder;
-import min3d.vos.Light;
 import min3d.vos.TextureVo;
+import android.graphics.Bitmap;
 
 /**
  * Demonstrates setting U/V texture wrapping 
@@ -25,7 +24,7 @@ public class ExampleTextureWrap extends RendererActivity
 	{
 		_object = new HollowCylinder(1f, 0.5f, 0.66f, 25);
 		_object.normalsEnabled(false);
-		_object.colorsEnabled(false);
+		_object.vertexColorsEnabled(false);
 		scene.addChild(_object);
 		
 		Bitmap b = Utils.makeBitmapFromResourceId(R.drawable.uglysquares);

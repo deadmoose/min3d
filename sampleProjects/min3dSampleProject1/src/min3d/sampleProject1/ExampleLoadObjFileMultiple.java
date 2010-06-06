@@ -21,8 +21,6 @@ public class ExampleLoadObjFileMultiple extends RendererActivity {
 	@Override
 	public void initScene() {
 		
-		scene.lights().add(new Light());
-		
 		IParser parser = Parser.createParser(Parser.Type.OBJ,
 				getResources(), "min3d.sampleProject1:raw/camaro2_obj", true);
 		parser.parse();
@@ -57,6 +55,11 @@ public class ExampleLoadObjFileMultiple extends RendererActivity {
 		scene.camera().position.x = MAX_CAM_X;
 		scene.camera().position.z = 3.5f;
 		scene.camera().position.y = 3.5f;
+
+		Light light = new Light();
+		light.position.setAllFrom(scene.camera().position);
+		scene.lights().add(light);
+		
 		
 		rotationDirection = 1;
 		camDirection = -.01f;

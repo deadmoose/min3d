@@ -25,13 +25,21 @@ public class ExampleMostMinimal extends RendererActivity
 		
 		/*
 		 *  Create an Object3d and add it to the scene.
-		 *  In this case, we're creating a cube using the Box class.
-		 *  The Box class automatically adds texture coordinates, per-vertex colors, and vertex normals.
-		 *  Since we're not assigning any texture, the object is of course textureless.
-		 *  Since normals for Object3d's are on by default, per-vertex colors are not displayed.
-		 *  The result is a cube whose faces are shaded in relation to the one light in the Scene.
+		 *  In this case, we're creating a cube using the Box class, which extends Object3d.
+		 *  Any Object3d must be declared with booleans that determine whether its vertices store: 
+		 *  	(a) U/V texture coordinates 
+		 *  	(b) Normals (required for shading based on light source/s)
+		 *  	(c) Per-vertex color information 
+		 *  We're going to create a shaded cube without textures or colors, so for those arguments
+		 *  we are using "false,true,false".  
 		 */
-		_cube = new Box(1,1,1);
+		_cube = new Box(1,1,1, null, true,true,false);
+		
+		/*
+		 * 	Since we're not using any colors on the cube, we're setting this to false.  
+		 * (False is the default)
+		 */
+		_cube.colorMaterialEnabled(false);
 		
 		/*
 		 * Add cube to the scene.

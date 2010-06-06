@@ -1,6 +1,8 @@
 package min3d.vos;
 
-import android.util.Log;
+import java.nio.FloatBuffer;
+
+import min3d.Utils;
 
 /**
  * Simple struct/VO.
@@ -14,6 +16,7 @@ public class Color4
 	public short g;
 	public short b;
 	public short a;
+	
 	
 	public Color4()
 	{
@@ -67,12 +70,20 @@ public class Color4
 	@Override
 	public String toString()
 	{
-		String s = "r:" + r + ", g:" + g + ", b:" + b + ", a:" + a;
-		return s;
+		return "r:" + r + ", g:" + g + ", b:" + b + ", a:" + a;
 	}
 	
-	public Color4Managed toColor4Managed()
+	public FloatBuffer toFloatBuffer()
 	{
-		return new Color4Managed(r,g,b,a);
+		return Utils.makeFloatBuffer4(r,g,b,a);
+	}
+	
+	public void toFloatBuffer(FloatBuffer $floatBuffer)
+	{
+		$floatBuffer.position(0);
+		$floatBuffer.put((float)r / 255f);
+		$floatBuffer.put((float)g / 255f);
+		$floatBuffer.put((float)b / 255f);
+		$floatBuffer.put((float)a / 255f);
 	}
 }

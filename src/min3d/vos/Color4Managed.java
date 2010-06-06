@@ -1,52 +1,70 @@
 package min3d.vos;
 
-import min3d.interfaces.IDirtyManaged;
+import java.nio.FloatBuffer;
+
+import min3d.Utils;
+import min3d.interfaces.IDirtyParent;
 
 /**
  * Same functionality as Color4, but uses proper accessors to r,g,b, and a properties, 
  * rather than VO-style public variables, so that 'dirty flag' can be managed properly.
+ * 
+ * It is also backed by a FloatBuffer.
  */
-public class Color4Managed implements IDirtyManaged
+public class Color4Managed extends AbstractDirtyManaged
 {
-	private boolean _dirty;
-
 	private short _r;
 	private short _g;
 	private short _b;
 	private short _a;
 	
+	private FloatBuffer _fb;
 	
-	public Color4Managed()
+	
+	public Color4Managed(IDirtyParent $parent)
 	{
+		super($parent);
+		
 		_r = (short)255;
 		_g = (short)255;
 		_b = (short)255;
 		_a = (short)255;
+
+		_fb = this.toFloatBuffer();
 		
-		_dirty = true;
+		setDirtyFlag();
+		
 	}
 	
-	public Color4Managed(short $r, short $g, short $b, short $a)
+	public Color4Managed(short $r, short $g, short $b, short $a, IDirtyParent $parent)
 	{
+		super($parent);
+		
 		_r = $r;
 		_g = $g;
 		_b = $b;
 		_a = $a;
 
-		_dirty = true;
+		_fb = this.toFloatBuffer();
+
+		setDirtyFlag();
 	}
 
 	/**
 	 * Convenience method which casts the int arguments to short for you. 
 	 */
-	public Color4Managed(int $r, int $g, int $b, int $a)
+	public Color4Managed(int $r, int $g, int $b, int $a, IDirtyParent $parent)
 	{
+		super($parent);
+
 		_r = (short)$r;
 		_g = (short)$g;
 		_b = (short)$b;
 		_a = (short)$a;
 
-		_dirty = true;
+		_fb = this.toFloatBuffer();
+
+		setDirtyFlag();
 	}
 
 	/**
@@ -59,7 +77,7 @@ public class Color4Managed implements IDirtyManaged
 		_b = $b;
 		_a = $a;
 
-		_dirty = true;
+		setDirtyFlag();
 	}
 	
 	public Color4 toColor4()
@@ -77,7 +95,7 @@ public class Color4Managed implements IDirtyManaged
 		_g = (short) (($argb32 >> 8) & 0x000000FF);
 		_b = (short) (($argb32) & 0x000000FF);		
 		
-		_dirty = true;
+		setDirtyFlag();
 	}	
 
 	public short r()
@@ -87,7 +105,7 @@ public class Color4Managed implements IDirtyManaged
 	public void r(short $r)
 	{
 		_r = $r;
-		_dirty = true;
+		setDirtyFlag();
 	}
 	
 	public short g()
@@ -97,7 +115,7 @@ public class Color4Managed implements IDirtyManaged
 	public void g(short $g)
 	{
 		_g = $g;
-		_dirty = true;
+		setDirtyFlag();
 	}
 	
 	public short b()
@@ -107,7 +125,7 @@ public class Color4Managed implements IDirtyManaged
 	public void b(short $b)
 	{
 		_b = $b;
-		_dirty = true;
+		setDirtyFlag();
 	}
 	
 	public short a()
@@ -117,23 +135,58 @@ public class Color4Managed implements IDirtyManaged
 	public void a(short $a)
 	{
 		_a = $a;
-		_dirty = true;
+		setDirtyFlag();
+	}
+
+	/**
+	 * Convenience method
+	 */
+	public FloatBuffer toFloatBuffer()
+	{
+		return Utils.makeFloatBuffer4(
+			(float)r() / 255f,
+			(float)g() / 255f,
+			(float)b() / 255f,
+			(float)a() / 255f
+		);
+	}
+
+	/**
+	 * Convenience method
+	 */
+	public void toFloatBuffer(FloatBuffer $floatBuffer)
+	{
+		$floatBuffer.position(0);
+		$floatBuffer.put((float)r() / 255f);
+		$floatBuffer.put((float)g() / 255f);
+		$floatBuffer.put((float)b() / 255f);
+		$floatBuffer.put((float)a() / 255f);
+		$floatBuffer.position(0);
 	}
 	
 	//
 	
-	public boolean isDirty()
+	/**
+	 * Used by Renderer
+	 */
+	public FloatBuffer floatBuffer()
 	{
-		return _dirty;
+		return _fb;
 	}
+
+	/**
+	 * Used by Renderer
+	 */
+	public void commitToFloatBuffer()
+	{
+		this.toFloatBuffer(_fb);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "r:" + _r + ", g:" + _g + ", b:" + _b + ", a:" + _a;
+	}
+
 	
-	public void setDirtyFlag()
-	{
-		_dirty = true;
-	}
-	
-	public void clearDirtyFlag()
-	{
-		_dirty = false;
-	}
 }

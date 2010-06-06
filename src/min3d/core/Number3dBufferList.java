@@ -4,9 +4,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import android.util.Log;
-
-import min3d.Min3d;
 import min3d.vos.Number3d;
 
 public class Number3dBufferList

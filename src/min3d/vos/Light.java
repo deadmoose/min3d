@@ -2,9 +2,8 @@ package min3d.vos;
 
 import java.nio.FloatBuffer;
 
-import android.util.Log;
-
 import min3d.Utils;
+import min3d.interfaces.IDirtyParent;
 
 /**
  * Consists of three main components - ambient color, diffuse color, and position.
@@ -15,131 +14,154 @@ import min3d.Utils;
  * WARNING:	Positional light type does not work in v1.5 emulator.
  * 			But is nevertheless the default type.
  */
-public class Light
+public class Light extends AbstractDirtyManaged implements IDirtyParent
 {
+	private BooleanManaged _isVisible; 
+	
 	public Color4Managed ambient;
 	public Color4Managed diffuse;
+	public Color4Managed specular;
+	public Color4Managed emissive;
 	public Number3dManaged position;
-
-	public enum Type {
-		POSITIONAL, 
-		DIRECTIONAL
-	}
 	
-	private boolean _isVisible; 
-	private boolean _isVisibleDirty;
+	private LightType _type;
+	private Number3dManaged _attenuation; // (using the 3 properties of N3D for the 3 attenuation properties)
+	private FloatBuffer _positionTypeFloatBuffer;
 	
-	private Type _type;
-	
-	private FloatBuffer _ambientBuffer; 
-	private FloatBuffer _diffuseBuffer;
-	private FloatBuffer _positionBuffer;
-
 	
 	public Light()
 	{
-		 ambient = new Color4Managed(128,128,128, 255);
-		 diffuse = new Color4Managed(255,255,255, 255);
-		 position = new Number3dManaged(0f, 0f, 5f);	
-		 type(Type.POSITIONAL);
-		 isVisible(true);
+		super(null);
+		
+		 ambient = new Color4Managed(128,128,128, 255, this);
+		 diffuse = new Color4Managed(255,255,255, 255, this);
+		 specular = new Color4Managed(0,0,0,255, this);
+		 emissive = new Color4Managed(0,0,0,255, this);
+		 position = new Number3dManaged(0f, 0f, 5f, this);
+		 _attenuation = new Number3dManaged(1f,0f,0f, this); // (OpenGL default attenuation values)
+		 _isVisible = new BooleanManaged(true, this);
+		 type(LightType.POSITIONAL);
+		 
+		 _positionTypeFloatBuffer = Utils.makeFloatBuffer4(0,0,0,0);
+		 
+		 setDirtyFlag();
 	}
 
+	//
+	
 	public boolean isVisible()
 	{
-		return _isVisible;
+		return _isVisible.get();
 	}
 	public void isVisible(Boolean $b)
 	{
-		_isVisible = $b;
-		_isVisibleDirty = true;
+		_isVisible.set($b);
 	}
 	
-	public Type type()
+	//
+	
+	public LightType type()
 	{
 		return _type;
 	}
-	public void type(Type $type)
+	public void type(LightType $type)
 	{
 		_type = $type;
-		
-		position.setDirtyFlag(); 
-		// .. because position and 'type' go together in OGL data structure
-	}
-
-	// Used by Renderer
-	public boolean isVisibleDirty()
-	{
-		return _isVisibleDirty;
+		position.setDirtyFlag(); // .. because position and 'type' go together in OGL data structure
 	}
 	
-	// Used by Renderer
-	public void clearIsVisibleDirtyFlag()
+	//
+	
+	public float attenuationConstant()
 	{
-		_isVisibleDirty = false; 
+		return _attenuation.getX();
 	}
-	// Used by Renderer
-	public void setIsVisibleDirtyFlag()
+	public void attenuationConstant(float $normalizedValue)
 	{
-		_isVisibleDirty = true; 
+		_attenuation.setX($normalizedValue);
+		setDirtyFlag();
 	}
+	public float attenuationLinear()
+	{
+		return _attenuation.getY();
+	}
+	public void attenuationLinear(float $normalizedValue)
+	{
+		_attenuation.setY($normalizedValue);
+		setDirtyFlag();
+	}
+	public float attenuationQuadratic()
+	{
+		return _attenuation.getZ();
+	}
+	public void attenuationQuadratic(float $normalizedValue)
+	{
+		_attenuation.setZ($normalizedValue);
+		setDirtyFlag();
+	}
+	public void attenuationSetAll(float $constant, float $linear, float $quadratic)
+	{
+		_attenuation.setAll($constant, $linear, $quadratic);
+		setDirtyFlag();
+	}
+
+	//
 	
 	public void setAllDirty()
 	{
 		position.setDirtyFlag();
 		ambient.setDirtyFlag();
 		diffuse.setDirtyFlag();
-		setIsVisibleDirtyFlag();
+		specular.setDirtyFlag();
+		emissive.setDirtyFlag();
+		_attenuation.setDirtyFlag();
+		_isVisible.setDirtyFlag();
 	}
 	
-	// Used by Renderer
-	public void commitAmbientBuffer()
+	@Override
+	public void onDirty()
 	{
-		_ambientBuffer = Utils.makeFloatBuffer4(
-			(float)ambient.r() / 255f,
-			(float)ambient.g() / 255f,
-			(float)ambient.b() / 255f,
-			(float)ambient.a() / 255f);
+		setDirtyFlag();
+	}
+	
+	/**
+	 * Used by Renderer
+	 */
+	public Number3dManaged attenuation()
+	{
+		return _attenuation;
+	}
+	
+	/**
+	 * Used by Renderer
+	 */
+	public BooleanManaged isVisibleBm()
+	{
+		return _isVisible;
 	}
 
-	// Used by Renderer
-	public FloatBuffer ambientBuffer()
+	/**
+	 * Used by Renderer
+	 */
+	public FloatBuffer positionTypeBuffer()
 	{
-		return _ambientBuffer;
+		return _positionTypeFloatBuffer;
 	}
 	
-	// Used by Renderer
-	public void commitDiffuseBuffer()
+	/**
+	 * Used by Renderer
+	 */
+	public void commitPositionTypeBuffer()
 	{
-		_diffuseBuffer = Utils.makeFloatBuffer4(
-			(float)diffuse.r() / 255f,
-			(float)diffuse.g() / 255f,
-			(float)diffuse.b() / 255f,
-			(float)diffuse.a() / 255f);
-	}
-
-	// Used by Renderer
-	public FloatBuffer diffuseBuffer()
-	{
-		return _diffuseBuffer;
-	}
-	
-	// Used by Renderer
-	public void commitPositionBuffer()
-	{
-		_positionBuffer = Utils.makeFloatBuffer4(
-			position.getX(),
-			position.getY(),
-			position.getZ(),
-			_type == Type.POSITIONAL ? 1 : 0
-		);
+		// GL_POSITION takes 4 arguments, the first 3 being x/y/z position, 
+		// and the 4th being what we're calling 'type' (positional or directional)
 		
-		// * Rem, 4th argument determines type!
+		_positionTypeFloatBuffer.position(0);
+		_positionTypeFloatBuffer.put(position.getX());
+		_positionTypeFloatBuffer.put(position.getY());
+		_positionTypeFloatBuffer.put(position.getZ());
+		_positionTypeFloatBuffer.put(_type.glValue());
+		_positionTypeFloatBuffer.position(0);
 	}
 
-	// Used by Renderer
-	public FloatBuffer positionBuffer()
-	{
-		return _positionBuffer;
-	}
 }

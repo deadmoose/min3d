@@ -1,10 +1,8 @@
 package min3d.sampleProject1;
 
-import min3d.core.Object3d;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Box;
-import min3d.objectPrimitives.Rectangle;
 import min3d.objectPrimitives.Sphere;
 import min3d.vos.Light;
 
@@ -51,26 +49,26 @@ public class ExampleMultipleLights extends RendererActivity
 		// The objects that we'll light up
 		
 		_sphere = new Sphere(1.0f, 20, 15);
-		_sphere.colorsEnabled(false);
+		_sphere.vertexColorsEnabled(false);
 		scene.addChild(_sphere);
 		
 		// Boxes, displayed just as a visualization aid
 		
 		_boxRed = new Box(0.05f,0.05f,0.05f);
 		_boxRed.normalsEnabled(false);
-		_boxRed.colorsEnabled(false);
+		_boxRed.vertexColorsEnabled(false);
 		_boxRed.defaultColor().setAll(0xaaff0000);
 		scene.addChild(_boxRed);
 		
 		_boxGreen = new Box(0.07f,0.07f,0.07f);
 		_boxGreen.normalsEnabled(false);
-		_boxGreen.colorsEnabled(false);
+		_boxGreen.vertexColorsEnabled(false);
 		_boxGreen.defaultColor().setAll(0xaa00ff00);
 		scene.addChild(_boxGreen);
 
 		_boxBlue = new Box(0.05f,0.05f,0.05f);
 		_boxBlue.normalsEnabled(false);
-		_boxBlue.colorsEnabled(false);
+		_boxBlue.vertexColorsEnabled(false);
 		_boxBlue.defaultColor().setAll(0xaa0000ff);
 		scene.addChild(_boxBlue);
 

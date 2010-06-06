@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -110,6 +109,9 @@ public class SplashActivity extends ListActivity
 	    Linkify.addLinks(tv, 0x07);
 	    
 	    registerForContextMenu(getListView());	    
+	    
+	    // xxx
+    	// this.startActivity( new Intent(this, ScratchActivity.class ) );
     }
     
     @Override

@@ -1,11 +1,12 @@
 package min3d.vos;
 
 import min3d.interfaces.IDirtyManaged;
+import min3d.interfaces.IDirtyParent;
 
 /**
  * 'Managed' VO for the view frustrum. Used by Camera.
  */
-public class FrustumManaged implements IDirtyManaged 
+public class FrustumManaged extends AbstractDirtyManaged 
 {
 	private float _shortSideLength;
 	private float _horizontalCenter;
@@ -13,11 +14,11 @@ public class FrustumManaged implements IDirtyManaged
 	private float _zNear;
 	private float _zFar;
 	
-	private boolean _dirty;
 	
-	
-	public FrustumManaged()
+	public FrustumManaged(IDirtyParent $parent)
 	{
+		super($parent);
+		
 		_horizontalCenter = 0f;
 		_verticalCenter = 0f;
 		_shortSideLength = 1.0f;
@@ -26,8 +27,10 @@ public class FrustumManaged implements IDirtyManaged
 		_zFar = 100.0f;
 	}
 
-	public FrustumManaged(float $horizontalCenter, float $verticalCenter, float $shortSideLength, float $zNear, float $zFar)
+	public FrustumManaged(float $horizontalCenter, float $verticalCenter, float $shortSideLength, float $zNear, float $zFar, IDirtyParent $parent)
 	{
+		super($parent);
+		
 		_horizontalCenter = $horizontalCenter;
 		_verticalCenter = $verticalCenter;
 		_shortSideLength = $shortSideLength;
@@ -46,7 +49,7 @@ public class FrustumManaged implements IDirtyManaged
 
 	public void shortSideLength(float shortSideLength) {
 		_shortSideLength = shortSideLength;
-		_dirty = true;
+		setDirtyFlag();
 	}
 
 	public float horizontalCenter() {
@@ -55,7 +58,7 @@ public class FrustumManaged implements IDirtyManaged
 
 	public void horizontalCenter(float horizontalCenter) {
 		_horizontalCenter = horizontalCenter;
-		_dirty = true;
+		setDirtyFlag();
 	}
 
 	public float verticalCenter() {
@@ -64,7 +67,7 @@ public class FrustumManaged implements IDirtyManaged
 
 	public void verticalCenter(float verticalCenter) {
 		_verticalCenter = verticalCenter;
-		_dirty = true;
+		setDirtyFlag();
 	}
 
 	/**
@@ -76,7 +79,7 @@ public class FrustumManaged implements IDirtyManaged
 
 	public void zNear(float zNear) {
 		_zNear = zNear;
-		_dirty = true;
+		setDirtyFlag();
 	}
 
 	/**
@@ -88,19 +91,9 @@ public class FrustumManaged implements IDirtyManaged
 
 	public void zFar(float zFar) {
 		_zFar = zFar;
-		_dirty = true;
+		setDirtyFlag();
 	}
 	
 	//
-	
-	public boolean isDirty() 
-	{
-		return _dirty;
-	}
-	
-	public void clearDirtyFlag() 
-	{
-		_dirty = false;
-	}
 	
 }

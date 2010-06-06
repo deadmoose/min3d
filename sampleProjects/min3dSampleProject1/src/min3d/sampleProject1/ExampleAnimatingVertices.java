@@ -5,9 +5,7 @@ import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Rectangle;
-import min3d.vos.Light;
 import min3d.vos.Number3d;
-import min3d.vos.TextureVo;
 import android.graphics.Bitmap;
 
 /**

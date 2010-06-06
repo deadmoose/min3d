@@ -8,6 +8,7 @@ import min3d.interfaces.IObject3dContainer;
 import min3d.vos.Color4;
 import min3d.vos.Number3d;
 import min3d.vos.RenderType;
+import min3d.vos.ShadeModel;
 
 /**
  * @author Lee
@@ -20,11 +21,12 @@ public class Object3d
 	private int _renderTypeInt = GL10.GL_TRIANGLES;
 	
 	private boolean _isVisible = true;
-	private boolean _colorsEnabled = true;
+	private boolean _vertexColorsEnabled = true;
 	private boolean _doubleSidedEnabled = false;
-	private boolean _useTextures = true;
-	private boolean _useNormals = true;
+	private boolean _texturesEnabled = true;
+	private boolean _normalsEnabled = true;
 	private boolean _ignoreFaces = false;
+	private boolean _colorMaterialEnabled = false;
 
 	private Number3d _position = new Number3d(0,0,0);
 	private Number3d _rotation = new Number3d(0,0,0);
@@ -32,11 +34,13 @@ public class Object3d
 
 	private Color4 _defaultColor = new Color4();
 	
+	private ShadeModel _shadeModel = ShadeModel.SMOOTH;
 	private float _pointSize = 3f;
 	private boolean _pointSmoothing = true;
 	private float _lineWidth = 1f;
 	private boolean _lineSmoothing = false;
 
+	
 	protected ArrayList<Object3d> _children;
 	
 	protected Vertices _vertices; 
@@ -61,9 +65,9 @@ public class Object3d
 	/**
 	 * Adds three arguments 
 	 */
-	public Object3d(int $maxVertices, int $maxFaces, Boolean $useUvs, Boolean $useNormals, Boolean $useColors)
+	public Object3d(int $maxVertices, int $maxFaces, Boolean $useUvs, Boolean $useNormals, Boolean $useVertexColors)
 	{
-		_vertices = new Vertices($maxVertices, $useUvs,$useNormals,$useColors);
+		_vertices = new Vertices($maxVertices, $useUvs,$useNormals,$useVertexColors);
 		_faces = new FacesBufferedList($maxFaces);
 		_textures = new TextureList();
 	}
@@ -124,6 +128,19 @@ public class Object3d
 	{
 		_doubleSidedEnabled = $b;
 	}
+	
+	/**
+	 * Determines if object uses GL_COLOR_MATERIAL or not.
+	 * Default is false.
+	 */
+	public boolean colorMaterialEnabled()
+	{
+		return _colorMaterialEnabled;
+	}
+	public void colorMaterialEnabled(boolean $b)
+	{
+		_colorMaterialEnabled = $b;
+	}
 
 	/**
 	 * Determines whether animation is enabled or not. If it is enabled
@@ -142,15 +159,16 @@ public class Object3d
 	/**
 	 * Determines if per-vertex colors will be using for rendering object.
 	 * If false, defaultColor property will dictate object color.
+	 * If object has no per-vertex color information, setting is ignored.
 	 * Default is true. 
 	 */
-	public boolean colorsEnabled()
+	public boolean vertexColorsEnabled()
 	{
-		return _colorsEnabled;
+		return _vertexColorsEnabled;
 	}
-	public void colorsEnabled(Boolean $b)
+	public void vertexColorsEnabled(Boolean $b)
 	{
-		_colorsEnabled = $b;
+		_vertexColorsEnabled = $b;
 	}
 
 	/**
@@ -159,11 +177,11 @@ public class Object3d
 	 */
 	public boolean texturesEnabled()
 	{
-		return _useTextures;
+		return _texturesEnabled;
 	}
 	public void texturesEnabled(Boolean $b)
 	{
-		_useTextures = $b;
+		_texturesEnabled = $b;
 	}
 	
 	/**
@@ -173,11 +191,11 @@ public class Object3d
 	 */
 	public boolean normalsEnabled()
 	{
-		return _useNormals;
+		return _normalsEnabled;
 	}
 	public void normalsEnabled(boolean $b)
 	{
-		_useNormals = $b;
+		_normalsEnabled = $b;
 	}
 
 	/**
@@ -206,6 +224,20 @@ public class Object3d
 	{
 		_renderType = $type;
 		_renderTypeInt = renderTypeToInt(_renderType);
+	}
+	
+	/**
+	 * Possible values are ShadeModel.SMOOTH and ShadeModel.FLAT.
+	 * Default is ShadeModel.SMOOTH.
+	 * @return
+	 */
+	public ShadeModel shadeModel()
+	{
+		return _shadeModel;
+	}
+	public void shadeModel(ShadeModel $shadeModel)
+	{
+		_shadeModel = $shadeModel;
 	}
 	
 	/**
@@ -259,7 +291,7 @@ public class Object3d
 	/**
 	 * Convenience 'pass-thru' method  
 	 */
-	public boolean hasColors()
+	public boolean hasVertexColors()
 	{
 		return _vertices.hasColors();
 	}

@@ -36,7 +36,7 @@ public class ExampleFromScratch extends RendererActivity
 		if (_count % 500 == 0) {
 			_currentObject = new Object3d(500,500); 
 			_currentObject.normalsEnabled(false);
-			_currentObject.colorsEnabled(true);
+			_currentObject.vertexColorsEnabled(true);
 			_currentObject.doubleSidedEnabled(true);
 			scene.addChild(_currentObject);
 		}

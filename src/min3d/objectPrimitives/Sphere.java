@@ -1,15 +1,14 @@
 package min3d.objectPrimitives;
 
-import java.util.ArrayList;
-
-import android.util.Log;
-
 import min3d.Utils;
 import min3d.core.Object3dContainer;
-import min3d.vos.Face;
 import min3d.vos.Number3d;
 
 
+/**
+ * Creates a sphere.
+ * Vertex colors are assigned randomly across the 'latitudes' of the sphere,
+ */
 public class Sphere extends Object3dContainer
 {
 	private float _radius;
@@ -17,11 +16,14 @@ public class Sphere extends Object3dContainer
 	private int _rows;
 
 	
-	public Sphere(float $radius, int $columns, int $rows)
+	public Sphere(float $radius, int $columns, int $rows, Boolean $useUvs, Boolean $useNormals, Boolean $useVertexColors)
 	{
 		super(
 			($columns+1) * ($rows+1),
-			$columns * $rows * 2
+			$columns * $rows * 2,
+			$useUvs,
+			$useNormals,
+			$useVertexColors
 		);
 
 		_cols = $columns;
@@ -29,7 +31,13 @@ public class Sphere extends Object3dContainer
 		_radius = $radius;
 
 		build();
+	}
+
+	public Sphere(float $radius, int $columns, int $rows)
+	{
+		this($radius,$columns,$rows,true,true,true);
 	} 
+	
 	
 	private void build()
 	{

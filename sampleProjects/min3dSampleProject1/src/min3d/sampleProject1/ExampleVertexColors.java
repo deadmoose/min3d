@@ -14,14 +14,17 @@ public class ExampleVertexColors extends RendererActivity
 	public void initScene() 
 	{
 		/**
-		 * Remember, the Box class automatically adds vertex colors (a different color for each side).
-		 * Set normalsEnabled to false or else vertex colors will not be displayed.
+		 * Rem, the Box class automatically adds vertex colors (a different color for each side).
 		 */
 		_cube = new Box(1,1,1);
-		_cube.normalsEnabled(false);
-//		_cube.colorsEnabled(true); // (colorsEnabled is true by default)
-		
+		_cube.colorMaterialEnabled(true);
 		scene.addChild(_cube);
+
+		/**
+		 * Turn off lighting so that colors come thru "as-is", without any changes in brightness based on
+		 * any extant lights or light settings.
+		 */
+		scene.lightingEnabled(false);
 	}
 	
 	@Override 

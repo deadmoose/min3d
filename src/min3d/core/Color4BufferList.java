@@ -2,7 +2,6 @@ package min3d.core;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 
 import min3d.vos.Color4;
 

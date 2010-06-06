@@ -2,9 +2,6 @@ package min3d.core;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
-import min3d.Min3d;
 import min3d.Shared;
 import min3d.vos.TextureVo;
 

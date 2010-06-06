@@ -1,7 +1,6 @@
 package min3d.core;
 
 import java.nio.IntBuffer;
-import java.util.Comparator;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -25,7 +24,6 @@ import android.util.Log;
 
 public class Renderer implements GLSurfaceView.Renderer
 {
-	public static final int FRAMERATE_SAMPLEINTERVAL_MS = 1000; 
 	public static final int NUM_GLLIGHTS = 8;
 
 	private GL10 _gl;
@@ -35,8 +33,11 @@ public class Renderer implements GLSurfaceView.Renderer
 	private float _surfaceAspectRatio;
 	
 	private IntBuffer _scratchIntBuffer;
+	private boolean _scratchB;
 	
+
 	// stats-related
+	public static final int FRAMERATE_SAMPLEINTERVAL_MS = 1000; 
 	private boolean _logFps = false;
 	private long _frameCount = 0;
 	private float _fps = 0;
@@ -156,7 +157,15 @@ public class Renderer implements GLSurfaceView.Renderer
 		
 		_gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		
-		// GL_LIGHTS - enable/disable based on enabledDirty list
+		drawSetupLights();
+		
+		// Always on:
+		_gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+	}
+	
+	protected void drawSetupLights()
+	{
+		// GL_LIGHTS enabled/disabled based on enabledDirty list
 		
 		for (int glIndex = 0; glIndex < NUM_GLLIGHTS; glIndex++)
 		{
@@ -183,40 +192,65 @@ public class Renderer implements GLSurfaceView.Renderer
 		Light[] lights = _scene.lights().toArray();
 		for (int i = 0; i < lights.length; i++)
 		{
-			Light light = lights[i]; 
-			int glLightId = GL10.GL_LIGHT0 + _scene.lights().getGlIndexByLight(light);
+			Light light = lights[i];
 			
-			if (light.ambient.isDirty()) 
+			if (light.isDirty()) // .. something has changed
 			{
-				light.commitAmbientBuffer();
-				_gl.glLightfv(glLightId, GL10.GL_AMBIENT, light.ambientBuffer());
-				light.ambient.clearDirtyFlag();
-			}
-			if (light.diffuse.isDirty()) 
-			{
-				light.commitDiffuseBuffer();
-				_gl.glLightfv(glLightId, GL10.GL_DIFFUSE, light.diffuseBuffer());
-				light.diffuse.clearDirtyFlag();
-			}
-			if (light.position.isDirty())
-			{
-				light.commitPositionBuffer();
-				_gl.glLightfv(glLightId, GL10.GL_POSITION, light.positionBuffer());
-				light.position.clearDirtyFlag();
-			}
-			if (light.isVisibleDirty()) 
-			{
-				if (light.isVisible()) {
-					_gl.glEnable(glLightId);
-				} else {
-					_gl.glDisable(glLightId);
+				// Check all of Light's properties for dirty 
+				
+				int glLightId = GL10.GL_LIGHT0 + _scene.lights().getGlIndexByLight(light);
+				
+				if (light.position.isDirty())
+				{
+					light.commitPositionTypeBuffer();
+					_gl.glLightfv(glLightId, GL10.GL_POSITION, light.positionTypeBuffer());
+					light.position.clearDirtyFlag();
 				}
-				light.clearIsVisibleDirtyFlag();
+				if (light.ambient.isDirty()) 
+				{
+					light.ambient.commitToFloatBuffer();
+					_gl.glLightfv(glLightId, GL10.GL_AMBIENT, light.ambient.floatBuffer());
+					light.ambient.clearDirtyFlag();
+				}
+				if (light.diffuse.isDirty()) 
+				{
+					light.diffuse.commitToFloatBuffer();
+					_gl.glLightfv(glLightId, GL10.GL_DIFFUSE, light.diffuse.floatBuffer());
+					light.diffuse.clearDirtyFlag();
+				}
+				if (light.specular.isDirty())
+				{
+					light.specular.commitToFloatBuffer();
+					_gl.glLightfv(glLightId, GL10.GL_SPECULAR, light.specular.floatBuffer());
+					light.specular.clearDirtyFlag();
+				}
+				if (light.emissive.isDirty())
+				{
+					light.emissive.commitToFloatBuffer();
+					_gl.glLightfv(glLightId, GL10.GL_EMISSION, light.emissive.floatBuffer());
+					light.emissive.clearDirtyFlag();
+				}
+				
+				if (light.isVisibleBm().isDirty()) 
+				{
+					if (light.isVisible()) {
+						_gl.glEnable(glLightId);
+					} else {
+						_gl.glDisable(glLightId);
+					}
+					light.isVisibleBm().clearDirtyFlag();
+				}
+
+				if (light.attenuation().isDirty())
+				{
+					_gl.glLightf(glLightId, GL10.GL_CONSTANT_ATTENUATION, light.attenuation().getX());
+					_gl.glLightf(glLightId, GL10.GL_LINEAR_ATTENUATION, light.attenuation().getY());
+					_gl.glLightf(glLightId, GL10.GL_QUADRATIC_ATTENUATION, light.attenuation().getZ());
+				}
+				
+				light.clearDirtyFlag();
 			}
 		}
-		
-		// Always on:
-		_gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 	}
 
 	protected void drawScene()
@@ -266,10 +300,15 @@ public class Renderer implements GLSurfaceView.Renderer
 			}
 		}
 
-
+		// Shademodel
+		_gl.glGetIntegerv(GL10.GL_COLOR_MATERIAL, _scratchIntBuffer);
+		if ($o.shadeModel().glConstant() != _scratchIntBuffer.get(0)) {
+			_gl.glShadeModel($o.shadeModel().glConstant());
+		}
+		
 		// Colors: either per-vertex, or per-object
 
-		if ($o.hasColors() && $o.colorsEnabled()) {
+		if ($o.hasVertexColors() && $o.vertexColorsEnabled()) {
 			$o.vertices().colors().buffer().position(0);
 			_gl.glColorPointer(4, GL10.GL_UNSIGNED_BYTE, 0, $o.vertices().colors().buffer());
 			_gl.glEnableClientState(GL10.GL_COLOR_ARRAY); 
@@ -282,6 +321,16 @@ public class Renderer implements GLSurfaceView.Renderer
 				(float)$o.defaultColor().a / 255f
 			);
 			_gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
+		}
+		
+		// Colormaterial
+		_gl.glGetIntegerv(GL10.GL_COLOR_MATERIAL, _scratchIntBuffer);
+		_scratchB = (_scratchIntBuffer.get(0) != 0);
+		if ($o.colorMaterialEnabled() != _scratchB) {
+			if ($o.colorMaterialEnabled())
+				_gl.glEnable(GL10.GL_COLOR_MATERIAL);
+			else
+				_gl.glDisable(GL10.GL_COLOR_MATERIAL);
 		}
 		
 		// Point size
@@ -587,3 +636,11 @@ public class Renderer implements GLSurfaceView.Renderer
 		//
 	}
 }
+
+//Color4 c = new Color4(100,100,0, 255);
+//_gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_EMISSION, c.toFloatBuffer());
+///Color4 c = new Color4(0,128,0, 255);
+///_gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, c.toFloatBuffer());
+//Color4 c = new Color4(128,128,128,128);		
+//_gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, c.toFloatBuffer());
+

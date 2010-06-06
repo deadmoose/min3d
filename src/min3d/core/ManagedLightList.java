@@ -2,9 +2,6 @@ package min3d.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-
-import javax.microedition.khronos.opengles.GL10;
 
 import min3d.vos.Light;
 

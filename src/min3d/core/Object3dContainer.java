@@ -19,9 +19,9 @@ public class Object3dContainer extends Object3d implements IObject3dContainer
 		super($maxVerts, $maxFaces, true,true,true);
 	}
 
-	public Object3dContainer(int $maxVerts, int $maxFaces,  Boolean $useUvs, Boolean $useNormals, Boolean $useColors)
+	public Object3dContainer(int $maxVerts, int $maxFaces,  Boolean $useUvs, Boolean $useNormals, Boolean $useVertexColors)
 	{
-		super($maxVerts, $maxFaces, $useUvs,$useNormals,$useColors);
+		super($maxVerts, $maxFaces, $useUvs,$useNormals,$useVertexColors);
 	}
 	
 	@Override

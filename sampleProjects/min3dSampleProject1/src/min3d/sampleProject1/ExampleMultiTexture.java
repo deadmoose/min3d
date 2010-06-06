@@ -1,22 +1,17 @@
 package min3d.sampleProject1;
 
 import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
 
-import min3d.Min3d;
 import min3d.Shared;
 import min3d.Utils;
-import min3d.core.Object3d;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
-import min3d.core.TextureManager;
 import min3d.objectPrimitives.Box;
 import min3d.objectPrimitives.Sphere;
 import min3d.vos.Light;
 import min3d.vos.TexEnvxVo;
 import min3d.vos.TextureVo;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 /**
  * This is the most complex example, for now.

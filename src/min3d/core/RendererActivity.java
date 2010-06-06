@@ -2,11 +2,9 @@ package min3d.core;
 
 import min3d.Shared;
 import min3d.interfaces.ISceneController;
-
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Extend this class when creating your min3d-based Activity (application) 

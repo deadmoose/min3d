@@ -28,7 +28,7 @@ public class ExampleTextures extends RendererActivity
 		
 		Bitmap b = Utils.makeBitmapFromResourceId(this, R.drawable.uglysquares);
 		
-		// * NEW: Upload the Bitmap via TextureManager and assign it a 
+		// Upload the Bitmap via TextureManager and assign it a 
 		// textureId ("uglysquares").
 		
 		Shared.textureManager().addTextureId(b, "uglysquares", false);
@@ -45,7 +45,7 @@ public class ExampleTextures extends RendererActivity
 		
 		// Add it to the TexturesList held by the Object3d, 
 		// and it will be duly rendered.
-		
+
 		_cube.textures().add(texture);
 	}
 	

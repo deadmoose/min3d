@@ -3,7 +3,6 @@ package min3d.sampleProject1;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.HollowCylinder;
-import min3d.vos.RenderType;
 
 /**
  * Example of rendering a 'subset' of index buffer list (list of triangle faces)
@@ -25,7 +24,7 @@ public class ExampleSubsetOfFaces extends RendererActivity
 		_cylinder = new HollowCylinder(1f, 0.5f, 0.66f, 25); 
 		_cylinder.scale().setAll(1.2f,1.2f,1.2f);
 		_cylinder.normalsEnabled(false);
-		_cylinder.colorsEnabled(true);
+		_cylinder.vertexColorsEnabled(true);
 		_cylinder.doubleSidedEnabled(true);
 		scene.addChild(_cylinder);
 		

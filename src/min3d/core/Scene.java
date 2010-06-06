@@ -3,6 +3,7 @@ package min3d.core;
 import java.util.ArrayList;
 
 import min3d.Min3d;
+import min3d.interfaces.IDirtyParent;
 import min3d.interfaces.IObject3dContainer;
 import min3d.interfaces.ISceneController;
 import min3d.vos.CameraVo;
@@ -10,7 +11,7 @@ import min3d.vos.Color4Managed;
 import android.util.Log;
 
 
-public class Scene implements IObject3dContainer
+public class Scene implements IObject3dContainer, IDirtyParent
 {
 	private ArrayList<Object3d> _children = new ArrayList<Object3d>();
 
@@ -58,7 +59,7 @@ public class Scene implements IObject3dContainer
 
 		_camera = new CameraVo();
 		
-		_backgroundColor = new Color4Managed(0,0,0,255);
+		_backgroundColor = new Color4Managed(0,0,0,255, this);
 		
 		lightingEnabled(true);
 	}
@@ -216,4 +217,10 @@ public class Scene implements IObject3dContainer
 			}
 		}
 	}	
+	
+	@Override 
+	public void onDirty()
+	{
+		//
+	}
 }

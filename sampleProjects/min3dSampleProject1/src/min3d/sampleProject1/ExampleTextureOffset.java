@@ -10,7 +10,6 @@ import min3d.objectPrimitives.Sphere;
 import min3d.vos.Light;
 import min3d.vos.TextureVo;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 /**
  * Demonstrates use of offset properties of TextureVo.
