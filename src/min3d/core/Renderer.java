@@ -1,5 +1,6 @@
 package min3d.core;
 
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -8,6 +9,7 @@ import javax.microedition.khronos.opengles.GL11;
 
 import min3d.Min3d;
 import min3d.Shared;
+import min3d.Utils;
 import min3d.animation.AnimationObject3d;
 import min3d.vos.FrustumManaged;
 import min3d.vos.Light;
@@ -33,6 +35,7 @@ public class Renderer implements GLSurfaceView.Renderer
 	private float _surfaceAspectRatio;
 	
 	private IntBuffer _scratchIntBuffer;
+	private FloatBuffer _scratchFloatBuffer;
 	private boolean _scratchB;
 	
 
@@ -51,6 +54,7 @@ public class Renderer implements GLSurfaceView.Renderer
 		_scene = $scene;
 
 		_scratchIntBuffer = IntBuffer.allocate(4);
+		_scratchFloatBuffer = FloatBuffer.allocate(4);
 		
 		_textureManager = new TextureManager();
 		Shared.textureManager(_textureManager); 
@@ -202,8 +206,8 @@ public class Renderer implements GLSurfaceView.Renderer
 				
 				if (light.position.isDirty())
 				{
-					light.commitPositionTypeBuffer();
-					_gl.glLightfv(glLightId, GL10.GL_POSITION, light.positionTypeBuffer());
+					light.commitPositionAndTypeBuffer();
+					_gl.glLightfv(glLightId, GL10.GL_POSITION, light.positionAndTypeBuffer());
 					light.position.clearDirtyFlag();
 				}
 				if (light.ambient.isDirty()) 
@@ -288,8 +292,11 @@ public class Renderer implements GLSurfaceView.Renderer
 			_gl.glDisableClientState(GL10.GL_NORMAL_ARRAY);
 		}
 		
-		// Lighting enabled for object?
-		int useLighting = (_scene.lightingEnabled() && $o.hasNormals() && $o.normalsEnabled()) ? 1 : 0;
+		// Is lighting enabled for object...
+		
+		/*
+		// *** this version not working properly on emulator - why not? ***
+		_scratchIntBuffer.position(0);
 		_gl.glGetIntegerv(GL10.GL_LIGHTING, _scratchIntBuffer);
 		if (useLighting != _scratchIntBuffer.get(0))
 		{
@@ -299,9 +306,18 @@ public class Renderer implements GLSurfaceView.Renderer
 				_gl.glDisable(GL10.GL_LIGHTING);
 			}
 		}
-
+		*/
+		
+		boolean useLighting = (_scene.lightingEnabled() && $o.hasNormals() && $o.normalsEnabled());
+		if (useLighting) {
+			_gl.glEnable(GL10.GL_LIGHTING);
+		} else {
+			_gl.glDisable(GL10.GL_LIGHTING);
+		}
+		
 		// Shademodel
-		_gl.glGetIntegerv(GL10.GL_COLOR_MATERIAL, _scratchIntBuffer);
+		
+		_gl.glGetIntegerv(GL11.GL_SHADE_MODEL, _scratchIntBuffer);
 		if ($o.shadeModel().glConstant() != _scratchIntBuffer.get(0)) {
 			_gl.glShadeModel($o.shadeModel().glConstant());
 		}
@@ -324,6 +340,7 @@ public class Renderer implements GLSurfaceView.Renderer
 		}
 		
 		// Colormaterial
+		
 		_gl.glGetIntegerv(GL10.GL_COLOR_MATERIAL, _scratchIntBuffer);
 		_scratchB = (_scratchIntBuffer.get(0) != 0);
 		if ($o.colorMaterialEnabled() != _scratchB) {
@@ -401,7 +418,7 @@ public class Renderer implements GLSurfaceView.Renderer
 				pos = $o.faces().renderSubsetStartIndex() * FacesBufferedList.PROPERTIES_PER_ELEMENT;
 				len = $o.faces().renderSubsetLength();
 			}
-				
+
 			$o.faces().buffer().position(pos);
 
 			_gl.glDrawElements(

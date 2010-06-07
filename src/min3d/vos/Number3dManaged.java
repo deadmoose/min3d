@@ -85,4 +85,11 @@ public class Number3dManaged extends AbstractDirtyManaged
 	{
 		return new Number3d(_x,_y,_z);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return _x + "," + _y + "," + _z; 
+	}
+	
 }

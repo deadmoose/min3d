@@ -5,6 +5,7 @@ import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Box;
 import min3d.objectPrimitives.Sphere;
 import min3d.vos.Light;
+import min3d.vos.LightType;
 
 /**
  * @author Lee
@@ -34,16 +35,19 @@ public class ExampleMultipleLights extends RendererActivity
 		_lightRed = new Light();
 		_lightRed.ambient.setAll(0x88110000);
 		_lightRed.diffuse.setAll(0xffff0000);
+		_lightRed.type(LightType.POSITIONAL); // looks nicer, especially with multiple lights interacting with each other
 		scene.lights().add(_lightRed);
 
 		_lightGreen = new Light();
 		_lightGreen.ambient.setAll(0x88001100);
 		_lightGreen.diffuse.setAll(0xff00ff00);
+		_lightGreen.type(LightType.POSITIONAL);
 		scene.lights().add(_lightGreen);
 
 		_lightBlue = new Light();
 		_lightBlue.ambient.setAll(0x88000011);
 		_lightBlue.diffuse.setAll(0xff0000ff);
+		_lightBlue.type(LightType.POSITIONAL); 
 		scene.lights().add(_lightBlue);
 
 		// The objects that we'll light up

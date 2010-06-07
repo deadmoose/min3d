@@ -1,6 +1,7 @@
 package min3d.sampleProject1;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import min3d.Shared;
 import min3d.Utils;
 import min3d.core.Object3dContainer;
@@ -33,6 +34,7 @@ public class ExampleVerticesVariations extends RendererActivity
 	public void initScene() 
 	{
 		scene.lights().add(new Light());
+		Log.v("x", "wtf"+scene.lights().get(0).position);
 		
 		Color4[] colors = new Color4[6];
 		colors[0] = new Color4(255,0,0,255);
@@ -52,23 +54,20 @@ public class ExampleVerticesVariations extends RendererActivity
 		_cube1 = new Box(.6f,.6f,.6f, colors,  false,false,true);
 		_cube1.normalsEnabled(false);
 		_cube1.position().y = 1.2f;
-		scene.addChild(_cube1);
 
 		// _cube2's verticies contain uv data, but not normal or color data.
 		// The result is an unshaded box with a texture on each side.
 		
 		_cube2 = new Box(.6f,.6f,.6f, colors,  true,false,false);
 		_cube2.position().y = .4f;
-		scene.addChild(_cube2);
 		_cube2.textures().addById("uglysquares");
 		
 		// _cube3's verticies contain uv and normal data, but not color data  
 		// The result is an shaded box with a texture on each side.
 		// The Scene must of course contain a light for the object to be visible.
 		
-		_cube3 = new Box(.6f,.6f,.6f, colors,  true,true,false);
+		_cube3 = new Box(.6f,.6f,.6f, null,  true,true,false);
 		_cube3.position().y = -.4f;
-		scene.addChild(_cube3);
 		_cube3.textures().addById("uglysquares");
 		
 		// _cube4's verticies contain neither uv, normal, or color data (in other words, just position data) 
@@ -79,6 +78,10 @@ public class ExampleVerticesVariations extends RendererActivity
 		_cube4 = new Box(.6f,.6f,.6f, colors,  false,false,false);
 		_cube4.defaultColor().setAll(0xffff0000);
 		_cube4.position().y = -1.2f;
+
+		scene.addChild(_cube1);
+		scene.addChild(_cube2);
+		scene.addChild(_cube3);
 		scene.addChild(_cube4);
 	}
 

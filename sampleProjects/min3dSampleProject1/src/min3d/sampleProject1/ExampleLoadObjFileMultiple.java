@@ -1,5 +1,6 @@
 package min3d.sampleProject1;
 
+import android.util.Log;
 import min3d.core.Object3d;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
@@ -7,7 +8,8 @@ import min3d.parser.IParser;
 import min3d.parser.Parser;
 import min3d.vos.Light;
 
-public class ExampleLoadObjFileMultiple extends RendererActivity {
+public class ExampleLoadObjFileMultiple extends RendererActivity 
+{
 	private final float MAX_ROTATION = 40;
 	private final float MAX_CAM_X = 6f;
 	private Object3dContainer car;
@@ -60,7 +62,6 @@ public class ExampleLoadObjFileMultiple extends RendererActivity {
 		light.position.setAllFrom(scene.camera().position);
 		scene.lights().add(light);
 		
-		
 		rotationDirection = 1;
 		camDirection = -.01f;
 	}
@@ -74,6 +75,7 @@ public class ExampleLoadObjFileMultiple extends RendererActivity {
 			rotationDirection = -rotationDirection;
 		
 		scene.camera().position.x += camDirection;
+		scene.lights().get(0).position.setAllFrom(scene.camera().position);
 		
 		if(Math.abs(scene.camera().position.x) >= MAX_CAM_X)
 			camDirection = -camDirection;
