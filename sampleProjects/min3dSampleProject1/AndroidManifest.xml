@@ -37,6 +37,7 @@
         <activity android:name="ExampleInsideLayout" android:label="@string/app_name"></activity>
 
         <activity android:name="ScratchActivity" android:label="@string/app_name"></activity>
+<activity android:name="ExampleKeyframeAnimation"></activity>
 </application>
     
 </manifest> 

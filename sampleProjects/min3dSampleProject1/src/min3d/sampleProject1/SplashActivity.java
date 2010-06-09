@@ -71,7 +71,8 @@ public class SplashActivity extends ListActivity
 		ExampleLoadObjFile.class,
 		ExampleLoadObjFileMultiple.class,
 		ExampleLoad3DSFile.class,
-		ExampleLoadMD2File.class
+		ExampleLoadMD2File.class,
+		ExampleKeyframeAnimation.class
 	};
 	
 	private String[] _strings = {
@@ -94,7 +95,8 @@ public class SplashActivity extends ListActivity
 			"Load model from .obj file",
 			"Load multiple models from .obj file",
 			"Load model from .3ds file",
-			"Load animated .md2 file"
+			"Load animated .md2 file",
+			"Keyframe animation"
 			// "Object from scratch"
 		};
 		

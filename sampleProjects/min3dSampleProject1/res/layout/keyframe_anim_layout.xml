@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content" android:layout_height="wrap_content"
+	android:orientation="vertical">
+	<LinearLayout android:id="@+id/scene2Holder"
+		android:gravity="center_horizontal" android:layout_height="350sp"
+		android:layout_width="fill_parent" />
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:orientation="horizontal">
+		<Button android:text="Play 'flip' animation" android:id="@+id/FlipButton"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="Play 'salute' animation" android:id="@+id/SaluteButton"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+	</LinearLayout>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:orientation="horizontal">
+		<CheckBox android:text="Loop" android:id="@+id/CheckBox01"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+	</LinearLayout>
+</LinearLayout>
