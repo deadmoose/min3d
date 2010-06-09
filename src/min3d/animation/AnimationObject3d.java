@@ -15,6 +15,9 @@ public class AnimationObject3d extends Object3d {
 	private float interpolation;
 	private float fps = 70;
 	private boolean updateVertices = true;	
+	private String currentFrameName;
+	private int loopStartIndex;
+	private boolean loop = false;
 
 	public AnimationObject3d(int $maxVertices, int $maxFaces, int $numFrames) {
 		super($maxVertices, $maxFaces);
@@ -48,17 +51,29 @@ public class AnimationObject3d extends Object3d {
 	public void play() {
 		startTime = System.currentTimeMillis();
 		isPlaying = true;
+		currentFrameName = null;
+		loop = false;
 	}
 
 	public void play(String name) {
 		currentFrameIndex = 0;
+		currentFrameName = name;
 
 		for (int i = 0; i < numFrames; i++) {
 			if (frames[i].getName().equals(name))
-				currentFrameIndex = i;
+			{
+				loopStartIndex = currentFrameIndex = i;
+				break;
+			}
 		}
 
-		play();
+		startTime = System.currentTimeMillis();
+		isPlaying = true;
+	}
+	
+	public void play(String name, boolean loop) {
+		this.loop = loop;
+		play(name);
 	}
 
 	public void stop() {
@@ -76,6 +91,16 @@ public class AnimationObject3d extends Object3d {
 		currentTime = System.currentTimeMillis();
 		KeyFrame currentFrame = frames[currentFrameIndex];
 		KeyFrame nextFrame = frames[(currentFrameIndex + 1) % numFrames];
+		
+		if(currentFrameName != null && !currentFrameName.equals(currentFrame.getName()))
+		{
+			if(!loop)
+				stop();
+			else
+				currentFrameIndex = loopStartIndex;
+			return;
+		}
+		
 		float[] currentVerts = currentFrame.getVertices();
 		float[] nextVerts = nextFrame.getVertices();
 		float[] currentNormals = currentFrame.getNormals();
@@ -149,7 +174,7 @@ public class AnimationObject3d extends Object3d {
 			cl[i] = frames[i].clone();
 		}
 		
-		return cl;		
+		return cl;
 	}
 
 	public boolean getUpdateVertices() {
