@@ -5,24 +5,49 @@ import min3d.interfaces.ISceneController;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Handler;
 
 /**
- * Extend this class when creating your min3d-based Activity (application) 
- * Then, override initScene() and updateScene().
+ * Extend this class when creating your min3d-based Activity. 
+ * Then, override initScene() and updateScene() for your main
+ * 3D logic.
  * 
  * Override onCreateSetContentView() to change layout, if desired.
+ * 
+ * To update 3d scene-related variables from within the the main UI thread,  
+ * override onUpdateScene() and onUpdateScene() as needed.
  */
 public class RendererActivity extends Activity implements ISceneController
 {
 	public Scene scene;
 	protected GLSurfaceView _glSurfaceView;
 	
+	protected Handler _initSceneHander;
+	protected Handler _updateSceneHander;
+	
+	final Runnable _initSceneRunnable = new Runnable() 
+	{
+        public void run() {
+            onInitScene();
+        }
+    };
+    
+	final Runnable _updateSceneRunnable = new Runnable() 
+    {
+        public void run() {
+            onUpdateScene();
+        }
+    };
+    
 
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 
+		_initSceneHander = new Handler();
+		_updateSceneHander = new Handler();
+		
 		//
 		// These 4 lines are important.
 		//
@@ -32,6 +57,11 @@ public class RendererActivity extends Activity implements ISceneController
 		Shared.renderer(r);
 		
 		_glSurfaceView = new GLSurfaceView(this);
+
+		// TESTING - MAKE GLSURFACEVIEW TRANSPARENT 
+		// CAN'T FIGURE THIS OUT WTF:
+        // _glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        // _glSurfaceView.setEGLConfigChooser(8,8,8,8, 16, 0);	
 		
 		// Uncomment for logging:
 		// _glSurfaceView.setDebugFlags(GLSurfaceView.DEBUG_CHECK_GL_ERROR | GLSurfaceView.DEBUG_LOG_GL_CALLS);
@@ -40,6 +70,11 @@ public class RendererActivity extends Activity implements ISceneController
 		_glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 		
 		onCreateSetContentView();
+	}
+	
+	protected GLSurfaceView glSurfaceView()
+	{
+		return _glSurfaceView;
 	}
 	
 	/**
@@ -70,8 +105,7 @@ public class RendererActivity extends Activity implements ISceneController
 	 * 
 	 * Note that this method is always called after GLCanvas is created, which occurs
 	 * not only on Activity.onCreate(), but on Activity.onResume() as well.
-	 * It would be the user's responsibility to build the logic to restore state on-resume,
-	 * if that's desired. 
+	 * It is the user's responsibility to build the logic to restore state on-resume.
 	 */
 	public void initScene()
 	{
@@ -85,4 +119,39 @@ public class RendererActivity extends Activity implements ISceneController
 	{
 	}
 	
+    /**
+     * Called _after_ scene init (ie, after initScene).
+     * Unlike initScene(), is thread-safe.
+     */
+    public void onInitScene()
+    {
+    }
+    
+    /**
+     * Called _after_ scene init (ie, after initScene).
+     * Unlike initScene(), is thread-safe.
+     */
+    public void onUpdateScene()
+    {
+    }
+    
+	public Handler getInitSceneHandler()
+	{
+		return _initSceneHander;
+	}
+	
+	public Handler getUpdateSceneHandler()
+	{
+		return _updateSceneHander;
+	}
+
+    public Runnable getInitSceneRunnable()
+    {
+    	return _initSceneRunnable;
+    }
+	
+    public Runnable getUpdateSceneRunnable()
+    {
+    	return _updateSceneRunnable;
+    }
 }

@@ -65,7 +65,8 @@ public class TextureManager
 	
 		_counter++;
 		
-		logContents();
+		// For debugging purposes (potentially adds a lot of chatter)
+		// logContents();
 		
 		return s;
 	}
@@ -99,7 +100,9 @@ public class TextureManager
 		_idToTextureName.remove($textureId);
 		_idToHasMipMap.remove($textureId);
 		
-		logContents();		
+		// logContents();
+		
+		//xxx needs error check
 	}
 
 	/**
@@ -118,6 +121,11 @@ public class TextureManager
 	 */
 	int getGlTextureId(String $textureId) /*package-private*/
 	{
+		if (_idToTextureName == null || $textureId == null)
+		{
+			Log.v("x", "wowow" + _idToTextureName+$textureId);
+		}
+		
 		return _idToTextureName.get($textureId);
 	}
 	

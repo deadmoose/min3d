@@ -84,6 +84,12 @@ public class TextureList
 		return _t.remove(t);
 	}
 	
+	public void removeAll()
+	{
+		for (int i = 0; i < _t.size(); i++)
+			_t.remove(0);
+	}
+	
 	/**
 	 * Get item from the list which is at the given index position 
 	 */

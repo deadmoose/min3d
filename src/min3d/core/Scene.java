@@ -61,6 +61,8 @@ public class Scene implements IObject3dContainer, IDirtyParent
 		
 		_backgroundColor = new Color4Managed(0,0,0,255, this);
 		
+		_lights = new ManagedLightList();
+		
 		lightingEnabled(true);
 	}
 	
@@ -193,7 +195,15 @@ public class Scene implements IObject3dContainer, IDirtyParent
 		Log.i(Min3d.TAG, "Scene.init()");
 		
 		this.reset();
+		
 		_sceneController.initScene();
+		_sceneController.getInitSceneHandler().post(_sceneController.getInitSceneRunnable());
+	}
+	
+	void update()
+	{
+		_sceneController.updateScene();
+		_sceneController.getUpdateSceneHandler().post(_sceneController.getUpdateSceneRunnable());
 	}
 	
 	/**

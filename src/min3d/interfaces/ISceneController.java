@@ -1,5 +1,7 @@
 package min3d.interfaces;
 
+import android.os.Handler;
+
 /**
  * Interface to handle the initialization of the Scene 
  * and the 'on-enter-frame' updates to the Scene (think 'model').
@@ -28,4 +30,10 @@ public interface ISceneController
 	 */
 	public void updateScene();
 	
+	
+	public Handler getInitSceneHandler();
+	public Runnable getInitSceneRunnable();
+	
+	public Handler getUpdateSceneHandler();
+	public Runnable getUpdateSceneRunnable();
 }

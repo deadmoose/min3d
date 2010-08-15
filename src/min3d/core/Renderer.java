@@ -9,7 +9,6 @@ import javax.microedition.khronos.opengles.GL11;
 
 import min3d.Min3d;
 import min3d.Shared;
-import min3d.Utils;
 import min3d.animation.AnimationObject3d;
 import min3d.vos.FrustumManaged;
 import min3d.vos.Light;
@@ -93,7 +92,7 @@ public class Renderer implements GLSurfaceView.Renderer
 	public void onDrawFrame(GL10 gl)
 	{
 		// Update 'model'
-		_scene.sceneController().updateScene();
+		_scene.update();
 		
 		// Update 'view'
 		drawSetup();
@@ -269,7 +268,6 @@ public class Renderer implements GLSurfaceView.Renderer
 			drawObject(o);
 		}
 	}
-	
 	
 	//boolean customResult = o.customRenderer(_gl); 
 	//if (customResult) return;
