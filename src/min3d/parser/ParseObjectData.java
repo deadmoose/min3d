@@ -83,7 +83,7 @@ public class ParseObjectData {
 						: new Number3d();
 				Color4 newColor = new Color4(255, 255, 0, 255);
 
-				if(hasBitmaps)
+				if(hasBitmaps && (ba != null))
 				{
 					newUv.u = ba.uOffset + newUv.u * ba.uScale;
 					newUv.v = ba.vOffset + ((newUv.v + 1) * ba.vScale) - 1;
