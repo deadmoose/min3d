@@ -24,6 +24,14 @@ public class Object3dContainer extends Object3d implements IObject3dContainer
 		super($maxVerts, $maxFaces, $useUvs,$useNormals,$useVertexColors);
 	}
 	
+	/**
+	 * This constructor is convenient for cloning purposes 
+	 */
+	public Object3dContainer(Vertices $vertices, FacesBufferedList $faces, TextureList $textures)
+	{
+		super($vertices, $faces, $textures);
+	}
+	
 	@Override
 	public void addChild(Object3d $o)
 	{
@@ -102,4 +110,23 @@ public class Object3dContainer extends Object3d implements IObject3dContainer
 	{
 		return _children;
 	}
+	
+	public Object3dContainer clone()
+	{
+		Vertices v = _vertices.clone();
+		FacesBufferedList f = _faces.clone();
+			
+		Object3dContainer clone = new Object3dContainer(v, f, _textures);
+		clone.position().x = position().x;
+		clone.position().y = position().y;
+		clone.position().z = position().z;
+		clone.rotation().x = rotation().x;
+		clone.rotation().y = rotation().y;
+		clone.rotation().z = rotation().z;
+		clone.scale().x = scale().x;
+		clone.scale().y = scale().y;
+		clone.scale().z = scale().z;
+		return clone;
+	}
+
 }

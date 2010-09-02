@@ -484,4 +484,22 @@ public class Object3d
 	{
 		return false;
 	}
+	
+	public Object3d clone()
+	{
+		Vertices v = _vertices.clone();
+		FacesBufferedList f = _faces.clone();
+			
+		Object3d clone = new Object3d(v, f, _textures);
+		clone.position().x = position().x;
+		clone.position().y = position().y;
+		clone.position().z = position().z;
+		clone.rotation().x = rotation().x;
+		clone.rotation().y = rotation().y;
+		clone.rotation().z = rotation().z;
+		clone.scale().x = scale().x;
+		clone.scale().y = scale().y;
+		clone.scale().z = scale().z;
+		return clone;
+	}
 }
