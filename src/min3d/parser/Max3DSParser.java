@@ -208,7 +208,7 @@ public class Max3DSParser extends AParser implements IParser {
 		{
 			textureAtlas.generate();
 			texture = textureAtlas.getBitmap();
-			Shared.textureManager().addTextureId(texture, "atlas", generateMipMap);
+			Shared.textureManager().addTextureId(texture, textureAtlas.getId(), generateMipMap);
 		}
 		
 		for (int i = 0; i < numObjects; i++) {

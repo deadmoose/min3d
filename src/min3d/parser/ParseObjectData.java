@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.util.Log;
 
 import min3d.Min3d;
+import min3d.Shared;
 import min3d.animation.AnimationObject3d;
 import min3d.animation.KeyFrame;
 import min3d.core.Object3d;
@@ -104,7 +105,7 @@ public class ParseObjectData {
 		}
 
 		if (hasBitmaps) {
-			obj.textures().addById("atlas");
+			obj.textures().addById(textureAtlas.getId());
 		}
 
 		cleanup();

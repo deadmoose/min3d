@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import min3d.Min3d;
+import min3d.Shared;
 import min3d.Utils;
 import min3d.animation.AnimationObject3d;
 import min3d.core.Object3dContainer;
@@ -188,6 +189,7 @@ public abstract class AParser implements IParser {
 		public TextureAtlas() {
 			bitmaps = new ArrayList<BitmapAsset>();
 		}
+		private String atlasId;
 
 		/**
 		 * Adds a bitmap to the atlas
@@ -299,6 +301,8 @@ public abstract class AParser implements IParser {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
+			
+			setId(Shared.textureManager().getNewAtlasId());
 		}
 
 		/**
@@ -370,6 +374,14 @@ public abstract class AParser implements IParser {
 			vertices.clear();
 			texCoords.clear();
 			normals.clear();
+		}
+
+		public void setId(String newAtlasId) {
+			atlasId = newAtlasId;			
+		}
+
+		public String getId() {
+			return atlasId;
 		}
 	}
 }

@@ -21,6 +21,7 @@ public class TextureManager
 	private HashMap<String, Integer> _idToTextureName;
 	private HashMap<String, Boolean> _idToHasMipMap;
 	private static int _counter = 1000001;
+	private static int _atlasId = 0;
 	
 	
 	public TextureManager()
@@ -159,4 +160,7 @@ public class TextureManager
 		Log.i(Min3d.TAG, "TextureManager contents updated - " + arrayToString( getTextureIds() ) );		
 	}
 	
+	public String getNewAtlasId() {
+		return "atlas".concat(Integer.toString(_atlasId++));
+	}
 }
