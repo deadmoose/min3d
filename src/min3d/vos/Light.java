@@ -126,7 +126,6 @@ public class Light extends AbstractDirtyManaged implements IDirtyParent
 		_isVisible.setDirtyFlag();
 	}
 	
-	@Override
 	public void onDirty()
 	{
 		setDirtyFlag();

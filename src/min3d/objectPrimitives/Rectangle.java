@@ -1,24 +1,12 @@
 package min3d.objectPrimitives;
 
-import java.util.ArrayList;
-
 import min3d.Utils;
-import min3d.core.Object3d;
 import min3d.core.Object3dContainer;
 import min3d.vos.Color4;
-import min3d.vos.Face;
-import min3d.vos.Number3d;
-import min3d.vos.Uv;
-import min3d.vos.Vertex3d;
-
-
-
-import android.opengl.GLUtils;
-import android.util.Log;
 
 public class Rectangle extends Object3dContainer
 {
-	public Rectangle(float $width, float $height, int $segsW, int $segsH, long $colorRgba)
+	public Rectangle(float $width, float $height, int $segsW, int $segsH, Color4 color)
 	{
 		super(4 * $segsW * $segsH, 2 * $segsW * $segsH);
 
@@ -30,10 +18,7 @@ public class Rectangle extends Object3dContainer
 		float width5 = $width/2f;
 		float height5 = $height/2f;
 		
-		Color4 c = new Color4();
-		c.setAll($colorRgba);
-		
-		// Add verticies
+		// Add vertices
 		
 		for (row = 0; row <= $segsH; row++)
 		{
@@ -43,7 +28,7 @@ public class Rectangle extends Object3dContainer
 					(float)col*w - width5, (float)row*h - height5,0f,	
 					(float)col/(float)$segsW, 1 - (float)row/(float)$segsH,	
 					0,0,1f,	
-					c.r, c.g, c.b, c.a
+					color.r, color.g, color.b, color.a
 				);
 			}
 		}

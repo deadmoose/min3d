@@ -27,6 +27,7 @@ public class Object3d
 	private boolean _normalsEnabled = true;
 	private boolean _ignoreFaces = false;
 	private boolean _colorMaterialEnabled = false;
+	private boolean _lightingEnabled = true;
 
 	private Number3d _position = new Number3d(0,0,0);
 	private Number3d _rotation = new Number3d(0,0,0);
@@ -137,6 +138,15 @@ public class Object3d
 	{
 		return _colorMaterialEnabled;
 	}
+	
+	public boolean lightingEnabled() {
+		return _lightingEnabled;
+	}
+
+	public void lightingEnabled(boolean _lightingEnabled) {
+		this._lightingEnabled = _lightingEnabled;
+	}
+
 	public void colorMaterialEnabled(boolean $b)
 	{
 		_colorMaterialEnabled = $b;
@@ -318,6 +328,10 @@ public class Object3d
 	public Color4 defaultColor()
 	{
 		return _defaultColor;
+	}
+	
+	public void defaultColor(Color4 color) {
+		_defaultColor = color;
 	}
 
 	/**

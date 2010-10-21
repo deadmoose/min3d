@@ -70,7 +70,6 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	 * Adds Object3d to Scene. Object3d's must be added to Scene in order to be rendered
 	 * Returns always true. 
 	 */
-	@Override
 	public void addChild(Object3d $o)
 	{
 		if (_children.contains($o)) return;
@@ -81,7 +80,6 @@ public class Scene implements IObject3dContainer, IDirtyParent
 		$o.scene(this);
 	}
 	
-	@Override
 	public void addChildAt(Object3d $o, int $index)
 	{
 		if (_children.contains($o)) return;
@@ -93,7 +91,6 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	 * Removes Object3d from Scene.
 	 * Returns false if unsuccessful
 	 */
-	@Override
 	public boolean removeChild(Object3d $o)
 	{
 		$o.parent(null);
@@ -101,7 +98,6 @@ public class Scene implements IObject3dContainer, IDirtyParent
 		return _children.remove($o);
 	}
 	
-	@Override
 	public Object3d removeChildAt(int $index)
 	{
 		Object3d o = _children.remove($index);
@@ -113,7 +109,6 @@ public class Scene implements IObject3dContainer, IDirtyParent
 		return o;
 	}
 	
-	@Override
 	public Object3d getChildAt(int $index)
 	{
 		return _children.get($index);
@@ -122,7 +117,6 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	/**
 	 * TODO: Use better lookup 
 	 */
-	@Override
 	public Object3d getChildByName(String $name)
 	{
 		for (int i = 0; i < _children.size(); i++)
@@ -132,13 +126,11 @@ public class Scene implements IObject3dContainer, IDirtyParent
 		return null;
 	}
 	
-	@Override
 	public int getChildIndexOf(Object3d $o)
 	{
 		return _children.indexOf($o);
 	}
 	
-	@Override
 	public int numChildren()
 	{
 		return _children.size();
@@ -228,7 +220,6 @@ public class Scene implements IObject3dContainer, IDirtyParent
 		}
 	}	
 	
-	@Override 
 	public void onDirty()
 	{
 		//

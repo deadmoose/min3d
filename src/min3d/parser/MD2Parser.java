@@ -38,7 +38,7 @@ public class MD2Parser extends AParser implements IParser {
 		}
 
 		Log.d(Min3d.TAG, "Creating object " + co.name);
-		animObj = co.getParsedObject(textureAtlas, frames);
+		animObj = co.getParsedObject(textureAtlas, materialMap, frames);
 
 		if (textureAtlas.hasBitmaps()) {
 			if (texture != null)

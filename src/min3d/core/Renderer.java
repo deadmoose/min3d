@@ -306,7 +306,7 @@ public class Renderer implements GLSurfaceView.Renderer
 		}
 		*/
 		
-		boolean useLighting = (_scene.lightingEnabled() && $o.hasNormals() && $o.normalsEnabled());
+		boolean useLighting = (_scene.lightingEnabled() && $o.hasNormals() && $o.normalsEnabled() && $o.lightingEnabled());
 		if (useLighting) {
 			_gl.glEnable(GL10.GL_LIGHTING);
 		} else {

@@ -12,6 +12,7 @@ import min3d.Min3d;
 import min3d.Shared;
 import min3d.Utils;
 import min3d.core.Object3dContainer;
+import min3d.vos.Color4;
 import min3d.vos.Number3d;
 import min3d.vos.Uv;
 import android.content.res.Resources;
@@ -38,9 +39,8 @@ public class ObjParser extends AParser implements IParser {
 	private final String MATERIAL_LIB = "mtllib";
 	private final String USE_MATERIAL = "usemtl";
 	private final String NEW_MATERIAL = "newmtl";
+	private final String DIFFUSE_COLOR = "Kd";
 	private final String DIFFUSE_TEX_MAP = "map_Kd";
-
-	private HashMap<String, ObjMaterial> materialMap;
 
 	/**
 	 * Creates a new OBJ parser instance
@@ -63,8 +63,6 @@ public class ObjParser extends AParser implements IParser {
 		String line;
 		co = new ParseObjectData(vertices, texCoords, normals);
 		parseObjects.add(co);
-
-		materialMap = new HashMap<String, ObjMaterial>();
 
 		Log.d(Min3d.TAG, "Start parsing object " + resourceID);
 		Log.d(Min3d.TAG, "Start time " + startTime);
@@ -150,7 +148,7 @@ public class ObjParser extends AParser implements IParser {
 		for (int i = 0; i < numObjects; i++) {
 			ParseObjectData o = parseObjects.get(i);
 			Log.d(Min3d.TAG, "Creating object " + o.name);
-			obj.addChild(o.getParsedObject(textureAtlas));
+			obj.addChild(o.getParsedObject(materialMap, textureAtlas));
 		}
 		
 		if(textureAtlas.hasBitmaps())
@@ -191,22 +189,25 @@ public class ObjParser extends AParser implements IParser {
 				if (type.equals(NEW_MATERIAL)) {
 					if (parts.length > 1) {
 						currentMaterial = parts[1];
-						materialMap.put(currentMaterial, new ObjMaterial(
+						materialMap.put(currentMaterial, new Material(
 								currentMaterial));
 					}
+				} else if(type.equals(DIFFUSE_COLOR) && !type.equals(DIFFUSE_TEX_MAP)) {
+					Color4 diffuseColor = new Color4(Float.parseFloat(parts[1]) * 255.0f, Float.parseFloat(parts[2]) * 255.0f, Float.parseFloat(parts[3]) * 255.0f, 255.0f);
+					materialMap.get(currentMaterial).diffuseColor = diffuseColor;
 				} else if (type.equals(DIFFUSE_TEX_MAP)) {
 					if (parts.length > 1) {
 						materialMap.get(currentMaterial).diffuseTextureMap = parts[1];
 						StringBuffer texture = new StringBuffer(packageID);
 						texture.append(":drawable/");
-
+						
 						StringBuffer textureName = new StringBuffer(parts[1]);
 						dotIndex = textureName.lastIndexOf(".");
 						if (dotIndex > -1)
 							texture.append(textureName.substring(0, dotIndex));
 						else
 							texture.append(textureName);
-
+						
 						int bmResourceID = resources.getIdentifier(texture
 								.toString(), null, null);
 						Bitmap b = Utils.makeBitmapFromResourceId(bmResourceID);
@@ -256,17 +257,6 @@ public class ObjParser extends AParser implements IParser {
 				if (hasn)
 					n[index] = (short) (Short.parseShort(subParts.nextToken()) - 1);
 			}
-		}
-	}
-
-	private class ObjMaterial {
-		public String name;
-		public String diffuseTextureMap;
-		public float offsetU;
-		public float offsetV;
-
-		public ObjMaterial(String name) {
-			this.name = name;
 		}
 	}
 }

@@ -46,6 +46,17 @@ public class Color4
 	}
 
 	/**
+	 * Convenience method which casts the float arguments to short for you. 
+	 */
+	public Color4(float $r, float $g, float $b, float $a)
+	{
+		r = (short)$r;
+		g = (short)$g;
+		b = (short)$b;
+		a = (short)$a;
+	}
+
+	/**
 	 *  Convenience method to set all properties in one line.
 	 */
 	public void setAll(short $r, short $g, short $b, short $a)
