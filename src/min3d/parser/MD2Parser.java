@@ -128,7 +128,12 @@ public class MD2Parser extends AParser implements IParser {
 			float translateY = is.readFloat();
 			float translateZ = is.readFloat();
 			String name = is.readString(16);
-			name = name.subSequence(0, name.lastIndexOf("_")).toString();
+			
+			if(name.indexOf("_") > 0)
+				name = name.subSequence(0, name.lastIndexOf("_")).toString();
+			else
+				name = name.substring(0, 6).replaceAll("[0-9]{1,2}$", "");
+			
 			Log.d(Min3d.TAG, "frame name: " + name);
 			float vertices[] = new float[header.numVerts * 3];
 			int index = 0;
