@@ -20,6 +20,7 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	
 	private Color4Managed _backgroundColor;
 	private boolean _lightingEnabled;
+	private boolean _backgroundTransparent;
 
 	private ISceneController _sceneController;
 	
@@ -178,6 +179,14 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	}
 	
 	//
+
+	public boolean backgroundTransparent() {
+		return _backgroundTransparent;
+	}
+
+	public void backgroundTransparent(boolean backgroundTransparent) {
+		this._backgroundTransparent = backgroundTransparent;
+	}
 
 	/**
 	 * Used by Renderer 

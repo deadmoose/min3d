@@ -28,7 +28,7 @@ public class Box extends Object3dContainer
 		_height = $height;
 		_depth = $depth;
 		
-		if (_cols != null)
+		if ($sixColor4s != null)
 		{
 			_cols = $sixColor4s;
 		}

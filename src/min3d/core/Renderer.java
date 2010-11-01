@@ -148,7 +148,7 @@ public class Renderer implements GLSurfaceView.Renderer
 		
 		// Background color
 		
-		if (_scene.backgroundColor().isDirty())
+		if (_scene.backgroundColor().isDirty() && _scene.backgroundTransparent() == false)
 		{
 			_gl.glClearColor( 
 				(float)_scene.backgroundColor().r() / 255f, 
