@@ -1,10 +1,12 @@
 package min3d.vos;
 
-import javax.microedition.khronos.opengles.GL10;
-
 public enum RenderType 
 {
-	TRIANGLES, 
+	POINTS,
 	LINES,
-	POINTS;
+	LINE_LOOP,
+	LINE_STRIP,
+	TRIANGLES,
+	TRIANGLE_STRIP,
+	TRIANGLE_FAN;
 }
