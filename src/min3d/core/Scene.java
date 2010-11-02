@@ -7,7 +7,9 @@ import min3d.interfaces.IDirtyParent;
 import min3d.interfaces.IObject3dContainer;
 import min3d.interfaces.ISceneController;
 import min3d.vos.CameraVo;
+import min3d.vos.Color4;
 import min3d.vos.Color4Managed;
+import min3d.vos.FogType;
 import android.util.Log;
 
 
@@ -21,6 +23,12 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	private Color4Managed _backgroundColor;
 	private boolean _lightingEnabled;
 	private boolean _backgroundTransparent;
+	
+	private Color4 _fogColor;
+	private float _fogFar;
+	private float _fogNear;
+	private FogType _fogType;
+	private boolean _fogEnabled;
 
 	private ISceneController _sceneController;
 	
@@ -29,6 +37,11 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	{
 		_sceneController = $sceneController;
 		_lights = new ManagedLightList();
+		_fogColor = new Color4(255, 255, 255, 255);
+		_fogNear = 0;
+		_fogFar = 10;
+		_fogType = FogType.LINEAR;
+		_fogEnabled = false;
 	}
 
 	/**
@@ -186,6 +199,46 @@ public class Scene implements IObject3dContainer, IDirtyParent
 
 	public void backgroundTransparent(boolean backgroundTransparent) {
 		this._backgroundTransparent = backgroundTransparent;
+	}
+
+	public Color4 fogColor() {
+		return _fogColor;
+	}
+
+	public void fogColor(Color4 _fogColor) {
+		this._fogColor = _fogColor;
+	}
+
+	public float fogFar() {
+		return _fogFar;
+	}
+
+	public void fogFar(float _fogFar) {
+		this._fogFar = _fogFar;
+	}
+
+	public float fogNear() {
+		return _fogNear;
+	}
+
+	public void fogNear(float _fogNear) {
+		this._fogNear = _fogNear;
+	}
+
+	public FogType fogType() {
+		return _fogType;
+	}
+
+	public void fogType(FogType _fogType) {
+		this._fogType = _fogType;
+	}
+
+	public boolean fogEnabled() {
+		return _fogEnabled;
+	}
+
+	public void fogEnabled(boolean _fogEnabled) {
+		this._fogEnabled = _fogEnabled;
 	}
 
 	/**

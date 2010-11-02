@@ -50,6 +50,11 @@ public class Box extends Object3dContainer
 	{
 		this($width,$height,$depth, $sixColor4s, true,true,true);
 	}
+	
+	public Box(float $width, float $height, float $depth, Color4 color)
+	{
+		this($width,$height,$depth, new Color4[] { color, color, color, color, color, color }, true,true,true);
+	}
 
 	public Box(float $width, float $height, float $depth)
 	{

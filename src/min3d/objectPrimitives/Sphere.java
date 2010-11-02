@@ -2,6 +2,7 @@ package min3d.objectPrimitives;
 
 import min3d.Utils;
 import min3d.core.Object3dContainer;
+import min3d.vos.Color4;
 import min3d.vos.Number3d;
 
 
@@ -14,7 +15,7 @@ public class Sphere extends Object3dContainer
 	private float _radius;
 	private int _cols;
 	private int _rows;
-
+	
 	
 	public Sphere(float $radius, int $columns, int $rows, Boolean $useUvs, Boolean $useNormals, Boolean $useVertexColors)
 	{
@@ -35,9 +36,37 @@ public class Sphere extends Object3dContainer
 
 	public Sphere(float $radius, int $columns, int $rows)
 	{
-		this($radius,$columns,$rows,true,true,true);
+		super(
+				($columns+1) * ($rows+1),
+				$columns * $rows * 2,
+				true,
+				true,
+				true
+			);
+
+			_cols = $columns;
+			_rows = $rows;
+			_radius = $radius;
+			
+			build();
 	} 
 	
+	public Sphere(float $radius, int $columns, int $rows, Color4 color)
+	{
+		super(
+				($columns+1) * ($rows+1),
+				$columns * $rows * 2,
+				true,
+				true,
+				true
+		);
+		defaultColor(color);
+		_cols = $columns;
+		_rows = $rows;
+		_radius = $radius;
+		
+		build();
+	}
 	
 	private void build()
 	{
@@ -47,8 +76,9 @@ public class Sphere extends Object3dContainer
 		Number3d pos = new Number3d();
 		Number3d posFull = new Number3d();
 
+		if( defaultColor() == null ) defaultColor(new Color4());
 		// Build vertices
-		
+				
 		for (r = 0; r <= _rows; r++)
 		{
 			float v = (float)r / (float)_rows; // [0,1]
@@ -58,10 +88,6 @@ public class Sphere extends Object3dContainer
 			n.rotateZ(theta1); 
 
 			// each 'row' assigned random color. for the hell of it.
-			short colr = (short)(Math.random()*255); 
-			short colg = (short)(Math.random()*255);
-			short colb = (short)(Math.random()*255);
-			short cola = (short)255;
 			
 			for (c = 0; c <= _cols; c++)
 			{
@@ -74,7 +100,7 @@ public class Sphere extends Object3dContainer
 				posFull.multiply(_radius);
 				
 				
-				this.vertices().addVertex(posFull.x,posFull.y,posFull.z,  u,v,  pos.x,pos.y,pos.z,  colr,colg,colb,cola);
+				this.vertices().addVertex(posFull.x,posFull.y,posFull.z,  u,v,  pos.x,pos.y,pos.z,  defaultColor().r,defaultColor().g,defaultColor().b,defaultColor().a);
 			}
 		}
 

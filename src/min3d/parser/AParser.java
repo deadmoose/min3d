@@ -301,8 +301,8 @@ public abstract class AParser implements IParser {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}*/
-			
+			}
+			*/
 			setId(Shared.textureManager().getNewAtlasId());
 		}
 
