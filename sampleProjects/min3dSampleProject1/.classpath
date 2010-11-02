@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="**/.svn/" kind="src" path="src"/>
+	<classpathentry kind="src" path="source"/>
 	<classpathentry excluding="**/.svn/" kind="src" path="gen"/>
-	<classpathentry excluding="**/.svn/" kind="src" path="src_min3d"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="C:/d/android/min3dSvn/trunk/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

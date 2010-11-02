@@ -9,14 +9,17 @@
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:orientation="horizontal">
 		<Button android:text="Play 'flip' animation" android:id="@+id/FlipButton"
+			android:visibility="invisible"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 		<Button android:text="Play 'salute' animation" android:id="@+id/SaluteButton"
+			android:visibility="invisible"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 	</LinearLayout>
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:orientation="horizontal">
 		<CheckBox android:text="Loop" android:id="@+id/CheckBox01"
+			android:visibility="invisible"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
 	</LinearLayout>
 </LinearLayout>

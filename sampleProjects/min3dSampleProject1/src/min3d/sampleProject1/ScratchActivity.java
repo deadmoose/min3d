@@ -4,6 +4,7 @@ import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Box;
 import min3d.objectPrimitives.Rectangle;
+import min3d.vos.Color4;
 import min3d.vos.Light;
 import min3d.vos.ShadeModel;
 
@@ -37,7 +38,7 @@ public class ScratchActivity extends RendererActivity
 		_object2.position().x = .75f;
 		scene.addChild(_object2);
 		
-		_rect = new Rectangle(3, 3, 10, 10, 0xffffffff);
+		_rect = new Rectangle(3, 3, 10, 10, new Color4());
 		_rect.doubleSidedEnabled(true);
 		scene.addChild(_rect);
 		

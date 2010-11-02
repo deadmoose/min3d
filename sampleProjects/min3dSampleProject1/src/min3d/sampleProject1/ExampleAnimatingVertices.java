@@ -5,6 +5,7 @@ import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Rectangle;
+import min3d.vos.Color4;
 import min3d.vos.Number3d;
 import android.graphics.Bitmap;
 
@@ -33,7 +34,7 @@ public class ExampleAnimatingVertices extends RendererActivity
 		float w = 2f;
 		float h = w * (float)b.getHeight() / (float)b.getWidth();; 
 		
-		_plane = new Rectangle(w, h, 1,1, 0xffffffff);
+		_plane = new Rectangle(w, h, 1,1, new Color4());
 		_plane.doubleSidedEnabled(true); // ... so that the back of the plane is visible
 		_plane.normalsEnabled(false);
 		scene.addChild(_plane);

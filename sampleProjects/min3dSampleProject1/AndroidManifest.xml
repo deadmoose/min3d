@@ -30,6 +30,7 @@
         <activity android:name=".ExampleMipMap" android:label="@string/app_name"></activity>
         <activity android:name=".ExampleMultiTexture" android:label="@string/app_name"></activity>
         <activity android:name=".ExampleTextureOffset" android:label="@string/app_name"></activity>
+        <activity android:name=".ExampleFog" android:label="@string/app_name"></activity>
     	<activity android:name="ExampleLoadObjFile" android:label="@string/app_name"></activity>
 		<activity android:name="ExampleLoadObjFileMultiple"></activity>
 		<activity android:name="ExampleLoad3DSFile"></activity>
