@@ -222,7 +222,7 @@ public class Renderer implements GLSurfaceView.Renderer
 					light.diffuse.clearDirtyFlag();
 				}
 				if (light.specular.isDirty())
-				{
+				{Log.d(Min3d.TAG, "specular");
 					light.specular.commitToFloatBuffer();
 					_gl.glLightfv(glLightId, GL10.GL_SPECULAR, light.specular.floatBuffer());
 					light.specular.clearDirtyFlag();

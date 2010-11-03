@@ -80,6 +80,11 @@ public class Color4Managed extends AbstractDirtyManaged
 		setDirtyFlag();
 	}
 	
+	public void setAll(int $r, int $g, int $b, int $a)
+	{
+		setAll((short)$r, (short)$g, (short)$b, (short)$a);
+	}
+	
 	public Color4 toColor4()
 	{
 		return new Color4(_r,_g,_b,_a);
@@ -96,7 +101,12 @@ public class Color4Managed extends AbstractDirtyManaged
 		_b = (short) (($argb32) & 0x000000FF);		
 		
 		setDirtyFlag();
-	}	
+	}
+	
+	public void setAll(Color4 $color)
+	{
+		setAll($color.r, $color.g, $color.b, $color.a);
+	}
 
 	public short r()
 	{

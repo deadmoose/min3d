@@ -132,6 +132,10 @@ public class FacesBufferedList
 		_numElements++;
 	}
 	
+	public void add(int $a, int $b, int $c) {
+		add((short)$a, (short)$b, (short)$c);
+	}
+	
 	public void add(short $a, short $b, short $c)
 	{
 		set(_numElements, $a, $b, $c);
