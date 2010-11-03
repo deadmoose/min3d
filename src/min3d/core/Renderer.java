@@ -12,6 +12,7 @@ import min3d.Shared;
 import min3d.animation.AnimationObject3d;
 import min3d.vos.FrustumManaged;
 import min3d.vos.Light;
+import min3d.vos.LightType;
 import min3d.vos.RenderType;
 import min3d.vos.TextureVo;
 import android.app.ActivityManager;
@@ -169,7 +170,6 @@ public class Renderer implements GLSurfaceView.Renderer
 	protected void drawSetupLights()
 	{
 		// GL_LIGHTS enabled/disabled based on enabledDirty list
-		
 		for (int glIndex = 0; glIndex < NUM_GLLIGHTS; glIndex++)
 		{
 			if (_scene.lights().glIndexEnabledDirty()[glIndex] == true)
@@ -222,7 +222,7 @@ public class Renderer implements GLSurfaceView.Renderer
 					light.diffuse.clearDirtyFlag();
 				}
 				if (light.specular.isDirty())
-				{Log.d(Min3d.TAG, "specular");
+				{
 					light.specular.commitToFloatBuffer();
 					_gl.glLightfv(glLightId, GL10.GL_SPECULAR, light.specular.floatBuffer());
 					light.specular.clearDirtyFlag();
@@ -233,7 +233,13 @@ public class Renderer implements GLSurfaceView.Renderer
 					_gl.glLightfv(glLightId, GL10.GL_EMISSION, light.emissive.floatBuffer());
 					light.emissive.clearDirtyFlag();
 				}
-				
+				if(light.type() == LightType.DIRECTIONAL && light.direction.isDirty())
+				{
+					light.direction.commitToFloatBuffer();
+					_gl.glLightfv(glLightId, GL10.GL_SPOT_DIRECTION, light.direction.floatBuffer());
+					_gl.glLightf(glLightId, GL10.GL_SPOT_CUTOFF, 60.0f);
+					light.direction.clearDirtyFlag();
+				}
 				if (light.isVisibleBm().isDirty()) 
 				{
 					if (light.isVisible()) {

@@ -19,6 +19,7 @@ public class Light extends AbstractDirtyManaged implements IDirtyParent
 	private BooleanManaged _isVisible; 
 	
 	public Number3dManaged position;
+	public Number3dManaged direction;
 	public Color4Managed ambient;
 	public Color4Managed diffuse;
 	public Color4Managed specular;
@@ -38,6 +39,7 @@ public class Light extends AbstractDirtyManaged implements IDirtyParent
 		 specular = new Color4Managed(0,0,0,255, this);
 		 emissive = new Color4Managed(0,0,0,255, this);
 		 position = new Number3dManaged(0f, 0f, 5f, this);
+		 direction = new Number3dManaged(0, 0, -1, this);
 		 _attenuation = new Number3dManaged(1f,0f,0f, this); // (OpenGL default attenuation values)
 		 _isVisible = new BooleanManaged(true, this);
 		 type(LightType.DIRECTIONAL);
@@ -122,6 +124,7 @@ public class Light extends AbstractDirtyManaged implements IDirtyParent
 		diffuse.setDirtyFlag();
 		specular.setDirtyFlag();
 		emissive.setDirtyFlag();
+		direction.setDirtyFlag();
 		_attenuation.setDirtyFlag();
 		_isVisible.setDirtyFlag();
 	}

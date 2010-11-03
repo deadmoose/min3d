@@ -1,5 +1,11 @@
 package min3d.vos;
 
+import java.nio.FloatBuffer;
+
+import android.util.Log;
+
+import min3d.Min3d;
+import min3d.Utils;
 import min3d.interfaces.IDirtyParent;
 
 /**
@@ -11,6 +17,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 	private float _y;
 	private float _z;
 	
+	private FloatBuffer _fb;
 	
 	public Number3dManaged(IDirtyParent $parent)
 	{
@@ -18,7 +25,8 @@ public class Number3dManaged extends AbstractDirtyManaged
 		_x = 0;
 		_y = 0;
 		_z = 0;
-		_dirty = true;
+		_fb = this.toFloatBuffer();
+		setDirtyFlag();
 	}
 	
 	public Number3dManaged(float $x, float $y, float $z, IDirtyParent $parent)
@@ -27,7 +35,8 @@ public class Number3dManaged extends AbstractDirtyManaged
 		_x = $x;
 		_y = $y;
 		_z = $z;
-		_dirty = true;
+		_fb = this.toFloatBuffer();
+		setDirtyFlag();
 	}
 	
 	public float getX() {
@@ -36,7 +45,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 
 	public void setX(float x) {
 		_x = x;
-		_dirty = true;
+		setDirtyFlag();
 	}
 
 	public float getY() {
@@ -45,7 +54,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 
 	public void setY(float y) {
 		_y = y;
-		_dirty = true;
+		setDirtyFlag();
 	}
 
 	public float getZ() {
@@ -54,7 +63,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 
 	public void setZ(float z) {
 		_z = z;
-		_dirty = true;
+		setDirtyFlag();
 	}
 
 	public void setAll(float $x, float $y, float $z)
@@ -62,7 +71,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 		_x = $x;
 		_y = $y;
 		_z = $z;
-		_dirty = true;
+		setDirtyFlag();
 	}
 	
 	public void setAllFrom(Number3d $n)
@@ -70,7 +79,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 		_x = $n.x;
 		_y = $n.y;
 		_z = $n.z;
-		_dirty = true;
+		setDirtyFlag();
 	}
 
 	public void setAllFrom(Number3dManaged $n)
@@ -78,7 +87,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 		_x = $n.getX();
 		_y = $n.getY();
 		_z = $n.getZ();
-		_dirty = true;
+		setDirtyFlag();
 	}
 
 	public Number3d toNumber3d()
@@ -92,4 +101,43 @@ public class Number3dManaged extends AbstractDirtyManaged
 		return _x + "," + _y + "," + _z; 
 	}
 	
+	/**
+	 * Convenience method
+	 */
+	public FloatBuffer toFloatBuffer()
+	{
+		return Utils.makeFloatBuffer3(
+			(float)_x / 255f,
+			(float)_y / 255f,
+			(float)_z / 255f
+		);
+	}
+	
+	/**
+	 * Convenience method
+	 */
+	public void toFloatBuffer(FloatBuffer $floatBuffer)
+	{
+		$floatBuffer.position(0);
+		$floatBuffer.put((float)_x / 255f);
+		$floatBuffer.put((float)_y / 255f);
+		$floatBuffer.put((float)_z / 255f);
+		$floatBuffer.position(0);
+	}
+
+	/**
+	 * Used by Renderer
+	 */
+	public FloatBuffer floatBuffer()
+	{
+		return _fb;
+	}
+
+	/**
+	 * Used by Renderer
+	 */
+	public void commitToFloatBuffer()
+	{
+		this.toFloatBuffer(_fb);
+	}
 }
