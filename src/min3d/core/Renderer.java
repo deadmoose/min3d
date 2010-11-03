@@ -237,7 +237,7 @@ public class Renderer implements GLSurfaceView.Renderer
 				{
 					light.direction.commitToFloatBuffer();
 					_gl.glLightfv(glLightId, GL10.GL_SPOT_DIRECTION, light.direction.floatBuffer());
-					_gl.glLightf(glLightId, GL10.GL_SPOT_CUTOFF, 60.0f);
+					_gl.glLightf(glLightId, GL10.GL_SPOT_CUTOFF, 45f);
 					light.direction.clearDirtyFlag();
 				}
 				if (light.isVisibleBm().isDirty()) 

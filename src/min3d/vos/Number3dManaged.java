@@ -106,11 +106,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 	 */
 	public FloatBuffer toFloatBuffer()
 	{
-		return Utils.makeFloatBuffer3(
-			(float)_x / 255f,
-			(float)_y / 255f,
-			(float)_z / 255f
-		);
+		return Utils.makeFloatBuffer3(_x, _y, _z);
 	}
 	
 	/**
@@ -119,9 +115,9 @@ public class Number3dManaged extends AbstractDirtyManaged
 	public void toFloatBuffer(FloatBuffer $floatBuffer)
 	{
 		$floatBuffer.position(0);
-		$floatBuffer.put((float)_x / 255f);
-		$floatBuffer.put((float)_y / 255f);
-		$floatBuffer.put((float)_z / 255f);
+		$floatBuffer.put(_x);
+		$floatBuffer.put(_y);
+		$floatBuffer.put(_z);
 		$floatBuffer.position(0);
 	}
 
@@ -138,6 +134,6 @@ public class Number3dManaged extends AbstractDirtyManaged
 	 */
 	public void commitToFloatBuffer()
 	{
-		this.toFloatBuffer(_fb);
+		toFloatBuffer(_fb);
 	}
 }
