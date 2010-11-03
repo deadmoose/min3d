@@ -18,7 +18,6 @@ public class Object3d
 	private String _name;
 	
 	private RenderType _renderType = RenderType.TRIANGLES;
-	private int _renderTypeInt = GL10.GL_TRIANGLES;
 	
 	private boolean _isVisible = true;
 	private boolean _vertexColorsEnabled = true;
@@ -233,7 +232,6 @@ public class Object3d
 	public void renderType(RenderType $type)
 	{
 		_renderType = $type;
-		_renderTypeInt = renderTypeToInt(_renderType);
 	}
 	
 	/**
@@ -455,39 +453,6 @@ public class Object3d
 	{
 		return _scene;
 	}
-	
-	/**
-	 * Called by Renderer
-	 */
-	int renderTypeInt() /*package-private*/
-	{
-		return _renderTypeInt;
-	}
-
-	/**
-	 * Called by Renderer 
-	 */
-	static int renderTypeToInt(RenderType $rt) /* package-private */
-	{
-		int i = 0;
-		
-		switch ($rt) 
-		{
-			case TRIANGLES:
-				i = GL10.GL_TRIANGLES;
-				break;
-			case POINTS:
-				i = GL10.GL_POINTS;
-				break;
-			case LINES:
-				i = GL10.GL_LINES;
-				break;
-		}
-		
-		return i;
-	}
-
-	//
 	
 	/**
 	 * Can be overridden to create custom draw routines on a per-object basis, 

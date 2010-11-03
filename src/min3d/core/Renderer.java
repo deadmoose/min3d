@@ -372,7 +372,7 @@ public class Renderer implements GLSurfaceView.Renderer
 
 		// Line properties
 		
-		if ($o.renderType() == RenderType.LINES) 
+		if ($o.renderType() == RenderType.LINES || $o.renderType() == RenderType.LINE_STRIP || $o.renderType() == RenderType.LINE_LOOP) 
 		{
 			if ( $o.lineSmoothing() == true) {
 				_gl.glEnable(GL10.GL_LINE_SMOOTH);
@@ -430,14 +430,14 @@ public class Renderer implements GLSurfaceView.Renderer
 			$o.faces().buffer().position(pos);
 
 			_gl.glDrawElements(
-					$o.renderTypeInt(), 
+					$o.renderType().glValue(),
 					len * FacesBufferedList.PROPERTIES_PER_ELEMENT, 
 					GL10.GL_UNSIGNED_SHORT, 
 					$o.faces().buffer());
 		}
 		else
 		{
-			_gl.glDrawArrays($o.renderTypeInt(), 0, $o.vertices().size());
+			_gl.glDrawArrays($o.renderType().glValue(), 0, $o.vertices().size());
 		}
 		
 		//
