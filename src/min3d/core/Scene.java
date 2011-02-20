@@ -63,7 +63,7 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	/**
 	 * Resets Scene to default settings:
 	 * Removes and clears any attached Object3ds.
-	 * Resets light list, adds single default light.
+	 * Resets light list.
 	 */
 	public void reset()
 	{

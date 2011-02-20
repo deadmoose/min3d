@@ -124,7 +124,7 @@ public class TextureManager
 	{
 		if (_idToTextureName == null || $textureId == null)
 		{
-			Log.v("x", "wowow" + _idToTextureName+$textureId);
+			Log.w(Min3d.TAG, "TextureManager.getGlTextureId - null? " + _idToTextureName+$textureId);
 		}
 		
 		return _idToTextureName.get($textureId);
@@ -157,7 +157,7 @@ public class TextureManager
 	
 	private void logContents()
 	{
-		Log.i(Min3d.TAG, "TextureManager contents updated - " + arrayToString( getTextureIds() ) );		
+		Log.v(Min3d.TAG, "TextureManager contents updated - " + arrayToString( getTextureIds() ) );		
 	}
 	
 	public String getNewAtlasId() {

@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content" android:layout_height="wrap_content"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
 	android:orientation="vertical">
+	
 	<LinearLayout android:id="@+id/scene2Holder"
-		android:gravity="center_horizontal" android:layout_height="350sp"
-		android:layout_width="fill_parent" />
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:orientation="horizontal">
+		android:layout_height="fill_parent" 
+		android:layout_width="fill_parent" 
+		android:gravity="center_horizontal" 
+		android:layout_weight="1"/>
+		
+	<LinearLayout 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal" 
+		android:layout_weight="0">
+		
 		<Button android:text="Play 'flip' animation" android:id="@+id/FlipButton"
-			android:visibility="invisible"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 		<Button android:text="Play 'salute' animation" android:id="@+id/SaluteButton"
-			android:visibility="invisible"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+			
 	</LinearLayout>
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:orientation="horizontal">
+	
+	<LinearLayout 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal" 
+		android:layout_weight="0">
+		
 		<CheckBox android:text="Loop" android:id="@+id/CheckBox01"
-			android:visibility="invisible"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"></CheckBox>
+			
 	</LinearLayout>
+	
 </LinearLayout>

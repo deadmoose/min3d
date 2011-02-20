@@ -35,7 +35,7 @@ public class ExampleMultipleLights extends RendererActivity
 		_lightRed = new Light();
 		_lightRed.ambient.setAll(0x88110000);
 		_lightRed.diffuse.setAll(0xffff0000);
-		_lightRed.type(LightType.POSITIONAL); // looks nicer, especially with multiple lights interacting with each other
+		_lightRed.type(LightType.POSITIONAL);
 		scene.lights().add(_lightRed);
 
 		_lightGreen = new Light();

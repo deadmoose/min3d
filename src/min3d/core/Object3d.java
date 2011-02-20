@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.util.Log;
+
 import min3d.interfaces.IObject3dContainer;
 import min3d.vos.Color4;
 import min3d.vos.Number3d;
@@ -310,13 +312,15 @@ public class Object3d
 	 */
 	public void clear()
 	{
-		this.vertices().points().clear();
-		this.vertices().uvs().clear();
-		this.vertices().normals().clear();
-		if(this.vertices().colors() != null)
-			this.vertices().colors().clear();
-		_textures.clear();
-		if (this.parent() != null) this.parent().removeChild(this);
+		Log.v("x", "about to clear");
+		
+		if (this.vertices().points() != null) 	this.vertices().points().clear();
+		if (this.vertices().uvs() != null) 		this.vertices().uvs().clear();
+		if (this.vertices().normals() != null) 	this.vertices().normals().clear();
+		if (this.vertices().colors() != null) 	this.vertices().colors().clear();
+		if (_textures != null) 					_textures.clear();
+		
+		if (this.parent() != null) 				this.parent().removeChild(this);
 	}
 
 	//
@@ -471,15 +475,19 @@ public class Object3d
 		FacesBufferedList f = _faces.clone();
 			
 		Object3d clone = new Object3d(v, f, _textures);
+		
 		clone.position().x = position().x;
 		clone.position().y = position().y;
 		clone.position().z = position().z;
+		
 		clone.rotation().x = rotation().x;
 		clone.rotation().y = rotation().y;
 		clone.rotation().z = rotation().z;
+		
 		clone.scale().x = scale().x;
 		clone.scale().y = scale().y;
 		clone.scale().z = scale().z;
+		
 		return clone;
 	}
 }

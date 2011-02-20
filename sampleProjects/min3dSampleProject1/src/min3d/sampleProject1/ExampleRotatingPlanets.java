@@ -8,6 +8,8 @@ import min3d.objectPrimitives.Sphere;
 import min3d.vos.Light;
 import min3d.vos.LightType;
 import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.util.Log;
 
 /**
  * This is the "demo" example.
@@ -30,6 +32,7 @@ public class ExampleRotatingPlanets extends RendererActivity
 	public void initScene() 
 	{
 		Light light = new Light();
+		
 		light.ambient.setAll((short)64, (short)64, (short)64, (short)255);
 		light.position.setAll(3, 3, 3);
 		scene.lights().add(light);

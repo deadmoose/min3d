@@ -9,6 +9,9 @@ public class Min3d
 	 * License:				MIT
 	 * 
 	 * Author: 				Lee Felarca
-	 * Author blog:			http://www.zeropointnine.com/blog
+	 * Website:				http://www.zeropointnine.com/blog
+	 *
+	 * Author: 				Dennis Ippel
+	 * Author blog:			http://www.rozengain.com/blog/
 	 */
 }

@@ -29,6 +29,7 @@ public class SplashActivity extends ListActivity
 	private String _basePath = "http://code.google.com/p/min3d/source/browse/trunk/sampleProjects/min3dSampleProject1/src/min3d/sampleProject1/"; 
 	
 	private String[] _sourceFiles = {
+		"ScratchActivity.java",
 		"ExampleRotatingPlanets.java", 
 		"ExampleMostMinimal.java",
 		"ExampleVertexColors.java",
@@ -53,6 +54,7 @@ public class SplashActivity extends ListActivity
 	};
 	
 	private Class<?>[] _classes = { 
+		//ScratchActivity.class, 
 		ExampleRotatingPlanets.class, 
 		ExampleMostMinimal.class,
 		ExampleVertexColors.class,
@@ -78,29 +80,30 @@ public class SplashActivity extends ListActivity
 	};
 	
 	private String[] _strings = {
-			"\"Hello, Jupiter\"", 
-			"Minimal example", 
-			"Vertex colors", 
-			"Texture",
-			"Usage of Vertices class",		
-			"Triangles, lines, points",
-			"Camera, frustum (trackball)",
-			"Multiple lights",
-			"Animating vertices",
-			"Rendering subset of faces",
-			"Assigning textures dynamically",
-			"MIP Mapping (on vs. off)",
-			"Texture wrapping",
-			"Multiple textures",
-			"Texture offset",
-			"3D inside layout",
-			"Fog Example",
-			"Load model from .obj file",
-			"Load multiple models from .obj file",
-			"Load model from .3ds file",
-			"Load animated .md2 file",
-			"Keyframe animation"
-			// "Object from scratch"
+		// "Scratch",
+		"\"Hello, Jupiter\"", 
+		"Minimal example", 
+		"Vertex colors", 
+		"Texture",
+		"Usage of Vertices class",		
+		"Triangles, lines, points",
+		"Camera, frustum (trackball)",
+		"Multiple lights",
+		"Animating vertices",
+		"Rendering subset of faces",
+		"Assigning textures dynamically",
+		"MIP Mapping (on vs. off)",
+		"Texture wrapping",
+		"Multiple textures",
+		"Texture offset",
+		"3D inside layout",
+		"Fog Example",
+		"Load model from .obj file",
+		"Load multiple models from .obj file",
+		"Load model from .3ds file",
+		"Load animated .md2 file",
+		"Keyframe animation"
+		// "Object from scratch"
 		};
 		
     @Override

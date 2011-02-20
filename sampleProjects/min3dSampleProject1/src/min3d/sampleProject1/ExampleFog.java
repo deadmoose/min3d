@@ -16,7 +16,6 @@ public class ExampleFog extends RendererActivity {
 	@Override
 	public void initScene() {
 		Light light = new Light();
-		light.type(LightType.DIRECTIONAL);
     	scene.lights().add(light);
     	scene.camera().position.x = 0;
     	scene.camera().position.y = 0;

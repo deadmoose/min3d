@@ -3,6 +3,7 @@ package min3d.core;
 import min3d.Shared;
 import min3d.interfaces.ISceneController;
 import android.app.Activity;
+import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
@@ -58,18 +59,17 @@ public class RendererActivity extends Activity implements ISceneController
 		
 		_glSurfaceView = new GLSurfaceView(this);
 
-		// TESTING ONLY: 
-		// MAKE GLSURFACEVIEW TRANSPARENT. CANNOT FIGURE THIS OUT!
-        // _glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        // _glSurfaceView.setEGLConfigChooser(8,8,8,8, 16, 0); // .. really dislike this being hardcoded anyway
-		
 		// Uncomment for logging:
 		// _glSurfaceView.setDebugFlags(GLSurfaceView.DEBUG_CHECK_GL_ERROR | GLSurfaceView.DEBUG_LOG_GL_CALLS);
 
-		_glSurfaceView.setRenderer(r);
+        _glSurfaceView.setEGLConfigChooser(8,8,8,8, 16, 0);	//x		
+
+        _glSurfaceView.setRenderer(r);
 		_glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 		
-		onCreateSetContentView();
+        _glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT); //x
+
+        onCreateSetContentView();
 	}
 	
 	protected GLSurfaceView glSurfaceView()
@@ -113,7 +113,7 @@ public class RendererActivity extends Activity implements ISceneController
 
 	/**
 	 * All manipulation of scene and Object3D instance properties should go here.
-	 * Gets called on every frame, right before rendering.   
+	 * Gets called on every frame, right before drawing.   
 	 */
 	public void updateScene()
 	{
@@ -121,15 +121,15 @@ public class RendererActivity extends Activity implements ISceneController
 	
     /**
      * Called _after_ scene init (ie, after initScene).
-     * Unlike initScene(), gets called from the UI thread.
+     * Unlike initScene(), is thread-safe.
      */
     public void onInitScene()
     {
     }
     
     /**
-     * Called _after_ updateScene()
-     * Unlike initScene(), gets called from the UI thread.
+     * Called _after_ scene init (ie, after initScene).
+     * Unlike initScene(), is thread-safe.
      */
     public void onUpdateScene()
     {

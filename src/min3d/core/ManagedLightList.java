@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import android.util.Log;
 
+import min3d.Min3d;
 import min3d.vos.Light;
 
 public class ManagedLightList 
@@ -35,7 +36,7 @@ public class ManagedLightList
 
 	public void reset() 
 	{
-		Log.v("x", "ManagedLightList.reset()");
+		Log.i(Min3d.TAG, "ManagedLightList.reset()");
 
 		_availGlIndices = new ArrayList<Integer>();
 		for (int i = 0; i < Renderer.NUM_GLLIGHTS; i++) {

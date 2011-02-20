@@ -3,77 +3,57 @@ package min3d.sampleProject1;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Box;
-import min3d.objectPrimitives.Rectangle;
-import min3d.vos.Color4;
+import min3d.objectPrimitives.Sphere;
 import min3d.vos.Light;
-import min3d.vos.ShadeModel;
 
 /**
- * Test activity - ignore
+ * 'Scratch' - ignore.
  * 
  * @author Lee
  */
-public class ScratchActivity extends RendererActivity
+public class ScratchActivity extends RendererActivity 
 {
-	Object3dContainer _object1;
-	Object3dContainer _object2;
-	Object3dContainer _rect;
+	Object3dContainer _o1;
+	Object3dContainer _o2;
+	Object3dContainer _o3;
+	
+	Object3dContainer _k;
+	
 	Light _light;
 	
-	int _count;
-	
+	@Override
 	public void initScene() 
 	{
+		scene.backgroundColor().setAll(0xff222222);
+
 		_light = new Light();
-		_light.ambient.setAll(0x0);
-		_light.diffuse.setAll(0xffff8888);
-		_light.position.setAll(0,2,2);
-		scene.lights().add( _light );
+		_light.position.setAll(0, 0, +3);
+		_light.diffuse.setAll(255, 255, 255, 255);
+		_light.ambient.setAll(0, 0, 0, 0);
+		_light.specular.setAll(0, 0, 0, 0);
+		_light.emissive.setAll(0, 0, 0, 0);
+		scene.lights().add(_light);
 
-		_object1 = new Box(1,1,1); // Sphere(1,20,15);
-		_object1.position().x = -.75f;
-		scene.addChild(_object1);
+		_o1 = new Box(1f,1f,1f);
+		scene.addChild(_o1);
 		
-		_object2 = new Box(1,1,1); // Sphere(1,20,15);
-		_object2.position().x = .75f;
-		scene.addChild(_object2);
+		_o2 = new Sphere(0.5f, 10,10);
+		_o2.position().x = 1.0f;
+		_o1.addChild(_o2);
 		
-		_rect = new Rectangle(3, 3, 10, 10, new Color4());
-		_rect.doubleSidedEnabled(true);
-		scene.addChild(_rect);
+		_o3 = new Sphere(0.5f, 10,10);
+		_o3.position().x = 0.75f;
+		_o2.addChild(_o3);
 		
-		//
-
-//		Bitmap b = Utils.makeBitmapFromResourceId(this, R.drawable.moon);
-//		Shared.textureManager().addTextureId(b, "moon", false);
-//		b.recycle();
-//		TextureVo texture = new TextureVo("moon");
-//		_object.textures().add(texture);
-		
-		_count = 0;
+		_k = _o1.clone();
+		_k.position().y = -2f;
+		scene.addChild(_k);
 	}
 
 	@Override 
 	public void updateScene() 
 	{
-//		short i = (short)((_count*2) % 255);
-//		Log.v("x", i+"");
-		_light.specular.setAll(0xff00ff00);
-		
-		
-		if (_count % 60 == 0) {
-			_object1.colorMaterialEnabled(! _object1.colorMaterialEnabled() );
-		}
-		
-		if (_count % 60 == 0) {
-			_object2.shadeModel(ShadeModel.FLAT);
-		}
-		if (_count % 60 == 30) {
-			_object2.shadeModel(ShadeModel.SMOOTH);
-		}
-		
-		_object1.rotation().y++;
-		_object2.rotation().y++;
-		_count++;
+		_o1.rotation().y += 0.33;
+		_k.rotation().y -= 0.33;
 	}
 }

@@ -206,7 +206,7 @@ public class Renderer implements GLSurfaceView.Renderer
 				if (light.position.isDirty())
 				{
 					light.commitPositionAndTypeBuffer();
-					_gl.glLightfv(glLightId, GL10.GL_POSITION, light.positionAndTypeBuffer());
+					_gl.glLightfv(glLightId, GL10.GL_POSITION, light._positionAndTypeBuffer);
 					light.position.clearDirtyFlag();
 				}
 				if (light.ambient.isDirty()) 
@@ -233,28 +233,37 @@ public class Renderer implements GLSurfaceView.Renderer
 					_gl.glLightfv(glLightId, GL10.GL_EMISSION, light.emissive.floatBuffer());
 					light.emissive.clearDirtyFlag();
 				}
-				if(light.type() == LightType.DIRECTIONAL && light.direction.isDirty())
+
+				if (light.direction.isDirty())
 				{
 					light.direction.commitToFloatBuffer();
 					_gl.glLightfv(glLightId, GL10.GL_SPOT_DIRECTION, light.direction.floatBuffer());
-					_gl.glLightf(glLightId, GL10.GL_SPOT_CUTOFF, 45f);
 					light.direction.clearDirtyFlag();
 				}
-				if (light.isVisibleBm().isDirty()) 
+				if (light._spotCutoffAngle.isDirty())
+				{
+					_gl.glLightf(glLightId, GL10.GL_SPOT_CUTOFF, light._spotCutoffAngle.get());
+				}
+				if (light._spotExponent.isDirty())
+				{
+					_gl.glLightf(glLightId, GL10.GL_SPOT_EXPONENT, light._spotExponent.get());
+				}
+
+				if (light._isVisible.isDirty()) 
 				{
 					if (light.isVisible()) {
 						_gl.glEnable(glLightId);
 					} else {
 						_gl.glDisable(glLightId);
 					}
-					light.isVisibleBm().clearDirtyFlag();
+					light._isVisible.clearDirtyFlag();
 				}
 
-				if (light.attenuation().isDirty())
+				if (light._attenuation.isDirty())
 				{
-					_gl.glLightf(glLightId, GL10.GL_CONSTANT_ATTENUATION, light.attenuation().getX());
-					_gl.glLightf(glLightId, GL10.GL_LINEAR_ATTENUATION, light.attenuation().getY());
-					_gl.glLightf(glLightId, GL10.GL_QUADRATIC_ATTENUATION, light.attenuation().getZ());
+					_gl.glLightf(glLightId, GL10.GL_CONSTANT_ATTENUATION, light._attenuation.getX());
+					_gl.glLightf(glLightId, GL10.GL_LINEAR_ATTENUATION, light._attenuation.getY());
+					_gl.glLightf(glLightId, GL10.GL_QUADRATIC_ATTENUATION, light._attenuation.getZ());
 				}
 				
 				light.clearDirtyFlag();

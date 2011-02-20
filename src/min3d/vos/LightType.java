@@ -2,8 +2,8 @@ package min3d.vos;
 
 public enum LightType 
 {
-	POSITIONAL (1f), 
-	DIRECTIONAL (0f);
+	DIRECTIONAL (0f),
+	POSITIONAL (1f); // Any value other than 0 treated as non-directional
 	
 	
 	private final float _glValue;

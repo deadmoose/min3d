@@ -34,7 +34,6 @@ public class ExampleVerticesVariations extends RendererActivity
 	public void initScene() 
 	{
 		scene.lights().add(new Light());
-		Log.v("x", "wtf"+scene.lights().get(0).position);
 		
 		Color4[] colors = new Color4[6];
 		colors[0] = new Color4(255,0,0,255);

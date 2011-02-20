@@ -111,17 +111,26 @@ public class Object3dContainer extends Object3d implements IObject3dContainer
 	{
 		Vertices v = _vertices.clone();
 		FacesBufferedList f = _faces.clone();
-			
+
 		Object3dContainer clone = new Object3dContainer(v, f, _textures);
+		
 		clone.position().x = position().x;
 		clone.position().y = position().y;
 		clone.position().z = position().z;
+		
 		clone.rotation().x = rotation().x;
 		clone.rotation().y = rotation().y;
 		clone.rotation().z = rotation().z;
+		
 		clone.scale().x = scale().x;
 		clone.scale().y = scale().y;
 		clone.scale().z = scale().z;
+		
+		for(int i = 0; i< this.numChildren();i++)
+		{
+			 clone.addChild(this.getChildAt(i));
+		}
+		 
 		return clone;
 	}
 
