@@ -312,8 +312,6 @@ public class Object3d
 	 */
 	public void clear()
 	{
-		Log.v("x", "about to clear");
-		
 		if (this.vertices().points() != null) 	this.vertices().points().clear();
 		if (this.vertices().uvs() != null) 		this.vertices().uvs().clear();
 		if (this.vertices().normals() != null) 	this.vertices().normals().clear();
