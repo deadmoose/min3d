@@ -26,106 +26,73 @@ public class SplashActivity extends ListActivity
 	private final int CONTEXTID_VIEWFILE = 0;
 	private final int CONTEXTID_CANCEL = 1;
 	
-	private String _basePath = "http://code.google.com/p/min3d/source/browse/trunk/sampleProjects/min3dSampleProject1/src/min3d/sampleProject1/"; 
+	private String _baseSourcePath = "http://code.google.com/p/min3d/source/browse/trunk/sampleProjects/min3dSampleProject1/src/min3d/sampleProject1/"; 
 	
-	private String[] _sourceFiles = {
-		"ScratchActivity.java",
-		"ExampleRotatingPlanets.java", 
-		"ExampleMostMinimal.java",
-		"ExampleVertexColors.java",
-		"ExampleTextures.java",
-		"ExampleVerticesVariations.java",
-		"ExampleRenderType.java",
-		"ExampleCamera.java",
-		"ExampleMultipleLights.java",
-		"ExampleAnimatingVertices.java",
-		"ExampleSubsetOfFaces.java",
-		"ExampleAssigningTexturesDynamically.java",
-		"ExampleMipMap.java",
-		"ExampleTextureWrap.java",
-		"ExampleMultiTexture.java",
-		"ExampleTextureOffset.java",
-		"ExampleInsideLayout.java",
-		"ExampleFog.java",
-		"ExampleLoadObjFile.java",
-		"ExampleLoadObjFileMultiple.java",
-		"ExampleLoad3DSFile.java",
-		"ExampleLoadMD2File"
+	class ItemVo
+	{
+		public String filename;
+		public Class<?> cls;
+		public String label;
+
+		public ItemVo(String $label, Class<?> $class, String $filename)
+		{
+			label = $label;
+			cls = $class;
+			filename = $filename;
+		}
+	}	
+	
+	private ItemVo[] _items = {
+			new ItemVo("\"Hello, Jupiter\"", ExampleRotatingPlanets.class, "ExampleRotatingPlanets.java"),
+			new ItemVo("Minimal example", ExampleMostMinimal.class, "ExampleMostMinimal.java"),
+			new ItemVo("Vertex colors", ExampleVertexColors.class, "ExampleVertexColors.java"),
+			new ItemVo("Texture", ExampleTextures.class, "ExampleTextures.java"),
+			new ItemVo("Usage of Vertices class", ExampleVerticesVariations.class, "ExampleVerticesVariations.java"),
+			new ItemVo("Triangles, lines, points", ExampleRenderType.class, "ExampleRenderType.java"),
+			new ItemVo("Camera, frustum (trackball)", ExampleCamera.class, "ExampleCamera.java"),
+			new ItemVo("Multiple lights", ExampleMultipleLights.class, "ExampleMultipleLights.java"),
+			new ItemVo("Animating vertices", ExampleAnimatingVertices.class, "ExampleAnimatingVertices.java"),
+			new ItemVo("Rendering subset of faces", ExampleSubsetOfFaces.class, "ExampleSubsetOfFaces.java"),
+			new ItemVo("Assigning textures dynamically", ExampleAssigningTexturesDynamically.class, "ExampleAssigningTexturesDynamically.java"),
+			new ItemVo("MIP Mapping (on vs. off)", ExampleMipMap.class, "ExampleMipMap.java"),
+			new ItemVo("Texture wrapping", ExampleTextureWrap.class, "ExampleTextureWrap.java"),
+			new ItemVo("Multiple textures", ExampleMultiTexture.class, "ExampleMultiTexture.java"),
+			new ItemVo("Texture offset", ExampleTextureOffset.class, "ExampleTextureOffset.java"),
+			new ItemVo("3D inside layout", ExampleInsideLayout.class, "ExampleInsideLayout.java"),
+			new ItemVo("Fog Example", ExampleFog.class, "ExampleFog.java"),
+			new ItemVo("Transparent GL Surface", ExampleTransparentGlSurface.class, "TransparentActivity.java"),
+			new ItemVo("Load model from .obj file", ExampleLoadObjFile.class, "ExampleLoadObjFile.java"),
+			new ItemVo("Load multiple models from .obj file", ExampleLoadObjFileMultiple.class, "ExampleLoadObjFileMultiple.java"),
+			new ItemVo("Load model from .3ds file", ExampleLoad3DSFile.class, "ExampleLoad3DSFile.java"),
+			new ItemVo("Load animated .md2 file", ExampleLoadMD2File.class, "ExampleLoadMD2File.java"),
+			new ItemVo("Keyframe animation", ExampleKeyframeAnimation.class, "ExampleKeyframeAnimation.java")
 	};
 	
-	private Class<?>[] _classes = { 
-		//ScratchActivity.class, 
-		ExampleRotatingPlanets.class, 
-		ExampleMostMinimal.class,
-		ExampleVertexColors.class,
-		ExampleTextures.class,
-		ExampleVerticesVariations.class,
-		ExampleRenderType.class,
-		ExampleCamera.class,
-		ExampleMultipleLights.class,
-		ExampleAnimatingVertices.class,
-		ExampleSubsetOfFaces.class,
-		ExampleAssigningTexturesDynamically.class,
-		ExampleMipMap.class,
-		ExampleTextureWrap.class,
-		ExampleMultiTexture.class,
-		ExampleTextureOffset.class,
-		ExampleInsideLayout.class,
-		ExampleFog.class,
-		ExampleLoadObjFile.class,
-		ExampleLoadObjFileMultiple.class,
-		ExampleLoad3DSFile.class,
-		ExampleLoadMD2File.class,
-		ExampleKeyframeAnimation.class
-	};
-	
-	private String[] _strings = {
-		// "Scratch",
-		"\"Hello, Jupiter\"", 
-		"Minimal example", 
-		"Vertex colors", 
-		"Texture",
-		"Usage of Vertices class",		
-		"Triangles, lines, points",
-		"Camera, frustum (trackball)",
-		"Multiple lights",
-		"Animating vertices",
-		"Rendering subset of faces",
-		"Assigning textures dynamically",
-		"MIP Mapping (on vs. off)",
-		"Texture wrapping",
-		"Multiple textures",
-		"Texture offset",
-		"3D inside layout",
-		"Fog Example",
-		"Load model from .obj file",
-		"Load multiple models from .obj file",
-		"Load model from .3ds file",
-		"Load animated .md2 file",
-		"Keyframe animation"
-		// "Object from scratch"
-		};
-		
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+    	String[] strings = new String[_items.length];
+    	for (int i = 0; i < _items.length; i++) {
+    		strings[i] = _items[i].label;
+    	}
+    	
 	    super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
-	    setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, _strings));
+	    setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, strings));
 	    
 	    TextView tv = (TextView) this.findViewById(R.id.splashTitle);
 	    Linkify.addLinks(tv, 0x07);
 	    
 	    registerForContextMenu(getListView());	    
 	    
-	    // xxx
-    	// this.startActivity( new Intent(this, ScratchActivity.class ) );
+	    // TEST ONLY:
+    	// this.startActivity( new Intent(this, ExampleTransparentGlSurface.class ) );
     }
     
     @Override
     public void onListItemClick(ListView parent, View v, int position, long id)
     {
-    	this.startActivity( new Intent(this, _classes[position] ) );
+    	this.startActivity( new Intent(this, _items[position].cls ) );
     }
     
     //
@@ -181,7 +148,7 @@ public class SplashActivity extends ListActivity
 		{
 			case CONTEXTID_VIEWFILE:
             	Intent i = new Intent(Intent.ACTION_VIEW);
-            	String url = _basePath + _sourceFiles[ (int)info.id ];
+            	String url = _baseSourcePath + _items[ (int)info.id ].filename;
             	i.setData(Uri.parse(url));
             	startActivity(i);                
 				return true;

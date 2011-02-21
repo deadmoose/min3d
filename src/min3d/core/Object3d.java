@@ -144,8 +144,8 @@ public class Object3d
 		return _lightingEnabled;
 	}
 
-	public void lightingEnabled(boolean _lightingEnabled) {
-		this._lightingEnabled = _lightingEnabled;
+	public void lightingEnabled(boolean $b) {
+		this._lightingEnabled = $b;
 	}
 
 	public void colorMaterialEnabled(boolean $b)

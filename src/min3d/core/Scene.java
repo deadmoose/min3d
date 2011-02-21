@@ -22,7 +22,6 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	
 	private Color4Managed _backgroundColor;
 	private boolean _lightingEnabled;
-	private boolean _backgroundTransparent;
 	
 	private Color4 _fogColor;
 	private float _fogFar;
@@ -61,7 +60,7 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	//
 	
 	/**
-	 * Resets Scene to default settings:
+	 * Resets Scene to default settings.
 	 * Removes and clears any attached Object3ds.
 	 * Resets light list.
 	 */
@@ -193,6 +192,7 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	
 	//
 
+	/*
 	public boolean backgroundTransparent() {
 		return _backgroundTransparent;
 	}
@@ -200,6 +200,7 @@ public class Scene implements IObject3dContainer, IDirtyParent
 	public void backgroundTransparent(boolean backgroundTransparent) {
 		this._backgroundTransparent = backgroundTransparent;
 	}
+	*/
 
 	public Color4 fogColor() {
 		return _fogColor;

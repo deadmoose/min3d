@@ -6,10 +6,7 @@ import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Sphere;
 import min3d.vos.Light;
-import min3d.vos.LightType;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.util.Log;
 
 /**
  * This is the "demo" example.

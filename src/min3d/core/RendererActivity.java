@@ -25,6 +25,7 @@ public class RendererActivity extends Activity implements ISceneController
 	protected Handler _initSceneHander;
 	protected Handler _updateSceneHander;
 	
+
 	final Runnable _initSceneRunnable = new Runnable() 
 	{
         public void run() {
@@ -57,20 +58,27 @@ public class RendererActivity extends Activity implements ISceneController
 		Shared.renderer(r);
 		
 		_glSurfaceView = new GLSurfaceView(this);
-
-		// TESTING ONLY: 
-		// MAKE GLSURFACEVIEW TRANSPARENT. CANNOT FIGURE THIS OUT!
-        // _glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        // _glSurfaceView.setEGLConfigChooser(8,8,8,8, 16, 0); // .. really dislike this being hardcoded anyway
-		
-		// Uncomment for logging:
-		// _glSurfaceView.setDebugFlags(GLSurfaceView.DEBUG_CHECK_GL_ERROR | GLSurfaceView.DEBUG_LOG_GL_CALLS);
-
+        glSurfaceViewConfig();
 		_glSurfaceView.setRenderer(r);
 		_glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 		
-		onCreateSetContentView();
+        onCreateSetContentView();
 	}
+    
+    /**
+     * Any GlSurfaceView settings that needs to be executed before 
+     * GLSurfaceView.setRenderer() can be done by overriding this method. 
+     * A couple examples are included in comments below.
+     */
+    protected void glSurfaceViewConfig()
+    {
+	    // Example which makes glSurfaceView transparent (along with setting scene.backgroundColor to 0x0)
+	    // _glSurfaceView.setEGLConfigChooser(8,8,8,8, 16, 0);
+	    // _glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+
+		// Example of enabling logging of GL operations 
+		// _glSurfaceView.setDebugFlags(GLSurfaceView.DEBUG_CHECK_GL_ERROR | GLSurfaceView.DEBUG_LOG_GL_CALLS);
+    }
 	
 	protected GLSurfaceView glSurfaceView()
 	{

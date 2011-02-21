@@ -7,7 +7,6 @@ import min3d.objectPrimitives.Box;
 import min3d.objectPrimitives.Rectangle;
 import min3d.vos.Color4;
 import min3d.vos.Light;
-import min3d.vos.LightType;
 import android.graphics.Bitmap;
 
 public class ExampleFog extends RendererActivity {

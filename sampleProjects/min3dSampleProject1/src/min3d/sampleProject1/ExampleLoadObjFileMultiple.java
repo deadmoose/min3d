@@ -1,6 +1,5 @@
 package min3d.sampleProject1;
 
-import android.util.Log;
 import min3d.core.Object3d;
 import min3d.core.Object3dContainer;
 import min3d.core.RendererActivity;

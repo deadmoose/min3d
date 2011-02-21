@@ -1,19 +1,10 @@
 package min3d.objectPrimitives;
 
-import java.util.ArrayList;
-
-import min3d.core.Object3d;
 import min3d.core.Object3dContainer;
 import min3d.vos.Color4;
 import min3d.vos.Face;
 import min3d.vos.Number3d;
 import min3d.vos.Uv;
-import min3d.vos.Vertex3d;
-
-
-
-import android.opengl.GLUtils;
-import android.util.Log;
 
 /**
  * Example of a more complex programmatically-drawn object.

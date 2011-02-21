@@ -1,7 +1,5 @@
 package min3d.sampleProject1;
 
-import android.graphics.Bitmap;
-import android.util.Log;
 import min3d.Shared;
 import min3d.Utils;
 import min3d.core.Object3dContainer;
@@ -9,6 +7,7 @@ import min3d.core.RendererActivity;
 import min3d.objectPrimitives.Box;
 import min3d.vos.Color4;
 import min3d.vos.Light;
+import android.graphics.Bitmap;
 
 /**
  * Demonstrates use of Object3D's constructor parameters "useUvs", "useNormals", and "useColors".

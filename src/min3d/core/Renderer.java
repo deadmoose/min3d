@@ -12,7 +12,6 @@ import min3d.Shared;
 import min3d.animation.AnimationObject3d;
 import min3d.vos.FrustumManaged;
 import min3d.vos.Light;
-import min3d.vos.LightType;
 import min3d.vos.RenderType;
 import min3d.vos.TextureVo;
 import android.app.ActivityManager;
@@ -149,7 +148,7 @@ public class Renderer implements GLSurfaceView.Renderer
 		
 		// Background color
 		
-		if (_scene.backgroundColor().isDirty() && _scene.backgroundTransparent() == false)
+		if (_scene.backgroundColor().isDirty())
 		{
 			_gl.glClearColor( 
 				(float)_scene.backgroundColor().r() / 255f, 
@@ -676,11 +675,3 @@ public class Renderer implements GLSurfaceView.Renderer
 		//
 	}
 }
-
-//Color4 c = new Color4(100,100,0, 255);
-//_gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_EMISSION, c.toFloatBuffer());
-///Color4 c = new Color4(0,128,0, 255);
-///_gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR, c.toFloatBuffer());
-//Color4 c = new Color4(128,128,128,128);		
-//_gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SHININESS, c.toFloatBuffer());
-
