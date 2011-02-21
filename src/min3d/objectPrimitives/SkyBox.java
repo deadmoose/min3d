@@ -45,7 +45,8 @@ public class SkyBox extends Object3dContainer {
 		north.lightingEnabled(false);
 		
 		east.rotation().y = -90;
-		east.position().x = -halfSize;
+		east.position().x = halfSize;
+		east.doubleSidedEnabled(true);
 		east.lightingEnabled(false);
 		
 		south.rotation().y = 180;
@@ -53,15 +54,18 @@ public class SkyBox extends Object3dContainer {
 		south.lightingEnabled(false);
 		
 		west.rotation().y = 90;
-		west.position().x = halfSize;
+		west.position().x = -halfSize;
+		west.doubleSidedEnabled(true);
 		west.lightingEnabled(false);
 		
-		up.rotation().x = -90;
+		up.rotation().x = 90;
 		up.position().y = halfSize;
+		up.doubleSidedEnabled(true);
 		up.lightingEnabled(false);
 		
-		down.rotation().x = 90;
+		down.rotation().x = -90;
 		down.position().y = -halfSize;
+		down.doubleSidedEnabled(true);
 		down.lightingEnabled(false);
 		
 		faces[Face.North.ordinal()] = north;
@@ -81,7 +85,7 @@ public class SkyBox extends Object3dContainer {
 	
 	public void addTexture(Face face, int resourceId, String id) {
 		Bitmap bitmap = Utils.makeBitmapFromResourceId(resourceId);
-		Shared.textureManager().addTextureId(bitmap, id, false);
+		Shared.textureManager().addTextureId(bitmap, id, true);
 		bitmap.recycle();
 		addTexture(face, bitmap, id);
 	}
