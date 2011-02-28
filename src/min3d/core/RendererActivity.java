@@ -25,6 +25,8 @@ public class RendererActivity extends Activity implements ISceneController
 	protected Handler _initSceneHander;
 	protected Handler _updateSceneHander;
 	
+    private boolean _renderContinuously;
+    
 
 	final Runnable _initSceneRunnable = new Runnable() 
 	{
@@ -141,6 +143,20 @@ public class RendererActivity extends Activity implements ISceneController
      */
     public void onUpdateScene()
     {
+    }
+    
+    /**
+     * Setting this to false stops the render loop, and initScene() and onInitScene() will no longer fire.
+     * Setting this to true resumes it. 
+     */
+    public void renderContinuously(boolean $b)
+    {
+    	_renderContinuously = $b;
+    	if (_renderContinuously)
+    		_glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+    	
+    	else
+    		_glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
     
 	public Handler getInitSceneHandler()

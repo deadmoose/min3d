@@ -15,6 +15,9 @@ import android.util.Log;
  * You add a Bitmap to the TextureManager, which adds a textureId to its list.
  * Then, you assign one or more TextureVo's to your Object3d's using id's that 
  * exist in the TextureManager.
+ * 
+ * Note that the _idToTextureName and _idToHasMipMap HashMaps used below
+ * don't test for exceptions. 
  */
 public class TextureManager 
 {
@@ -119,14 +122,10 @@ public class TextureManager
 	
 	/**
 	 * Used by Renderer
+	 * 
 	 */
 	int getGlTextureId(String $textureId) /*package-private*/
 	{
-		if (_idToTextureName == null || $textureId == null)
-		{
-			Log.w(Min3d.TAG, "TextureManager.getGlTextureId - null? " + _idToTextureName+$textureId);
-		}
-		
 		return _idToTextureName.get($textureId);
 	}
 	
