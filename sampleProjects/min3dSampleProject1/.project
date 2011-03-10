@@ -32,9 +32,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>src_min3d</name>
+			<name>min3d_src</name>
 			<type>2</type>
-			<locationURI>$%7BPARENT-2-PROJECT_LOC%7D/src</locationURI>
+			<location>C:/Projects/Android/min3dSampleProject1/source</location>
 		</link>
 	</linkedResources>
 </projectDescription>

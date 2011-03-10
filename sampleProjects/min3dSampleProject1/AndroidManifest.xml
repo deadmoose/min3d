@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="min3d.sampleProject1"
-      android:versionCode="19"
+      android:versionCode="20"
       android:versionName="Feb_27_2010">
     
     <uses-sdk android:minSdkVersion="4" />
 
-    <application android:debuggable="false" android:icon="@drawable/icon" android:label="@string/app_name">
-        
+    <application android:debuggable="false" android:icon="@drawable/icon" android:label="@string/app_name"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         <activity android:name=".SplashActivity" android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +38,7 @@
 		<activity android:name=".ExampleLoadMD2File"></activity>
         <activity android:name=".ExampleInsideLayout" android:label="@string/app_name"></activity>
 		<activity android:name=".ExampleKeyframeAnimation"></activity>
+		<activity android:name="ExampleAccelerometer"></activity>
 		
 		<!-- Debugging-related activities: -->
         <activity android:name=".ScratchActivity" android:label="@string/app_name"></activity>
