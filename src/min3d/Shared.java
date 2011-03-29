@@ -9,38 +9,38 @@ import android.content.Context;
  */
 public class Shared
 {
-	private static Context _context;
-	private static Renderer _renderer;
-	private static TextureManager _textureManager;
+    private static Context _context;
+    private static Renderer _renderer;
+    private static TextureManager _textureManager;
 
 
-	public static Context context()
-	{
-		return _context;
-	}
-	public static void context(Context $c)
-	{
-		_context = $c;
-	}
+    public static Context context()
+    {
+        return _context;
+    }
+    public static void context(Context $c)
+    {
+        _context = $c;
+    }
 
-	public static Renderer renderer()
-	{
-		return _renderer;
-	}
-	public static void renderer(Renderer $r)
-	{
-		_renderer = $r;
-	}
+    public static Renderer renderer()
+    {
+        return _renderer;
+    }
+    public static void renderer(Renderer $r)
+    {
+        _renderer = $r;
+    }
 
-	/**
-	 * You must access the TextureManager instance through this accessor
-	 */
-	public static TextureManager textureManager()
-	{
-		return _textureManager;
-	}
-	public static void textureManager(TextureManager $bm)
-	{
-		_textureManager = $bm;
-	}
+    /**
+     * You must access the TextureManager instance through this accessor
+     */
+    public static TextureManager textureManager()
+    {
+        return _textureManager;
+    }
+    public static void textureManager(TextureManager $bm)
+    {
+        _textureManager = $bm;
+    }
 }

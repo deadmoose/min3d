@@ -14,144 +14,144 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 public class Max3DSParser extends AParser implements IParser {
-	private final int IDENTIFIER_3DS = 0x4D4D;
-	private final int MESH_BLOCK = 0x3D3D;
-	private final int OBJECT_BLOCK = 0x4000;
-	private final int TRIMESH = 0x4100;
-	private final int TRI_MATERIAL = 0x4130;
-	private final int VERTICES = 0x4110;
-	private final int FACES = 0x4120;
-	private final int TEXCOORD = 0x4140;
-	private final int TEX_MAP = 0xA200;
-	private final int TEX_NAME = 0xA000;
-	private final int TEX_FILENAME = 0xA300;
-	private final int MATERIAL = 0xAFFF;
+    private final int IDENTIFIER_3DS = 0x4D4D;
+    private final int MESH_BLOCK = 0x3D3D;
+    private final int OBJECT_BLOCK = 0x4000;
+    private final int TRIMESH = 0x4100;
+    private final int TRI_MATERIAL = 0x4130;
+    private final int VERTICES = 0x4110;
+    private final int FACES = 0x4120;
+    private final int TEXCOORD = 0x4140;
+    private final int TEX_MAP = 0xA200;
+    private final int TEX_NAME = 0xA000;
+    private final int TEX_FILENAME = 0xA300;
+    private final int MATERIAL = 0xAFFF;
 
-	private int chunkID;
-	private int chunkEndOffset;
-	private boolean endReached;
-	private String currentObjName;
+    private int chunkID;
+    private int chunkEndOffset;
+    private boolean endReached;
+    private String currentObjName;
 
-	public Max3DSParser(Resources resources, String resourceID, boolean generateMipMap) {
-		super(resources, resourceID, generateMipMap);
-	}
+    public Max3DSParser(Resources resources, String resourceID, boolean generateMipMap) {
+        super(resources, resourceID, generateMipMap);
+    }
 
-	@Override
-	public void parse() {
-		InputStream fileIn = resources.openRawResource(resources.getIdentifier(
-				resourceID, null, null));
-		BufferedInputStream stream = new BufferedInputStream(fileIn);
+    @Override
+    public void parse() {
+        InputStream fileIn = resources.openRawResource(resources.getIdentifier(
+                resourceID, null, null));
+        BufferedInputStream stream = new BufferedInputStream(fileIn);
 
-		Log.d(Min3d.TAG, "Start parsing object");
+        Log.d(Min3d.TAG, "Start parsing object");
 
-		co = new ParseObjectData();
-		parseObjects.add(co);
+        co = new ParseObjectData();
+        parseObjects.add(co);
 
-		try {
-			readHeader(stream);
-			if(chunkID != IDENTIFIER_3DS)
-			{
-				Log.d(Min3d.TAG, "Not a valid .3DS file!");
-				return;
-			}
-			else
-			{
-				Log.d(Min3d.TAG, "Found a valid .3DS file");
-			}
-			while(!endReached)
-			{
-				readChunk(stream);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        try {
+            readHeader(stream);
+            if(chunkID != IDENTIFIER_3DS)
+            {
+                Log.d(Min3d.TAG, "Not a valid .3DS file!");
+                return;
+            }
+            else
+            {
+                Log.d(Min3d.TAG, "Found a valid .3DS file");
+            }
+            while(!endReached)
+            {
+                readChunk(stream);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		Log.d(Min3d.TAG, "End parsing object");
-	}
+        Log.d(Min3d.TAG, "End parsing object");
+    }
 
-	private void readHeader(InputStream stream) throws IOException {
-		chunkID = readShort(stream);
-		chunkEndOffset = readInt(stream);
-		endReached = chunkID < 0;
-	}
+    private void readHeader(InputStream stream) throws IOException {
+        chunkID = readShort(stream);
+        chunkEndOffset = readInt(stream);
+        endReached = chunkID < 0;
+    }
 
-	private void readChunk(InputStream stream) throws IOException {
-		readHeader(stream);
+    private void readChunk(InputStream stream) throws IOException {
+        readHeader(stream);
 
-		switch (chunkID) {
-		case MESH_BLOCK:
-			break;
-		case OBJECT_BLOCK:
-			currentObjName = readString(stream);
-			Log.d(Min3d.TAG, "Parsing object " + currentObjName);
-			break;
-		case TRIMESH:
-			if(firstObject)
-			{
-				co.name = currentObjName;
-				firstObject = false;
-			}
-			else
-			{
-				co = new ParseObjectData();
-				co.name = currentObjName;
-				parseObjects.add(co);
-			}
-			break;
-		case VERTICES:
-			readVertices(stream);
-			break;
-		case FACES:
-			readFaces(stream);
-			break;
-		case TEXCOORD:
-			readTexCoords(stream);
-			break;
-		case TEX_NAME:
-			currentMaterialKey = readString(stream);
-			break;
-		case TEX_FILENAME:
-			String fileName = readString(stream);
-			StringBuffer texture = new StringBuffer(packageID);
-			texture.append(":drawable/");
+        switch (chunkID) {
+        case MESH_BLOCK:
+            break;
+        case OBJECT_BLOCK:
+            currentObjName = readString(stream);
+            Log.d(Min3d.TAG, "Parsing object " + currentObjName);
+            break;
+        case TRIMESH:
+            if(firstObject)
+            {
+                co.name = currentObjName;
+                firstObject = false;
+            }
+            else
+            {
+                co = new ParseObjectData();
+                co.name = currentObjName;
+                parseObjects.add(co);
+            }
+            break;
+        case VERTICES:
+            readVertices(stream);
+            break;
+        case FACES:
+            readFaces(stream);
+            break;
+        case TEXCOORD:
+            readTexCoords(stream);
+            break;
+        case TEX_NAME:
+            currentMaterialKey = readString(stream);
+            break;
+        case TEX_FILENAME:
+            String fileName = readString(stream);
+            StringBuffer texture = new StringBuffer(packageID);
+            texture.append(":drawable/");
 
-			StringBuffer textureName = new StringBuffer(fileName.toLowerCase());
-			int dotIndex = textureName.lastIndexOf(".");
-			if (dotIndex > -1)
-				texture.append(textureName.substring(0, dotIndex));
-			else
-				texture.append(textureName);
+            StringBuffer textureName = new StringBuffer(fileName.toLowerCase());
+            int dotIndex = textureName.lastIndexOf(".");
+            if (dotIndex > -1)
+                texture.append(textureName.substring(0, dotIndex));
+            else
+                texture.append(textureName);
 
-			textureAtlas.addBitmapAsset(new BitmapAsset(currentMaterialKey, texture.toString()));
-			break;
-		case TRI_MATERIAL:
-			String materialName = readString(stream);
-			int numFaces = readShort(stream);
+            textureAtlas.addBitmapAsset(new BitmapAsset(currentMaterialKey, texture.toString()));
+            break;
+        case TRI_MATERIAL:
+            String materialName = readString(stream);
+            int numFaces = readShort(stream);
 
-			for(int i=0; i<numFaces; i++)
-			{
-				int faceIndex = readShort(stream);
-				co.faces.get(faceIndex).materialKey = materialName;
-			}
-			break;
-		case MATERIAL:
-			break;
-		case TEX_MAP:
-			break;
-		default:
-			skipRead(stream);
-		}
-	}
+            for(int i=0; i<numFaces; i++)
+            {
+                int faceIndex = readShort(stream);
+                co.faces.get(faceIndex).materialKey = materialName;
+            }
+            break;
+        case MATERIAL:
+            break;
+        case TEX_MAP:
+            break;
+        default:
+            skipRead(stream);
+        }
+    }
 
-	private void skipRead(InputStream stream) throws IOException
-	{
-		for(int i=0; (i<chunkEndOffset - 6) && !endReached; i++)
-		{
-			endReached = stream.read() < 0;
-		}
-	}
+    private void skipRead(InputStream stream) throws IOException
+    {
+        for(int i=0; (i<chunkEndOffset - 6) && !endReached; i++)
+        {
+            endReached = stream.read() < 0;
+        }
+    }
 
-	private void readVertices(InputStream buffer) throws IOException {
+    private void readVertices(InputStream buffer) throws IOException {
         float x, y, z, tmpy;
         int numVertices = readShort(buffer);
 
@@ -167,7 +167,7 @@ public class Max3DSParser extends AParser implements IParser {
         }
     }
 
-	private void readFaces(InputStream buffer) throws IOException {
+    private void readFaces(InputStream buffer) throws IOException {
         int triangles = readShort(buffer);
         for (int i = 0; i < triangles; i++) {
             int[] vertexIDs = new int[3];
@@ -187,7 +187,7 @@ public class Max3DSParser extends AParser implements IParser {
         }
     }
 
-	private void readTexCoords(InputStream buffer) throws IOException {
+    private void readTexCoords(InputStream buffer) throws IOException {
         int numVertices = readShort(buffer);
 
         for (int i = 0; i < numVertices; i++) {
@@ -198,33 +198,33 @@ public class Max3DSParser extends AParser implements IParser {
         }
     }
 
-	public Object3dContainer getParsedObject() {
-		Log.d(Min3d.TAG, "Start object creation");
-		Object3dContainer obj = new Object3dContainer(0, 0);
-		int numObjects = parseObjects.size();
-		Bitmap texture = null;
+    public Object3dContainer getParsedObject() {
+        Log.d(Min3d.TAG, "Start object creation");
+        Object3dContainer obj = new Object3dContainer(0, 0);
+        int numObjects = parseObjects.size();
+        Bitmap texture = null;
 
-		if(textureAtlas.hasBitmaps())
-		{
-			textureAtlas.generate();
-			texture = textureAtlas.getBitmap();
-			Shared.textureManager().addTextureId(texture, textureAtlas.getId(), generateMipMap);
-		}
+        if(textureAtlas.hasBitmaps())
+        {
+            textureAtlas.generate();
+            texture = textureAtlas.getBitmap();
+            Shared.textureManager().addTextureId(texture, textureAtlas.getId(), generateMipMap);
+        }
 
-		for (int i = 0; i < numObjects; i++) {
-			ParseObjectData o = parseObjects.get(i);
-			Log.d(Min3d.TAG, "Creating object " + o.name);
-			obj.addChild(o.getParsedObject(materialMap, textureAtlas));
-		}
+        for (int i = 0; i < numObjects; i++) {
+            ParseObjectData o = parseObjects.get(i);
+            Log.d(Min3d.TAG, "Creating object " + o.name);
+            obj.addChild(o.getParsedObject(materialMap, textureAtlas));
+        }
 
-		if(textureAtlas.hasBitmaps())
-		{
-			if(texture != null) texture.recycle();
-		}
-		Log.d(Min3d.TAG, "Object creation finished");
+        if(textureAtlas.hasBitmaps())
+        {
+            if(texture != null) texture.recycle();
+        }
+        Log.d(Min3d.TAG, "Object creation finished");
 
-		super.cleanup();
+        super.cleanup();
 
-		return obj;
-	}
+        return obj;
+    }
 }

@@ -9,32 +9,32 @@ import android.content.res.Resources;
  *
  */
 public class Parser {
-	/**
-	 * Parser types enum
-	 * @author dennis.ippel
-	 *
-	 */
-	public static enum Type { OBJ, MAX_3DS, MD2 };
+    /**
+     * Parser types enum
+     * @author dennis.ippel
+     *
+     */
+    public static enum Type { OBJ, MAX_3DS, MD2 };
 
-	/**
-	 * Create a parser of the specified type.
-	 * @param type
-	 * @param resources
-	 * @param resourceID
-	 * @return
-	 */
-	public static IParser createParser(Type type, Resources resources, String resourceID, boolean generateMipMap)
-	{
-		switch(type)
-		{
-			case OBJ:
-				return new ObjParser(resources, resourceID, generateMipMap);
-			case MAX_3DS:
-				return new Max3DSParser(resources, resourceID, generateMipMap);
-			case MD2:
-				return new MD2Parser(resources, resourceID, generateMipMap);
-		}
+    /**
+     * Create a parser of the specified type.
+     * @param type
+     * @param resources
+     * @param resourceID
+     * @return
+     */
+    public static IParser createParser(Type type, Resources resources, String resourceID, boolean generateMipMap)
+    {
+        switch(type)
+        {
+            case OBJ:
+                return new ObjParser(resources, resourceID, generateMipMap);
+            case MAX_3DS:
+                return new Max3DSParser(resources, resourceID, generateMipMap);
+            case MD2:
+                return new MD2Parser(resources, resourceID, generateMipMap);
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

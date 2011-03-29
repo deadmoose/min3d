@@ -13,190 +13,190 @@ import min3d.interfaces.IDirtyParent;
  */
 public class Color4Managed extends AbstractDirtyManaged
 {
-	private short _r;
-	private short _g;
-	private short _b;
-	private short _a;
+    private short _r;
+    private short _g;
+    private short _b;
+    private short _a;
 
-	private FloatBuffer _fb;
+    private FloatBuffer _fb;
 
 
-	public Color4Managed(IDirtyParent $parent)
-	{
-		super($parent);
+    public Color4Managed(IDirtyParent $parent)
+    {
+        super($parent);
 
-		_r = (short)255;
-		_g = (short)255;
-		_b = (short)255;
-		_a = (short)255;
+        _r = (short)255;
+        _g = (short)255;
+        _b = (short)255;
+        _a = (short)255;
 
-		_fb = this.toFloatBuffer();
+        _fb = this.toFloatBuffer();
 
-		setDirtyFlag();
+        setDirtyFlag();
 
-	}
+    }
 
-	public Color4Managed(short $r, short $g, short $b, short $a, IDirtyParent $parent)
-	{
-		super($parent);
+    public Color4Managed(short $r, short $g, short $b, short $a, IDirtyParent $parent)
+    {
+        super($parent);
 
-		_r = $r;
-		_g = $g;
-		_b = $b;
-		_a = $a;
+        _r = $r;
+        _g = $g;
+        _b = $b;
+        _a = $a;
 
-		_fb = this.toFloatBuffer();
+        _fb = this.toFloatBuffer();
 
-		setDirtyFlag();
-	}
+        setDirtyFlag();
+    }
 
-	/**
-	 * Convenience method which casts the int arguments to short for you.
-	 */
-	public Color4Managed(int $r, int $g, int $b, int $a, IDirtyParent $parent)
-	{
-		super($parent);
+    /**
+     * Convenience method which casts the int arguments to short for you.
+     */
+    public Color4Managed(int $r, int $g, int $b, int $a, IDirtyParent $parent)
+    {
+        super($parent);
 
-		_r = (short)$r;
-		_g = (short)$g;
-		_b = (short)$b;
-		_a = (short)$a;
+        _r = (short)$r;
+        _g = (short)$g;
+        _b = (short)$b;
+        _a = (short)$a;
 
-		_fb = this.toFloatBuffer();
+        _fb = this.toFloatBuffer();
 
-		setDirtyFlag();
-	}
+        setDirtyFlag();
+    }
 
-	/**
-	 *  Convenience method to set all properties in one line.
-	 */
-	public void setAll(short $r, short $g, short $b, short $a)
-	{
-		_r = $r;
-		_g = $g;
-		_b = $b;
-		_a = $a;
+    /**
+     *  Convenience method to set all properties in one line.
+     */
+    public void setAll(short $r, short $g, short $b, short $a)
+    {
+        _r = $r;
+        _g = $g;
+        _b = $b;
+        _a = $a;
 
-		setDirtyFlag();
-	}
+        setDirtyFlag();
+    }
 
-	public void setAll(int $r, int $g, int $b, int $a)
-	{
-		setAll((short)$r, (short)$g, (short)$b, (short)$a);
-	}
+    public void setAll(int $r, int $g, int $b, int $a)
+    {
+        setAll((short)$r, (short)$g, (short)$b, (short)$a);
+    }
 
-	public Color4 toColor4()
-	{
-		return new Color4(_r,_g,_b,_a);
-	}
+    public Color4 toColor4()
+    {
+        return new Color4(_r,_g,_b,_a);
+    }
 
-	/**
-	 * Convenience method to set all properties off one 32-bit rgba value
-	 */
-	public void setAll(long $argb32)
-	{
-		_a = (short) (($argb32 >> 24) & 0x000000FF);
-		_r = (short) (($argb32 >> 16) & 0x000000FF);
-		_g = (short) (($argb32 >> 8) & 0x000000FF);
-		_b = (short) (($argb32) & 0x000000FF);
+    /**
+     * Convenience method to set all properties off one 32-bit rgba value
+     */
+    public void setAll(long $argb32)
+    {
+        _a = (short) (($argb32 >> 24) & 0x000000FF);
+        _r = (short) (($argb32 >> 16) & 0x000000FF);
+        _g = (short) (($argb32 >> 8) & 0x000000FF);
+        _b = (short) (($argb32) & 0x000000FF);
 
-		setDirtyFlag();
-	}
+        setDirtyFlag();
+    }
 
-	public void setAll(Color4 $color)
-	{
-		setAll($color.r, $color.g, $color.b, $color.a);
-	}
+    public void setAll(Color4 $color)
+    {
+        setAll($color.r, $color.g, $color.b, $color.a);
+    }
 
-	public short r()
-	{
-		return _r;
-	}
-	public void r(short $r)
-	{
-		_r = $r;
-		setDirtyFlag();
-	}
+    public short r()
+    {
+        return _r;
+    }
+    public void r(short $r)
+    {
+        _r = $r;
+        setDirtyFlag();
+    }
 
-	public short g()
-	{
-		return _g;
-	}
-	public void g(short $g)
-	{
-		_g = $g;
-		setDirtyFlag();
-	}
+    public short g()
+    {
+        return _g;
+    }
+    public void g(short $g)
+    {
+        _g = $g;
+        setDirtyFlag();
+    }
 
-	public short b()
-	{
-		return _b;
-	}
-	public void b(short $b)
-	{
-		_b = $b;
-		setDirtyFlag();
-	}
+    public short b()
+    {
+        return _b;
+    }
+    public void b(short $b)
+    {
+        _b = $b;
+        setDirtyFlag();
+    }
 
-	public short a()
-	{
-		return _a;
-	}
-	public void a(short $a)
-	{
-		_a = $a;
-		setDirtyFlag();
-	}
+    public short a()
+    {
+        return _a;
+    }
+    public void a(short $a)
+    {
+        _a = $a;
+        setDirtyFlag();
+    }
 
-	/**
-	 * Convenience method
-	 */
-	public FloatBuffer toFloatBuffer()
-	{
-		return Utils.makeFloatBuffer4(
-			r() / 255f,
-			g() / 255f,
-			b() / 255f,
-			a() / 255f
-		);
-	}
+    /**
+     * Convenience method
+     */
+    public FloatBuffer toFloatBuffer()
+    {
+        return Utils.makeFloatBuffer4(
+            r() / 255f,
+            g() / 255f,
+            b() / 255f,
+            a() / 255f
+        );
+    }
 
-	/**
-	 * Convenience method
-	 */
-	public void toFloatBuffer(FloatBuffer $floatBuffer)
-	{
-		$floatBuffer.position(0);
-		$floatBuffer.put(r() / 255f);
-		$floatBuffer.put(g() / 255f);
-		$floatBuffer.put(b() / 255f);
-		$floatBuffer.put(a() / 255f);
-		$floatBuffer.position(0);
-	}
+    /**
+     * Convenience method
+     */
+    public void toFloatBuffer(FloatBuffer $floatBuffer)
+    {
+        $floatBuffer.position(0);
+        $floatBuffer.put(r() / 255f);
+        $floatBuffer.put(g() / 255f);
+        $floatBuffer.put(b() / 255f);
+        $floatBuffer.put(a() / 255f);
+        $floatBuffer.position(0);
+    }
 
-	//
+    //
 
-	/**
-	 * Used by Renderer
-	 */
-	public FloatBuffer floatBuffer()
-	{
-		return _fb;
-	}
+    /**
+     * Used by Renderer
+     */
+    public FloatBuffer floatBuffer()
+    {
+        return _fb;
+    }
 
-	/**
-	 * Used by Renderer
-	 */
-	public void commitToFloatBuffer()
-	{
-		this.toFloatBuffer(_fb);
-	}
+    /**
+     * Used by Renderer
+     */
+    public void commitToFloatBuffer()
+    {
+        this.toFloatBuffer(_fb);
+    }
 
-	@Override
-	public String toString()
-	{
-		return "r:" + _r + ", g:" + _g + ", b:" + _b + ", a:" + _a;
-	}
+    @Override
+    public String toString()
+    {
+        return "r:" + _r + ", g:" + _g + ", b:" + _b + ", a:" + _a;
+    }
 
 
 }
