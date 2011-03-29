@@ -12,19 +12,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 
-public class Utils 
+public class Utils
 {
 	public static final float DEG = (float)(Math.PI / 180f);
-		
-	private static final int BYTES_PER_FLOAT = 4;  
-	
+
+	private static final int BYTES_PER_FLOAT = 4;
+
 	/**
-	 * Convenience method to create a Bitmap given a Context's drawable resource ID. 
+	 * Convenience method to create a Bitmap given a Context's drawable resource ID.
 	 */
 	public static Bitmap makeBitmapFromResourceId(Context $context, int $id)
 	{
 		InputStream is = $context.getResources().openRawResource($id);
-		
+
 		Bitmap bitmap;
 		try {
 		   bitmap = BitmapFactory.decodeStream(is);
@@ -35,18 +35,18 @@ public class Utils
 		      // Ignore.
 		   }
 		}
-	      
+
 		return bitmap;
 	}
-	
+
 	/**
-	 * Convenience method to create a Bitmap given a drawable resource ID from the application Context. 
+	 * Convenience method to create a Bitmap given a drawable resource ID from the application Context.
 	 */
 	public static Bitmap makeBitmapFromResourceId(int $id)
 	{
 		return makeBitmapFromResourceId(Shared.context(), $id);
 	}
-	
+
 	/**
 	 * Add two triangles to the Object3d's faces using the supplied indices
 	 */
@@ -55,7 +55,7 @@ public class Utils
 		$o.faces().add((short)$upperLeft, (short)$lowerRight, (short)$upperRight);
 		$o.faces().add((short)$upperLeft, (short)$lowerLeft, (short)$lowerRight);
 	}
-	
+
 	public static FloatBuffer makeFloatBuffer3(float $a, float $b, float $c)
 	{
 		ByteBuffer b = ByteBuffer.allocateDirect(3 * BYTES_PER_FLOAT);

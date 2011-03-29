@@ -9,16 +9,16 @@ import min3d.Utils;
 import min3d.interfaces.IDirtyParent;
 
 /**
- * 'Managed' version of Number3d VO 
+ * 'Managed' version of Number3d VO
  */
-public class Number3dManaged extends AbstractDirtyManaged 
+public class Number3dManaged extends AbstractDirtyManaged
 {
 	private float _x;
 	private float _y;
 	private float _z;
-	
+
 	private FloatBuffer _fb;
-	
+
 	public Number3dManaged(IDirtyParent $parent)
 	{
 		super($parent);
@@ -28,7 +28,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 		_fb = this.toFloatBuffer();
 		setDirtyFlag();
 	}
-	
+
 	public Number3dManaged(float $x, float $y, float $z, IDirtyParent $parent)
 	{
 		super($parent);
@@ -38,7 +38,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 		_fb = this.toFloatBuffer();
 		setDirtyFlag();
 	}
-	
+
 	public float getX() {
 		return _x;
 	}
@@ -73,7 +73,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 		_z = $z;
 		setDirtyFlag();
 	}
-	
+
 	public void setAllFrom(Number3d $n)
 	{
 		_x = $n.x;
@@ -94,13 +94,13 @@ public class Number3dManaged extends AbstractDirtyManaged
 	{
 		return new Number3d(_x,_y,_z);
 	}
-	
+
 	@Override
 	public String toString()
 	{
-		return _x + "," + _y + "," + _z; 
+		return _x + "," + _y + "," + _z;
 	}
-	
+
 	/**
 	 * Convenience method
 	 */
@@ -108,7 +108,7 @@ public class Number3dManaged extends AbstractDirtyManaged
 	{
 		return Utils.makeFloatBuffer3(_x, _y, _z);
 	}
-	
+
 	/**
 	 * Convenience method
 	 */

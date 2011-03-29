@@ -5,7 +5,7 @@ import min3d.core.Object3dContainer;
 
 /**
  * Interface for 3D object parsers
- * 
+ *
  * @author dennis.ippel
  *
  */

@@ -2,7 +2,7 @@ package min3d.vos;
 
 import min3d.interfaces.IDirtyParent;
 
-public class FloatManaged extends AbstractDirtyManaged 
+public class FloatManaged extends AbstractDirtyManaged
 {
 	private float _f;
 
@@ -11,7 +11,7 @@ public class FloatManaged extends AbstractDirtyManaged
 		super($parent);
 		set($value);
 	}
-	
+
 	public float get()
 	{
 		return _f;

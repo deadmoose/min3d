@@ -2,7 +2,7 @@ package min3d.vos;
 
 import min3d.interfaces.IDirtyParent;
 
-public class BooleanManaged extends AbstractDirtyManaged 
+public class BooleanManaged extends AbstractDirtyManaged
 {
 	private boolean _b;
 
@@ -11,7 +11,7 @@ public class BooleanManaged extends AbstractDirtyManaged
 		super($parent);
 		set($value);
 	}
-	
+
 	public boolean get()
 	{
 		return _b;

@@ -41,9 +41,9 @@ public class Max3DSParser extends AParser implements IParser {
 		InputStream fileIn = resources.openRawResource(resources.getIdentifier(
 				resourceID, null, null));
 		BufferedInputStream stream = new BufferedInputStream(fileIn);
-		
+
 		Log.d(Min3d.TAG, "Start parsing object");
-		
+
 		co = new ParseObjectData();
 		parseObjects.add(co);
 
@@ -65,7 +65,7 @@ public class Max3DSParser extends AParser implements IParser {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		Log.d(Min3d.TAG, "End parsing object");
 	}
 
@@ -121,7 +121,7 @@ public class Max3DSParser extends AParser implements IParser {
 				texture.append(textureName.substring(0, dotIndex));
 			else
 				texture.append(textureName);
-			
+
 			textureAtlas.addBitmapAsset(new BitmapAsset(currentMaterialKey, texture.toString()));
 			break;
 		case TRI_MATERIAL:
@@ -142,7 +142,7 @@ public class Max3DSParser extends AParser implements IParser {
 			skipRead(stream);
 		}
 	}
-	
+
 	private void skipRead(InputStream stream) throws IOException
 	{
 		for(int i=0; (i<chunkEndOffset - 6) && !endReached; i++)
@@ -150,7 +150,7 @@ public class Max3DSParser extends AParser implements IParser {
 			endReached = stream.read() < 0;
 		}
 	}
-	
+
 	private void readVertices(InputStream buffer) throws IOException {
         float x, y, z, tmpy;
         int numVertices = readShort(buffer);
@@ -162,11 +162,11 @@ public class Max3DSParser extends AParser implements IParser {
             tmpy = y;
             y = z;
             z = -tmpy;
-            
+
             co.vertices.add(new Number3d(x, y, z));
         }
     }
-	
+
 	private void readFaces(InputStream buffer) throws IOException {
         int triangles = readShort(buffer);
         for (int i = 0; i < triangles; i++) {
@@ -182,11 +182,11 @@ public class Max3DSParser extends AParser implements IParser {
             face.hasuv = true;
             co.numFaces++;
             co.faces.add(face);
-            
+
             co.calculateFaceNormal(face);
         }
     }
-	
+
 	private void readTexCoords(InputStream buffer) throws IOException {
         int numVertices = readShort(buffer);
 
@@ -197,7 +197,7 @@ public class Max3DSParser extends AParser implements IParser {
             co.texCoords.add(uv);
         }
     }
-	
+
 	public Object3dContainer getParsedObject() {
 		Log.d(Min3d.TAG, "Start object creation");
 		Object3dContainer obj = new Object3dContainer(0, 0);
@@ -210,21 +210,21 @@ public class Max3DSParser extends AParser implements IParser {
 			texture = textureAtlas.getBitmap();
 			Shared.textureManager().addTextureId(texture, textureAtlas.getId(), generateMipMap);
 		}
-		
+
 		for (int i = 0; i < numObjects; i++) {
 			ParseObjectData o = parseObjects.get(i);
 			Log.d(Min3d.TAG, "Creating object " + o.name);
 			obj.addChild(o.getParsedObject(materialMap, textureAtlas));
 		}
-		
+
 		if(textureAtlas.hasBitmaps())
 		{
 			if(texture != null) texture.recycle();
 		}
 		Log.d(Min3d.TAG, "Object creation finished");
-		
+
 		super.cleanup();
-		
+
 		return obj;
 	}
 }

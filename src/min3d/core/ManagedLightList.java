@@ -8,7 +8,7 @@ import android.util.Log;
 import min3d.Min3d;
 import min3d.vos.Light;
 
-public class ManagedLightList 
+public class ManagedLightList
 {
 	// List of Light objects
 	private ArrayList<Light> _lights;
@@ -29,12 +29,12 @@ public class ManagedLightList
 	// "GL index" here means an int from 0 to 8 that corresponds to
 	// the int constants GL10.GL_LIGHT0 to GL10.GL_LIGHT7
 
-	public ManagedLightList() 
+	public ManagedLightList()
 	{
 		reset();
 	}
 
-	public void reset() 
+	public void reset()
 	{
 		Log.i(Min3d.TAG, "ManagedLightList.reset()");
 
@@ -55,7 +55,7 @@ public class ManagedLightList
 		_lights = new ArrayList<Light>();
 	}
 
-	public boolean add(Light $light) 
+	public boolean add(Light $light)
 	{
 		if (_lights.contains($light)) {
 			return false;
@@ -72,35 +72,35 @@ public class ManagedLightList
 
 		_glIndexEnabled[glIndex] = true;
 		_glIndexEnabledDirty[glIndex] = true;
-		
+
 		return result;
 	}
 
-	public void remove(Light $light) 
+	public void remove(Light $light)
 	{
 		boolean result = _lights.remove($light);
 
 		if (!result) return;
 
 		int glIndex = _lightToGlIndex.get($light);
-		
+
 		_availGlIndices.add(glIndex);
 
 		_glIndexEnabled[glIndex] = false;
 		_glIndexEnabledDirty[glIndex] = true;
 	}
 
-	public void removeAll() 
+	public void removeAll()
 	{
 		reset();
 	}
 
-	public int size() 
+	public int size()
 	{
 		return _lights.size();
 	}
 
-	public Light get(int $index) 
+	public Light get(int $index)
 	{
 		return _lights.get($index);
 	}
@@ -122,7 +122,7 @@ public class ManagedLightList
 	 */
 	Light getLightByGlIndex(int $glIndex) /* package-private */
 	{
-		for (int i = 0; i < _lights.size(); i++) 
+		for (int i = 0; i < _lights.size(); i++)
 		{
 			Light light = _lights.get(i);
 			if (_lightToGlIndex.get(light) == $glIndex)

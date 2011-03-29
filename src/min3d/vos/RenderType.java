@@ -2,7 +2,7 @@ package min3d.vos;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public enum RenderType 
+public enum RenderType
 {
 	POINTS (GL10.GL_POINTS),
 	LINES (GL10.GL_LINES),
@@ -11,14 +11,14 @@ public enum RenderType
 	TRIANGLES (GL10.GL_TRIANGLES),
 	TRIANGLE_STRIP (GL10.GL_TRIANGLE_STRIP),
 	TRIANGLE_FAN (GL10.GL_TRIANGLE_FAN);
-	
+
 	private final int _glValue;
-	
+
 	private RenderType(int $glValue)
 	{
 		_glValue = $glValue;
 	}
-	
+
 	public int glValue()
 	{
 		return _glValue;

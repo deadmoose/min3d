@@ -24,7 +24,7 @@ import android.util.Log;
 
 /**
  * Abstract parser class with basic parsing functionality.
- * 
+ *
  * @author dennis.ippel
  *
  */
@@ -42,7 +42,7 @@ public abstract class AParser implements IParser {
 	protected ArrayList<Number3d> normals;
 	protected boolean generateMipMap;
 	protected HashMap<String, Material> materialMap;
-	
+
 	public AParser()
 	{
 		vertices = new ArrayList<Number3d>();
@@ -53,7 +53,7 @@ public abstract class AParser implements IParser {
 		firstObject = true;
 		materialMap = new HashMap<String, Material>();
 	}
-	
+
 	public AParser(Resources resources, String resourceID, Boolean generateMipMap)
 	{
 		this();
@@ -63,7 +63,7 @@ public abstract class AParser implements IParser {
 			this.packageID = resourceID.split(":")[0];
 		this.generateMipMap = generateMipMap;
 	}
-	
+
 	protected void cleanup()
 	{
 		parseObjects.clear();
@@ -72,16 +72,16 @@ public abstract class AParser implements IParser {
 		texCoords.clear();
 		normals.clear();
 	}
-	
+
 	/**
 	 * Override this in the concrete parser
 	 */
 	public Object3dContainer getParsedObject() {
 		return null;
 	}
-	
+
 	/**
-	 * Override this in the concrete parser if applicable 
+	 * Override this in the concrete parser if applicable
 	 */
 	public AnimationObject3d getParsedAnimationObject() {
 		return null;
@@ -113,12 +113,12 @@ public abstract class AParser implements IParser {
 	 */
 	public void parse() {
 	}
-	
+
 
 	/**
 	 * Contains texture information. UV offsets and scaling is stored here.
 	 * This is used with texture atlases.
-	 * 
+	 *
 	 * @author dennis.ippel
 	 *
 	 */
@@ -153,7 +153,7 @@ public abstract class AParser implements IParser {
 		 */
 		public float vScale;
 		public boolean useForAtlasDimensions;
-		
+
 		/**
 		 * Creates a new BitmapAsset object
 		 * @param bitmap
@@ -166,13 +166,13 @@ public abstract class AParser implements IParser {
 			useForAtlasDimensions = false;
 		}
 	}
-	
+
 	/**
 	 * When a model contains per-face textures a texture atlas is created. This
 	 * combines multiple textures into one and re-calculates the UV coordinates.
-	 * 
+	 *
 	 * @author dennis.ippel
-	 * 
+	 *
 	 */
 	protected class TextureAtlas {
 		/**
@@ -194,7 +194,7 @@ public abstract class AParser implements IParser {
 
 		/**
 		 * Adds a bitmap to the atlas
-		 * 
+		 *
 		 * @param bitmap
 		 */
 		public void addBitmapAsset(BitmapAsset ba) {
@@ -210,7 +210,7 @@ public abstract class AParser implements IParser {
 				}
 
 				Log.d(Min3d.TAG, "Adding texture " + ba.resourceID);
-				
+
 				Bitmap b = Utils.makeBitmapFromResourceId(bmResourceID);
 				ba.useForAtlasDimensions = true;
 				ba.bitmap = b;
@@ -222,17 +222,17 @@ public abstract class AParser implements IParser {
 
 			bitmaps.add(ba);
 		}
-		
+
 		public BitmapAsset getBitmapAssetByResourceID(String resourceID)
 		{
 			int numBitmaps = bitmaps.size();
-			
+
 			for(int i=0; i<numBitmaps; i++)
 			{
 				if(bitmaps.get(i).resourceID.equals(resourceID))
 					return bitmaps.get(i);
 			}
-			
+
 			return null;
 		}
 
@@ -243,7 +243,7 @@ public abstract class AParser implements IParser {
 			Collections.sort(bitmaps, new BitmapHeightComparer());
 
 			if(bitmaps.size() == 0) return;
-			
+
 			BitmapAsset largestBitmap = bitmaps.get(0);
 			int totalWidth = 0;
 			int numBitmaps = bitmaps.size();
@@ -260,23 +260,23 @@ public abstract class AParser implements IParser {
 
 			for (int i = 0; i < numBitmaps; i++) {
 				BitmapAsset ba = bitmaps.get(i);
-				BitmapAsset existingBA = getBitmapAssetByResourceID(ba.resourceID);				
-				
+				BitmapAsset existingBA = getBitmapAssetByResourceID(ba.resourceID);
+
 				if(ba.useForAtlasDimensions)
 				{
 					Bitmap b = ba.bitmap;
 					int w = b.getWidth();
 					int h = b.getHeight();
 					int[] pixels = new int[w * h];
-					
+
 					b.getPixels(pixels, 0, w, 0, 0, w, h);
 					atlas.setPixels(pixels, 0, w, uOffset, vOffset, w, h);
-					
+
 					ba.uOffset = (float) uOffset / totalWidth;
 					ba.vOffset = 0;
 					ba.uScale = (float) w / (float) totalWidth;
 					ba.vScale = (float) h / (float) largestBitmap.bitmap.getHeight();
-					
+
 					uOffset += w;
 					b.recycle();
 				}
@@ -308,7 +308,7 @@ public abstract class AParser implements IParser {
 
 		/**
 		 * Returns the generated texture atlas bitmap
-		 * 
+		 *
 		 * @return
 		 */
 		public Bitmap getBitmap() {
@@ -317,7 +317,7 @@ public abstract class AParser implements IParser {
 
 		/**
 		 * Indicates whether bitmaps have been added to the atlas.
-		 * 
+		 *
 		 * @return
 		 */
 		public boolean hasBitmaps() {
@@ -326,9 +326,9 @@ public abstract class AParser implements IParser {
 
 		/**
 		 * Compares the height of two BitmapAsset objects.
-		 * 
+		 *
 		 * @author dennis.ippel
-		 * 
+		 *
 		 */
 		private class BitmapHeightComparer implements Comparator<BitmapAsset> {
 			public int compare(BitmapAsset b1, BitmapAsset b2) {
@@ -344,10 +344,10 @@ public abstract class AParser implements IParser {
 				}
 			}
 		}
-		
+
 		/**
 		 * Returns a bitmap asset with a specified name.
-		 * 
+		 *
 		 * @param materialKey
 		 * @return
 		 */
@@ -361,7 +361,7 @@ public abstract class AParser implements IParser {
 
 			return null;
 		}
-		
+
 		public void cleanup()
 		{
 			int numBitmaps = bitmaps.size();
@@ -369,7 +369,7 @@ public abstract class AParser implements IParser {
 			for (int i = 0; i < numBitmaps; i++) {
 				bitmaps.get(i).bitmap.recycle();
 			}
-			
+
 			if(atlas != null) atlas.recycle();
 			bitmaps.clear();
 			vertices.clear();
@@ -378,14 +378,14 @@ public abstract class AParser implements IParser {
 		}
 
 		public void setId(String newAtlasId) {
-			atlasId = newAtlasId;			
+			atlasId = newAtlasId;
 		}
 
 		public String getId() {
 			return atlasId;
 		}
 	}
-	
+
 	protected class Material {
 		public String name;
 		public String diffuseTextureMap;

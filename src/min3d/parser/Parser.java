@@ -15,7 +15,7 @@ public class Parser {
 	 *
 	 */
 	public static enum Type { OBJ, MAX_3DS, MD2 };
-	
+
 	/**
 	 * Create a parser of the specified type.
 	 * @param type
@@ -34,7 +34,7 @@ public class Parser {
 			case MD2:
 				return new MD2Parser(resources, resourceID, generateMipMap);
 		}
-		
+
 		return null;
 	}
 }

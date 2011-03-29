@@ -10,11 +10,11 @@ import min3d.Min3d;
 import android.util.Log;
 
 /**
- * Simple static class holding values representing various capabilities of 
- * hardware's concrete OpenGL capabilities that are relevant to min3d's 
- * supported features. 
+ * Simple static class holding values representing various capabilities of
+ * hardware's concrete OpenGL capabilities that are relevant to min3d's
+ * supported features.
  */
-public class RenderCaps 
+public class RenderCaps
 {
 	private static float _openGlVersion;
 	private static boolean _isGl10Only;
@@ -29,13 +29,13 @@ public class RenderCaps
 	private static int _smoothLineSizeMin;
 	private static int _smoothLineSizeMax;
 	private static int _maxLights;
-	
-	
+
+
 	public static float openGlVersion()
 	{
 		return _openGlVersion;
 	}
-	
+
 	public static boolean isGl10Only()
 	{
 		return _isGl10Only;
@@ -45,54 +45,54 @@ public class RenderCaps
 	{
 		return _maxTextureUnits;
 	}
-	
+
 	public static int aliasedPointSizeMin()
 	{
 		return _aliasedPointSizeMin;
 	}
-	
+
 	public static int aliasedPointSizeMax()
 	{
 		return _aliasedPointSizeMax;
 	}
-	
+
 	public static int smoothPointSizeMin()
 	{
 		return _smoothPointSizeMin;
 	}
-	
+
 	public static int smoothPointSizeMax()
 	{
 		return _smoothPointSizeMax;
 	}
-	
+
 	public static int aliasedLineSizeMin()
 	{
 		return _aliasedLineSizeMin;
 	}
-	
+
 	public static int aliasedLineSizeMax()
 	{
 		return _aliasedLineSizeMax;
 	}
-	
+
 	public static int smoothLineSizeMin()
 	{
 		return _smoothLineSizeMin;
 	}
-	
+
 	public static int smoothLineSizeMax()
 	{
 		return _smoothLineSizeMax;
 	}
-	
+
 	public static int maxLights()
 	{
 		return _maxLights;
 	}
-	
+
 	/**
-	 * Called by Renderer.onSurfaceCreate() 
+	 * Called by Renderer.onSurfaceCreate()
 	 */
 	static void setRenderCaps(GL10 $gl) /* package-private*/
 	{
@@ -105,17 +105,17 @@ public class RenderCaps
 		else {
 			_openGlVersion = 1.0f;
 		}
-		
+
 	    // Max texture units
 		i = IntBuffer.allocate(1);
 		$gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_UNITS, i);
 		_maxTextureUnits = i.get(0);
-		
+
 	    // Max texture size
 		i = IntBuffer.allocate(1);
 		$gl.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, i);
 		_maxTextureSize = i.get(0);
-		
+
 		// Aliased point size range
 		i = IntBuffer.allocate(2);
 		$gl.glGetIntegerv(GL10.GL_ALIASED_POINT_SIZE_RANGE, i);
@@ -139,7 +139,7 @@ public class RenderCaps
 		$gl.glGetIntegerv(GL10.GL_SMOOTH_LINE_WIDTH_RANGE, i);
 		_smoothLineSizeMin = i.get(0);
 		_smoothLineSizeMax = i.get(1);
-		
+
 	    // Max lights
 		i = IntBuffer.allocate(1);
 		$gl.glGetIntegerv(GL10.GL_MAX_LIGHTS, i);

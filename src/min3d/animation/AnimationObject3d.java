@@ -14,7 +14,7 @@ public class AnimationObject3d extends Object3d {
 	private boolean isPlaying;
 	private float interpolation;
 	private float fps = 70;
-	private boolean updateVertices = true;	
+	private boolean updateVertices = true;
 	private String currentFrameName;
 	private int loopStartIndex;
 	private boolean loop = false;
@@ -28,7 +28,7 @@ public class AnimationObject3d extends Object3d {
 		this.interpolation = 0;
 		this._animationEnabled = true;
 	}
-	
+
 	public AnimationObject3d(Vertices $vertices, FacesBufferedList $faces, TextureList $textures, KeyFrame[] $frames)
 	{
 		super($vertices, $faces, $textures);
@@ -70,7 +70,7 @@ public class AnimationObject3d extends Object3d {
 		startTime = System.currentTimeMillis();
 		isPlaying = true;
 	}
-	
+
 	public void play(String name, boolean loop) {
 		this.loop = loop;
 		play(name);
@@ -91,7 +91,7 @@ public class AnimationObject3d extends Object3d {
 		currentTime = System.currentTimeMillis();
 		KeyFrame currentFrame = frames[currentFrameIndex];
 		KeyFrame nextFrame = frames[(currentFrameIndex + 1) % numFrames];
-		
+
 		if(currentFrameName != null && !currentFrameName.equals(currentFrame.getName()))
 		{
 			if(!loop)
@@ -100,13 +100,13 @@ public class AnimationObject3d extends Object3d {
 				currentFrameIndex = loopStartIndex;
 			return;
 		}
-		
+
 		float[] currentVerts = currentFrame.getVertices();
 		float[] nextVerts = nextFrame.getVertices();
 		float[] currentNormals = currentFrame.getNormals();
 		float[] nextNormals = nextFrame.getNormals();
 		int numVerts = currentVerts.length;
-		
+
 		float[] interPolatedVerts = new float[numVerts];
 		float[] interPolatedNormals = new float[numVerts];
 
@@ -120,10 +120,10 @@ public class AnimationObject3d extends Object3d {
 		}
 
 		interpolation += fps * (currentTime - startTime) / 1000;
-		
+
 		vertices().overwriteNormals(interPolatedNormals);
 		vertices().overwriteVerts(interPolatedVerts);
-	
+
 		if (interpolation > 1) {
 			interpolation = 0;
 			currentFrameIndex++;
@@ -131,7 +131,7 @@ public class AnimationObject3d extends Object3d {
 			if (currentFrameIndex >= numFrames)
 				currentFrameIndex = 0;
 		}
-		
+
 		startTime = System.currentTimeMillis();
 	}
 
@@ -142,13 +142,13 @@ public class AnimationObject3d extends Object3d {
 	public void setFps(float fps) {
 		this.fps = fps;
 	}
-	
+
 	public Object3d clone(boolean cloneData)
 	{
 		Vertices v = cloneData ? _vertices.clone() : _vertices;
 		FacesBufferedList f = cloneData ? _faces.clone() : _faces;
 		//KeyFrame[] fr = cloneData ? getClonedFrames() : frames;
-		
+
 		AnimationObject3d clone = new AnimationObject3d(v, f, _textures, frames);
 		clone.position().x = position().x;
 		clone.position().y = position().y;
@@ -163,17 +163,17 @@ public class AnimationObject3d extends Object3d {
 		clone.animationEnabled(animationEnabled());
 		return clone;
 	}
-	
+
 	public KeyFrame[] getClonedFrames()
 	{
 		int len = frames.length;
 		KeyFrame[] cl = new KeyFrame[len];
-		
+
 		for(int i=0; i<len; i++)
 		{
 			cl[i] = frames[i].clone();
 		}
-		
+
 		return cl;
 	}
 

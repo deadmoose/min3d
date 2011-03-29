@@ -24,9 +24,9 @@ public class ParseObjectData {
 	protected ArrayList<Number3d> vertices;
 	protected ArrayList<Uv> texCoords;
 	protected ArrayList<Number3d> normals;
-	
+
 	public String name;
-	
+
 	public ParseObjectData()
 	{
 		this.vertices = new ArrayList<Number3d>();
@@ -44,27 +44,27 @@ public class ParseObjectData {
 		this.name = "";
 		faces = new ArrayList<ParseObjectFace>();
 	}
-	
+
 	public AnimationObject3d getParsedObject(TextureAtlas textureAtlas, HashMap<String, Material> materialMap, KeyFrame[] frames)
 	{
 		AnimationObject3d obj = new AnimationObject3d(numFaces * 3, numFaces, frames.length);
 		obj.name(name);
 		obj.setFrames(frames);
-		
+
 		parseObject(obj, materialMap, textureAtlas);
 
 		return obj;
 	}
-	
+
 	public Object3d getParsedObject(HashMap<String, Material> materialMap, TextureAtlas textureAtlas) {
 		Object3d obj = new Object3d(numFaces * 3, numFaces);
 		obj.name(name);
-		
+
 		parseObject(obj, materialMap, textureAtlas);
-		
+
 		return obj;
 	}
-	
+
 	private void parseObject(Object3d obj, HashMap<String, Material> materialMap, TextureAtlas textureAtlas)
 	{
 		int numFaces = faces.size();
@@ -78,13 +78,13 @@ public class ParseObjectData {
 
 			for (int j = 0; j < face.faceLength; j++) {
 				Number3d newVertex = vertices.get(face.v[j]);
-				
+
 				Uv newUv = face.hasuv ? texCoords.get(face.uv[j]).clone()
 						: new Uv();
 				Number3d newNormal = face.hasn ? normals.get(face.n[j])
 						: new Number3d();
 				Material material = materialMap.get(face.materialKey);
-				
+
 				Color4 newColor = new Color4(255, 255, 0, 255);
 				if(material != null && material.diffuseColor != null)
 				{
@@ -121,29 +121,29 @@ public class ParseObjectData {
 
 		cleanup();
 	}
-	
+
 	public void calculateFaceNormal(ParseObjectFace face)
 	{
 		Number3d v1 = vertices.get(face.v[0]);
 		Number3d v2 = vertices.get(face.v[1]);
 		Number3d v3 = vertices.get(face.v[2]);
-		
+
 		Number3d vector1 = Number3d.subtract(v2, v1);
 		Number3d vector2 = Number3d.subtract(v3, v1);
-		
+
 		Number3d normal = new Number3d();
 		normal.x = (vector1.y * vector2.z) - (vector1.z * vector2.y);
 		normal.y = -((vector2.z * vector1.x) - (vector2.x * vector1.z));
 		normal.z = (vector1.x * vector2.y) - (vector1.y * vector2.x);
-		
+
 		double normFactor = Math.sqrt((normal.x * normal.x) + (normal.y * normal.y) + (normal.z * normal.z));
-		
+
 		normal.x /= normFactor;
 		normal.y /= normFactor;
 		normal.z /= normFactor;
-		
+
         normals.add(normal);
-        
+
         int index = normals.size() - 1;
         face.n = new int[3];
         face.n[0] = index;
@@ -152,7 +152,7 @@ public class ParseObjectData {
         face.hasn = true;
 	}
 
-	
+
 	protected void cleanup() {
 		faces.clear();
 	}

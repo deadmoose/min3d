@@ -21,13 +21,13 @@ import android.util.Log;
 
 /**
  * Parses Wavefront OBJ files. Basic version, this is still a work in progress!
- * 
+ *
  * TODO: proper error handling TODO: handle multiple objects TODO: handle groups
  * TODO: a lot more :-) *
- * 
+ *
  * @author dennis.ippel
  * @see http://en.wikipedia.org/wiki/Obj
- * 
+ *
  */
 
 public class ObjParser extends AParser implements IParser {
@@ -44,7 +44,7 @@ public class ObjParser extends AParser implements IParser {
 
 	/**
 	 * Creates a new OBJ parser instance
-	 * 
+	 *
 	 * @param resources
 	 * @param resourceID
 	 */
@@ -108,7 +108,7 @@ public class ObjParser extends AParser implements IParser {
 				} else if (type.equals(USE_MATERIAL)) {
 					currentMaterialKey = parts.nextToken();
 				} else if (type.equals(OBJECT)) {
-					String objName = parts.hasMoreTokens() ? parts.nextToken() : ""; 
+					String objName = parts.hasMoreTokens() ? parts.nextToken() : "";
 					if(firstObject)
 					{
 						Log.d(Min3d.TAG, "Create object " + objName);
@@ -144,21 +144,21 @@ public class ObjParser extends AParser implements IParser {
 			texture = textureAtlas.getBitmap();
 			Shared.textureManager().addTextureId(texture, textureAtlas.getId(), generateMipMap);
 		}
-		
+
 		for (int i = 0; i < numObjects; i++) {
 			ParseObjectData o = parseObjects.get(i);
 			Log.d(Min3d.TAG, "Creating object " + o.name);
 			obj.addChild(o.getParsedObject(materialMap, textureAtlas));
 		}
-		
+
 		if(textureAtlas.hasBitmaps())
 		{
 			if(texture != null) texture.recycle();
 		}
 		Log.d(Min3d.TAG, "Object creation finished");
-		
+
 		cleanup();
-		
+
 		return obj;
 	}
 
@@ -200,14 +200,14 @@ public class ObjParser extends AParser implements IParser {
 						materialMap.get(currentMaterial).diffuseTextureMap = parts[1];
 						StringBuffer texture = new StringBuffer(packageID);
 						texture.append(":drawable/");
-						
+
 						StringBuffer textureName = new StringBuffer(parts[1]);
 						dotIndex = textureName.lastIndexOf(".");
 						if (dotIndex > -1)
 							texture.append(textureName.substring(0, dotIndex));
 						else
 							texture.append(textureName);
-						
+
 						int bmResourceID = resources.getIdentifier(texture
 								.toString(), null, null);
 						Bitmap b = Utils.makeBitmapFromResourceId(bmResourceID);

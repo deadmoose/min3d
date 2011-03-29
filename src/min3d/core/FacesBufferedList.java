@@ -17,32 +17,32 @@ public class FacesBufferedList
 	private int _renderSubsetStartIndex = 0;
 	private int _renderSubsetLength = 1;
 	private boolean _renderSubsetEnabled = false;
-	
+
 	public FacesBufferedList(ShortBuffer $b, int $size)
 	{
-		ByteBuffer bb = ByteBuffer.allocateDirect($b.limit() * BYTES_PER_PROPERTY); 
+		ByteBuffer bb = ByteBuffer.allocateDirect($b.limit() * BYTES_PER_PROPERTY);
 		bb.order(ByteOrder.nativeOrder());
 		_b = bb.asShortBuffer();
 		_b.put($b);
 		_numElements = $size;
 	}
-	
+
 	public FacesBufferedList(int $maxElements)
 	{
-		ByteBuffer b = ByteBuffer.allocateDirect($maxElements * PROPERTIES_PER_ELEMENT * BYTES_PER_PROPERTY); 
+		ByteBuffer b = ByteBuffer.allocateDirect($maxElements * PROPERTIES_PER_ELEMENT * BYTES_PER_PROPERTY);
 		b.order(ByteOrder.nativeOrder());
 		_b = b.asShortBuffer();
 	}
-	
+
 	/**
-	 * The number of items in the list. 
+	 * The number of items in the list.
 	 */
 	public int size()
 	{
 		return _numElements;
 	}
-	
-	
+
+
 	/**
 	 * The _maximum_ number of items that the list can hold, as defined on instantiation.
 	 * (Not to be confused with the Buffer's capacity)
@@ -51,7 +51,7 @@ public class FacesBufferedList
 	{
 		return _b.capacity() / PROPERTIES_PER_ELEMENT;
 	}
-	
+
 	/**
 	 * Clear object in preparation for garbage collection
 	 */
@@ -65,7 +65,7 @@ public class FacesBufferedList
 		_b.position($index * PROPERTIES_PER_ELEMENT);
 		return new Face( _b.get(), _b.get(), _b.get() );
 	}
-	
+
 	public void putInFace(int $index, Face $face)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT);
@@ -73,7 +73,7 @@ public class FacesBufferedList
 		$face.b = (short)_b.get();
 		$face.c = (short)_b.get();
 	}
-	
+
 	public short getPropertyA(int $index)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT);
@@ -91,7 +91,7 @@ public class FacesBufferedList
 	}
 
 	/**
-	 * Enables rendering only a subset of faces (renderSubset must be set to true) 
+	 * Enables rendering only a subset of faces (renderSubset must be set to true)
 	 * This mechanism could be expanded to render multiple 'subsets' of the list of faces...
 	 */
 	public void renderSubsetStartIndex(int $num)
@@ -110,10 +110,10 @@ public class FacesBufferedList
 	{
 		return _renderSubsetLength;
 	}
-	
+
 	/**
-	 * If true, Renderer will only draw the faces as defined by 
-	 * renderSubsetStartIndex and renderSubsetLength  
+	 * If true, Renderer will only draw the faces as defined by
+	 * renderSubsetStartIndex and renderSubsetLength
 	 */
 	public boolean renderSubsetEnabled()
 	{
@@ -123,25 +123,25 @@ public class FacesBufferedList
 	{
 		_renderSubsetEnabled = $b;
 	}
-	
+
 	//
-	
+
 	public void add(Face $f)
 	{
 		set( _numElements, $f );
 		_numElements++;
 	}
-	
+
 	public void add(int $a, int $b, int $c) {
 		add((short)$a, (short)$b, (short)$c);
 	}
-	
+
 	public void add(short $a, short $b, short $c)
 	{
 		set(_numElements, $a, $b, $c);
 		_numElements++;
 	}
-	
+
 	public void set(int $index, Face $face)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT);
@@ -157,7 +157,7 @@ public class FacesBufferedList
 		_b.put($b);
 		_b.put($c);
 	}
-	
+
 	public void setPropertyA(int $index, short $a)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT);
@@ -173,14 +173,14 @@ public class FacesBufferedList
 		_b.position($index * PROPERTIES_PER_ELEMENT + 2);
 		_b.put($c);
 	}
-	
+
 	//
-	
+
 	public ShortBuffer buffer()
 	{
 		return _b;
 	}
-	
+
 	public FacesBufferedList clone()
 	{
 		_b.position(0);

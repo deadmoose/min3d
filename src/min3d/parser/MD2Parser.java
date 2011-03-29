@@ -128,12 +128,12 @@ public class MD2Parser extends AParser implements IParser {
 			float translateY = is.readFloat();
 			float translateZ = is.readFloat();
 			String name = is.readString(16);
-			
+
 			if(name.indexOf("_") > 0)
 				name = name.subSequence(0, name.lastIndexOf("_")).toString();
 			else
 				name = name.substring(0, 6).replaceAll("[0-9]{1,2}$", "");
-			
+
 			Log.d(Min3d.TAG, "frame name: " + name);
 			float vertices[] = new float[header.numVerts * 3];
 			int index = 0;
@@ -142,7 +142,7 @@ public class MD2Parser extends AParser implements IParser {
 				vertices[index++] = scaleX * is.readUnsignedByte() + translateX;
 				vertices[index++] = scaleY * is.readUnsignedByte() + translateY;
 				vertices[index++] = scaleZ * is.readUnsignedByte() + translateZ;
-				
+
 				int normalIndex = is.readUnsignedByte();
 				if (i == 0)
 					co.vertices.add(new Number3d(vertices[index - 3],
@@ -184,7 +184,7 @@ public class MD2Parser extends AParser implements IParser {
 			co.faces.add(f);
 			co.calculateFaceNormal(f);
 		}
-		
+
 		for(int j=0; j<header.numFrames; j++)
 		{
 			frames[j].setIndices(indices);
