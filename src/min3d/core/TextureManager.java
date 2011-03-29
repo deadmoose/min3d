@@ -10,10 +10,10 @@ import android.util.Log;
 
 /**
  * TextureManager is responsible for managing textures for the whole environment.
- * It maintains a list of id's that are mapped to the GL texture names (id's).
+ * It maintains a list of ids that are mapped to the GL texture names (ids).
  *
  * You add a Bitmap to the TextureManager, which adds a textureId to its list.
- * Then, you assign one or more TextureVo's to your Object3d's using id's that
+ * Then, you assign one or more TextureVos to your Object3ds using ids that
  * exist in the TextureManager.
  *
  * Note that the _idToTextureName and _idToHasMipMap HashMaps used below
@@ -53,7 +53,7 @@ public class TextureManager
 
     /**
      * 'Uploads' a texture via OpenGL which is mapped to a textureId to the TextureManager,
-     * which can subsequently be used to assign textures to Object3d's.
+     * which can subsequently be used to assign textures to Object3ds.
      *
      * @return The textureId as added to TextureManager, which is identical to $id
      */
@@ -86,7 +86,7 @@ public class TextureManager
 
     /**
      * 'Uploads' texture via OpenGL and returns an autoassigned textureId,
-     * which can be used to assign textures to Object3d's.
+     * which can be used to assign textures to Object3ds.
      */
     public String createTextureId(Bitmap $b, boolean $generateMipMap)
     {
@@ -110,7 +110,7 @@ public class TextureManager
     }
 
     /**
-     * Returns a String Array of textureId's in the TextureManager
+     * Returns a String Array of textureIds in the TextureManager
      */
     public String[] getTextureIds()
     {

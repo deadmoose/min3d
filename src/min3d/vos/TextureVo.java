@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Contains the properties of a texture which can be assigned to an object.
- * An object can be assigned multiple TextureVo's by adding them to
+ * An object can be assigned multiple TextureVos by adding them to
  * the Object3d's TextureList (usually up to just 2 w/ current Android hardware).
  *
  *  The "textureEnvs" ArrayList defines what texture environment commands
@@ -37,7 +37,7 @@ public class TextureVo
     public float offsetV = 0;
 
     /**
-     * A list of TexEnvVo's that define how texture is composited in the output.
+     * A list of TexEnvVos that define how texture is composited in the output.
      * Normally contains just one element.
      */
     public ArrayList<TexEnvxVo> textureEnvs;

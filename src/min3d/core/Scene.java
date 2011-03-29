@@ -80,7 +80,7 @@ public class Scene implements IObject3dContainer, IDirtyParent
     }
 
     /**
-     * Adds Object3d to Scene. Object3d's must be added to Scene in order to be rendered
+     * Adds Object3d to Scene. Object3ds must be added to Scene in order to be rendered
      * Returns always true.
      */
     public void addChild(Object3d $o)

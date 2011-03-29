@@ -16,7 +16,7 @@ public class ManagedLightList
     // Map Light objects to GL_LIGHT indices
     private HashMap<Light, Integer> _lightToGlIndex;
 
-    // 'Pool' of available GL_LIGHT id's
+    // 'Pool' of available GL_LIGHT ids
     private ArrayList<Integer> _availGlIndices;
 
     // Array of which GL_LIGHTS are enabled, where index corresponds to

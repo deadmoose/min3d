@@ -18,7 +18,7 @@ public class Face
     }
 
     /**
-     * Convenience method to cast int arguments to short's
+     * Convenience method to cast int arguments to shorts
      */
     public Face(int $a, int $b, int $c)
     {

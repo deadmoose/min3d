@@ -2,7 +2,7 @@ package min3d.vos;
 
 
 /**
- * Container holding VO's of vertex-related information.
+ * Container holding VOs of vertex-related information.
  * Not required for operation of framework, but may be helpful as a convenience.
  */
 public class Vertex3d

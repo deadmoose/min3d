@@ -7,7 +7,7 @@ import min3d.Utils;
 /**
  * Simple struct/VO.
  * Expected range of [0,255] for r, g, b, and a
- * (Unfortunately stored as shorts's, not byte's, since Java bytes only go up to 128 :( )
+ * (Unfortunately stored as shortss, not bytes, since Java bytes only go up to 128 :( )
  *
  */
 public class Color4

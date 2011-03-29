@@ -95,8 +95,8 @@ public class Vertices
 
 
     /**
-     * Use this to populate an Object3d's vertex data.
-     * Return's newly added vertex's index
+     * Use this to populate an Object3ds vertex data.
+     * Returns newly added vertex's index
      *
      *      If hasUvs, hasNormals, or hasColors was set to false,
      *         their corresponding arguments are just ignored.
@@ -118,9 +118,9 @@ public class Vertices
 
     /**
      * More structured-looking way of adding a vertex (but potentially wasteful).
-     * The VO's taken in as arguments are only used to read the values they hold
+     * The VOs taken in as arguments are only used to read the values they hold
      * (no references are kept to them).
-     * Return's newly added vertex's index
+     * Returns newly added vertex's index
      *
      *         If hasUvs, hasNormals, or hasColors was set to false,
      *         their corresponding arguments are just ignored.

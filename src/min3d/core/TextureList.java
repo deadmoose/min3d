@@ -6,7 +6,7 @@ import min3d.Shared;
 import min3d.vos.TextureVo;
 
 /**
- * Manages a list of TextureVo's used by Object3d's.
+ * Manages a list of TextureVos used by Object3ds.
  * This allows an Object3d to use multiple textures.
  *
  * If more textures are added than what's supported by the hardware

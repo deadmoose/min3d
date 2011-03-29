@@ -110,7 +110,7 @@ public class RendererActivity extends Activity implements ISceneController
     }
 
     /**
-     * Instantiation of Object3D's, setting their properties, and adding Object3D's
+     * Instantiation of Object3Ds, setting their properties, and adding Object3Ds
      * to the scene should be done here. Or any point thereafter.
      *
      * Note that this method is always called after GLCanvas is created, which occurs
