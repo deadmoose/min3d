@@ -62,7 +62,7 @@ public class RendererActivity extends Activity implements ISceneController
         _glSurfaceView = new GLSurfaceView(this);
         glSurfaceViewConfig();
         _glSurfaceView.setRenderer(r);
-        _glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+        renderContinuously(true);
 
         onCreateSetContentView();
     }
