@@ -3,7 +3,7 @@ package min3d.vos;
 import min3d.interfaces.IDirtyParent;
 
 /**
- * 'Managed' VO for the view frustrum. Used by Camera.
+ * 'Managed' VO for the view frustum. Used by Camera.
  */
 public class FrustumManaged extends AbstractDirtyManaged
 {

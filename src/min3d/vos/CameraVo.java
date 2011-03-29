@@ -1,7 +1,7 @@
 package min3d.vos;
 
 /**
- * Encapsulates camera-related properties, including view frustrum.
+ * Encapsulates camera-related properties, including view frustum.
  */
 public class CameraVo
 {

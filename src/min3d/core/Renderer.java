@@ -83,7 +83,7 @@ public class Renderer implements GLSurfaceView.Renderer
         _gl.glMatrixMode(GL10.GL_PROJECTION);
         _gl.glLoadIdentity();
 
-        updateViewFrustrum();
+        updateViewFrustum();
     }
 
     public void onDrawFrame(GL10 gl)
@@ -127,10 +127,10 @@ public class Renderer implements GLSurfaceView.Renderer
 
     protected void drawSetup()
     {
-        // View frustrum
+        // View frustum
 
         if (_scene.camera().frustum.isDirty()) {
-            updateViewFrustrum();
+            updateViewFrustum();
         }
 
         // Camera
@@ -566,7 +566,7 @@ public class Renderer implements GLSurfaceView.Renderer
         _gl.glDeleteTextures(1, a, 0);
     }
 
-    protected void updateViewFrustrum()
+    protected void updateViewFrustum()
     {
         FrustumManaged vf = _scene.camera().frustum;
         float n = vf.shortSideLength() / 2f;
