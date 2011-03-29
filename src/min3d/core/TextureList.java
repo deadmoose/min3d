@@ -128,13 +128,7 @@ public class TextureList
      */
     public TextureVo[] toArray()
     {
-        Object[] a = _t.toArray();
-        TextureVo[] ret = new TextureVo[a.length];
-        for (int i = 0; i < _t.size(); i++)
-        {
-            ret[i] = _t.get(i);
-        }
-        return ret;
+        return _t.toArray(new TextureVo[_t.size()]);
     }
 
     /**
@@ -142,9 +136,6 @@ public class TextureList
      */
     public String[] getIds()
     {
-        // BTW this makes a casting error. Why?
-        // (TextureVo[])_t.toArray();
-
         String[] a = new String[_t.size()];
         for (int i = 0; i < _t.size(); i++)
         {
