@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="min3d" default="compile" xmlns:artifact="urn:maven-artifact-ant">
+    <property name="deploy.dir"    location="dist"/>
+    <property name="classes.dir"   location="${deploy.dir}/classes"/>
+    <property name="libs.dir"      location="libs"/>
+    <property name="src.dir"       location="src"/>
+
+    <property name="ooo-build.vers" value="2.1"/>
+    <ant antfile="bootstrap.xml"/>
+    <import file="${user.home}/.m2/ooo-build/${ooo-build.vers}/ooo-build.xml"/>
+
+    <!-- Gets our various properties files and sticks them in dist -->
+    <target name="config" depends="-init-ooo">
+        <!-- TODO - Gatherconfiguration stuff will eventually want to live here. -->
+    </target>
+
+    <target name="-prepare" depends="-init-ooo,config" unless="skip.maven">
+        <mavendep pom="pom.xml" destDir="${libs.dir}"/>      
+    </target>
+
+    <target name="compile" depends="-prepare">
+        <ant target="compile" antfile="build-android.xml"/>
+    </target>
+
+    <target name="distclean">
+        <ant target="clean" antfile="build-android.xml"/>
+        <delete dir="${deploy.dir}"/>
+        <delete dir="${libs.dir}"/>
+    </target>
+
+    <target name="dist" depends="compile">
+        <jar destfile="${deploy.dir}/${ant.project.name}.jar">
+            <fileset dir="${classes.dir}" includes="**"/>
+        </jar>
+    </target>
+
+    <target name="maven-deploy" depends="dist"
+            description="Deploys our build artifacts to a Maven repository.">
+        <jar basedir="${src.dir}" destfile="${deploy.dir}/${ant.project.name}-sources.jar"/>
+        <mavendeploy file="${deploy.dir}/${ant.project.name}.jar" 
+                     srcdir="${src.dir}" pom="pom.xml"/>
+    </target>
+
+</project>

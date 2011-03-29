@@ -1,1 +1,3 @@
-bin
+libs
+dist
+local.properties
