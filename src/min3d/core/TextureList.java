@@ -97,11 +97,9 @@ public class TextureList
      */
     public TextureVo getById(String $textureId)
     {
-        for (int i = 0; i < _t.size(); i++) {
-            String s = _t.get(i).textureId;
-            if ($textureId == s) {
-                TextureVo t = _t.get(i);
-                return t;
+        for (TextureVo texture : _t) {
+            if (texture.textureId.equals($textureId)) {
+                return texture;
             }
         }
         return null;
