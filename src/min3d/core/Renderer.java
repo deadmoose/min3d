@@ -151,10 +151,10 @@ public class Renderer implements GLSurfaceView.Renderer
 		if (_scene.backgroundColor().isDirty())
 		{
 			_gl.glClearColor(
-				(float)_scene.backgroundColor().r() / 255f,
-				(float)_scene.backgroundColor().g() / 255f,
-				(float)_scene.backgroundColor().b() / 255f,
-				(float)_scene.backgroundColor().a() / 255f);
+				_scene.backgroundColor().r() / 255f,
+				_scene.backgroundColor().g() / 255f,
+				_scene.backgroundColor().b() / 255f,
+				_scene.backgroundColor().a() / 255f);
 			_scene.backgroundColor().clearDirtyFlag();
 		}
 
@@ -353,10 +353,10 @@ public class Renderer implements GLSurfaceView.Renderer
 		}
 		else {
 			_gl.glColor4f(
-				(float)$o.defaultColor().r / 255f,
-				(float)$o.defaultColor().g / 255f,
-				(float)$o.defaultColor().b / 255f,
-				(float)$o.defaultColor().a / 255f
+				$o.defaultColor().r / 255f,
+				$o.defaultColor().g / 255f,
+				$o.defaultColor().b / 255f,
+				$o.defaultColor().a / 255f
 			);
 			_gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
 		}

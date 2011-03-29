@@ -93,7 +93,7 @@ public class LittleEndianDataInputStream extends InputStream implements DataInpu
 		 (long)(w[3]&0xff) << 24 |
 		 (long)(w[2]&0xff) << 16 |
 		 (long)(w[1]&0xff) <<  8 |
-		 (long)(w[0]&0xff);
+		 (w[0]&0xff);
 	 }
 
 	 public final float readFloat() throws IOException {

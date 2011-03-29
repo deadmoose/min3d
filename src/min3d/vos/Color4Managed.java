@@ -154,10 +154,10 @@ public class Color4Managed extends AbstractDirtyManaged
 	public FloatBuffer toFloatBuffer()
 	{
 		return Utils.makeFloatBuffer4(
-			(float)r() / 255f,
-			(float)g() / 255f,
-			(float)b() / 255f,
-			(float)a() / 255f
+			r() / 255f,
+			g() / 255f,
+			b() / 255f,
+			a() / 255f
 		);
 	}
 
@@ -167,10 +167,10 @@ public class Color4Managed extends AbstractDirtyManaged
 	public void toFloatBuffer(FloatBuffer $floatBuffer)
 	{
 		$floatBuffer.position(0);
-		$floatBuffer.put((float)r() / 255f);
-		$floatBuffer.put((float)g() / 255f);
-		$floatBuffer.put((float)b() / 255f);
-		$floatBuffer.put((float)a() / 255f);
+		$floatBuffer.put(r() / 255f);
+		$floatBuffer.put(g() / 255f);
+		$floatBuffer.put(b() / 255f);
+		$floatBuffer.put(a() / 255f);
 		$floatBuffer.position(0);
 	}
 

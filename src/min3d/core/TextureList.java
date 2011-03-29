@@ -132,7 +132,7 @@ public class TextureList
 		TextureVo[] ret = new TextureVo[a.length];
 		for (int i = 0; i < _t.size(); i++)
 		{
-			ret[i] = (TextureVo)_t.get(i);
+			ret[i] = _t.get(i);
 		}
 		return ret;
 	}

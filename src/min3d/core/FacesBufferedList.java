@@ -69,25 +69,25 @@ public class FacesBufferedList
 	public void putInFace(int $index, Face $face)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT);
-		$face.a = (short)_b.get();
-		$face.b = (short)_b.get();
-		$face.c = (short)_b.get();
+		$face.a = _b.get();
+		$face.b = _b.get();
+		$face.c = _b.get();
 	}
 
 	public short getPropertyA(int $index)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT);
-		return (short)_b.get();
+		return _b.get();
 	}
 	public short getPropertyB(int $index)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT + 1);
-		return (short)_b.get();
+		return _b.get();
 	}
 	public float getPropertyC(int $index)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT + 2);
-		return (short)_b.get();
+		return _b.get();
 	}
 
 	/**

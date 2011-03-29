@@ -51,7 +51,7 @@ public class HollowCylinder extends Object3dContainer
 
 		for (int i = 0; i < _segs; i++)
 		{
-			float angle = (float)i * step;
+			float angle = i * step;
 
 			// outer
 			float x1 		= (float) Math.sin(angle) * _radiusOuter;
@@ -91,7 +91,7 @@ public class HollowCylinder extends Object3dContainer
 	//
 	private void addVerticalSurface(boolean $isOuter)
 	{
-		int off = (int)(_vertices.size() / 2);
+		int off = (_vertices.size() / 2);
 
 		for (int i = 0; i < _segs - 1; i++)
 		{

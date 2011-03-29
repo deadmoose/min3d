@@ -117,8 +117,8 @@ public class Sphere extends Object3dContainer
 			{
 				int ul = offset  +  c;
 				int ur = offset  +  c+1;
-				int br = offset  +  (int)(c + 1 + colLength);
-				int bl = offset  +  (int)(c + 0 + colLength);
+				int br = offset  +  (c + 1 + colLength);
+				int bl = offset  +  (c + 0 + colLength);
 
 				Utils.addQuad(this, ul,ur,br,bl);
 			}

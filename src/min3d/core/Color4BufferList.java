@@ -62,31 +62,31 @@ public class Color4BufferList
 	public void putInColor4(int $index, Color4 $color4)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT);
-		$color4.r = (short)_b.get();
-		$color4.g = (short)_b.get();
-		$color4.b = (short)_b.get();
-		$color4.a = (short)_b.get();
+		$color4.r = _b.get();
+		$color4.g = _b.get();
+		$color4.b = _b.get();
+		$color4.a = _b.get();
 	}
 
 	public short getPropertyR(int $index)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT);
-		return (short)_b.get();
+		return _b.get();
 	}
 	public short getPropertyG(int $index)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT + 1);
-		return (short)_b.get();
+		return _b.get();
 	}
 	public float getPropertyB(int $index)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT + 2);
-		return (short)_b.get();
+		return _b.get();
 	}
 	public float getPropertyA(int $index)
 	{
 		_b.position($index * PROPERTIES_PER_ELEMENT + 3);
-		return (short)_b.get();
+		return _b.get();
 	}
 
 	//

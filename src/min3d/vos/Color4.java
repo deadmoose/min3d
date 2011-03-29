@@ -92,9 +92,9 @@ public class Color4
 	public void toFloatBuffer(FloatBuffer $floatBuffer)
 	{
 		$floatBuffer.position(0);
-		$floatBuffer.put((float)r / 255f);
-		$floatBuffer.put((float)g / 255f);
-		$floatBuffer.put((float)b / 255f);
-		$floatBuffer.put((float)a / 255f);
+		$floatBuffer.put(r / 255f);
+		$floatBuffer.put(g / 255f);
+		$floatBuffer.put(b / 255f);
+		$floatBuffer.put(a / 255f);
 	}
 }

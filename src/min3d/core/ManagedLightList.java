@@ -106,7 +106,7 @@ public class ManagedLightList
 	}
 
 	public Light[] toArray() {
-		return (Light[]) _lights.toArray(new Light[_lights.size()]);
+		return _lights.toArray(new Light[_lights.size()]);
 	}
 
 	/**
