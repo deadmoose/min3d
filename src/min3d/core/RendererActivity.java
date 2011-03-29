@@ -22,8 +22,8 @@ public class RendererActivity extends Activity implements ISceneController
     public Scene scene;
     protected GLSurfaceView _glSurfaceView;
 
-    protected Handler _initSceneHander;
-    protected Handler _updateSceneHander;
+    protected Handler _initSceneHandler;
+    protected Handler _updateSceneHandler;
 
     private boolean _renderContinuously;
 
@@ -48,8 +48,8 @@ public class RendererActivity extends Activity implements ISceneController
     {
         super.onCreate(savedInstanceState);
 
-        _initSceneHander = new Handler();
-        _updateSceneHander = new Handler();
+        _initSceneHandler = new Handler();
+        _updateSceneHandler = new Handler();
 
         //
         // These 4 lines are important.
@@ -161,12 +161,12 @@ public class RendererActivity extends Activity implements ISceneController
 
     public Handler getInitSceneHandler()
     {
-        return _initSceneHander;
+        return _initSceneHandler;
     }
 
     public Handler getUpdateSceneHandler()
     {
-        return _updateSceneHander;
+        return _updateSceneHandler;
     }
 
     public Runnable getInitSceneRunnable()
