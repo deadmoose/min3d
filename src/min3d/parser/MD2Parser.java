@@ -4,8 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-
 import min3d.Min3d;
 import min3d.Shared;
 import min3d.animation.AnimationObject3d;
@@ -118,7 +116,6 @@ public class MD2Parser extends AParser implements IParser {
 		ByteArrayInputStream ba = new ByteArrayInputStream(bytes,
 				header.offsetFrames - 68, bytes.length - header.offsetFrames);
 		LittleEndianDataInputStream is = new LittleEndianDataInputStream(ba);
-		ArrayList<Number3d> firstFrameVerts = new ArrayList<Number3d>();
 
 		for (int i = 0; i < header.numFrames; i++) {
 			float scaleX = is.readFloat();

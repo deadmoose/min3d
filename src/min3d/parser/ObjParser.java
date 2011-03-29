@@ -9,7 +9,6 @@ import java.util.StringTokenizer;
 
 import min3d.Min3d;
 import min3d.Shared;
-import min3d.Utils;
 import min3d.core.Object3dContainer;
 import min3d.vos.Color4;
 import min3d.vos.Number3d;
@@ -207,9 +206,6 @@ public class ObjParser extends AParser implements IParser {
 						else
 							texture.append(textureName);
 
-						int bmResourceID = resources.getIdentifier(texture
-								.toString(), null, null);
-						Bitmap b = Utils.makeBitmapFromResourceId(bmResourceID);
 						textureAtlas.addBitmapAsset(new BitmapAsset(currentMaterial, texture.toString()));
 					}
 				}

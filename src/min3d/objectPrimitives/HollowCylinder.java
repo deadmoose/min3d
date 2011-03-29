@@ -2,7 +2,6 @@ package min3d.objectPrimitives;
 
 import min3d.core.Object3dContainer;
 import min3d.vos.Color4;
-import min3d.vos.Face;
 import min3d.vos.Number3d;
 import min3d.vos.Uv;
 
@@ -126,8 +125,6 @@ public class HollowCylinder extends Object3dContainer
 
 	private void addQuad(int ul, int bl, int ur, int br, boolean $flipped)
 	{
-		Face t;
-
 		if (! $flipped)
 		{
 			_faces.add((short)ul,(short)bl,(short)ur);

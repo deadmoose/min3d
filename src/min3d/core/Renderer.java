@@ -1,6 +1,5 @@
 package min3d.core;
 
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -34,7 +33,6 @@ public class Renderer implements GLSurfaceView.Renderer
 	private float _surfaceAspectRatio;
 
 	private IntBuffer _scratchIntBuffer;
-	private FloatBuffer _scratchFloatBuffer;
 	private boolean _scratchB;
 
 
@@ -53,7 +51,6 @@ public class Renderer implements GLSurfaceView.Renderer
 		_scene = $scene;
 
 		_scratchIntBuffer = IntBuffer.allocate(4);
-		_scratchFloatBuffer = FloatBuffer.allocate(4);
 
 		_textureManager = new TextureManager();
 		Shared.textureManager(_textureManager);
@@ -192,10 +189,7 @@ public class Renderer implements GLSurfaceView.Renderer
 		// Lights' properties
 
 		Light[] lights = _scene.lights().toArray();
-		for (int i = 0; i < lights.length; i++)
-		{
-			Light light = lights[i];
-
+		for (Light light : lights) {
 			if (light.isDirty()) // .. something has changed
 			{
 				// Check all of Light's properties for dirty
