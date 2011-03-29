@@ -2,9 +2,6 @@ package min3d.vos;
 
 import java.nio.FloatBuffer;
 
-import android.util.Log;
-
-import min3d.Min3d;
 import min3d.Utils;
 import min3d.interfaces.IDirtyParent;
 

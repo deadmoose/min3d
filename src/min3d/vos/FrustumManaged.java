@@ -1,6 +1,5 @@
 package min3d.vos;
 
-import min3d.interfaces.IDirtyManaged;
 import min3d.interfaces.IDirtyParent;
 
 /**

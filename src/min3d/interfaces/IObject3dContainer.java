@@ -1,7 +1,5 @@
 package min3d.interfaces;
 
-import java.util.ArrayList;
-
 import min3d.core.Object3d;
 
 /**

@@ -2,8 +2,6 @@ package min3d.vos;
 
 import java.util.ArrayList;
 
-import javax.microedition.khronos.opengles.GL10;
-
 /**
  * Contains the properties of a texture which can be assigned to an object.
  * An object can be assigned multiple TextureVo's by adding them to

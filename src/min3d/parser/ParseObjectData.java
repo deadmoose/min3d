@@ -3,10 +3,6 @@ package min3d.parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.util.Log;
-
-import min3d.Min3d;
-import min3d.Shared;
 import min3d.animation.AnimationObject3d;
 import min3d.animation.KeyFrame;
 import min3d.core.Object3d;
