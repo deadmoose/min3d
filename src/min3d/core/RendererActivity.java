@@ -152,11 +152,8 @@ public class RendererActivity extends Activity implements ISceneController
     public void renderContinuously(boolean $b)
     {
         _renderContinuously = $b;
-        if (_renderContinuously)
-            _glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-
-        else
-            _glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        _glSurfaceView.setRenderMode(_renderContinuously ?
+            GLSurfaceView.RENDERMODE_CONTINUOUSLY : GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     public Handler getInitSceneHandler()
