@@ -168,9 +168,9 @@ public class Renderer implements GLSurfaceView.Renderer
         // GL_LIGHTS enabled/disabled based on enabledDirty list
         for (int glIndex = 0; glIndex < NUM_GLLIGHTS; glIndex++)
         {
-            if (_scene.lights().glIndexEnabledDirty()[glIndex] == true)
+            if (_scene.lights().glIndexEnabledDirty()[glIndex])
             {
-                if (_scene.lights().glIndexEnabled()[glIndex] == true)
+                if (_scene.lights().glIndexEnabled()[glIndex])
                 {
                     _gl.glEnable(GL10.GL_LIGHT0 + glIndex);
 
@@ -266,7 +266,7 @@ public class Renderer implements GLSurfaceView.Renderer
 
     protected void drawScene()
     {
-        if(_scene.fogEnabled() == true) {
+        if(_scene.fogEnabled()) {
             _gl.glFogf(GL10.GL_FOG_MODE, _scene.fogType().glValue());
             _gl.glFogf(GL10.GL_FOG_START, _scene.fogNear());
             _gl.glFogf(GL10.GL_FOG_END, _scene.fogFar());
@@ -293,7 +293,7 @@ public class Renderer implements GLSurfaceView.Renderer
 
     protected void drawObject(Object3d $o)
     {
-        if ($o.isVisible() == false) return;
+        if (!$o.isVisible()) return;
 
         // Various per-object settings:
 
@@ -382,7 +382,7 @@ public class Renderer implements GLSurfaceView.Renderer
 
         if ($o.renderType() == RenderType.LINES || $o.renderType() == RenderType.LINE_STRIP || $o.renderType() == RenderType.LINE_LOOP)
         {
-            if ( $o.lineSmoothing() == true) {
+            if ( $o.lineSmoothing()) {
                 _gl.glEnable(GL10.GL_LINE_SMOOTH);
             }
             else {
