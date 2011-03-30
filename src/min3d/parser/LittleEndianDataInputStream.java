@@ -18,6 +18,7 @@ public class LittleEndianDataInputStream extends InputStream implements DataInpu
         w = new byte[8];
     }
 
+    @Override
     public int available() throws IOException {
         return d.available();
     }
@@ -104,6 +105,7 @@ public class LittleEndianDataInputStream extends InputStream implements DataInpu
          return Double.longBitsToDouble(readLong());
      }
 
+     @Override
      public final int read(byte b[], int off, int len) throws IOException {
          return in.read(b, off, len);
      }
@@ -128,6 +130,7 @@ public class LittleEndianDataInputStream extends InputStream implements DataInpu
          return d.readByte();
      }
 
+     @Override
      public int read() throws IOException {
          return in.read();
      }
@@ -145,6 +148,7 @@ public class LittleEndianDataInputStream extends InputStream implements DataInpu
          return d.readUTF();
      }
 
+     @Override
      public final void close() throws IOException {
          d.close();
      }

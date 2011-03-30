@@ -181,6 +181,7 @@ public class FacesBufferedList
         return _b;
     }
 
+    @Override
     public FacesBufferedList clone()
     {
         _b.position(0);

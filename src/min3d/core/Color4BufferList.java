@@ -151,6 +151,7 @@ public class Color4BufferList
         return _b;
     }
 
+    @Override
     public Color4BufferList clone()
     {
         _b.position(0);

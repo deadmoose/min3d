@@ -107,6 +107,7 @@ public class Object3dContainer extends Object3d implements IObject3dContainer
         return _children;
     }
 
+    @Override
     public Object3dContainer clone()
     {
         Vertices v = _vertices.clone();

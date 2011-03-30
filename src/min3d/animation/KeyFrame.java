@@ -95,6 +95,7 @@ public class KeyFrame {
         return normal;
     }
 
+    @Override
     public KeyFrame clone()
     {
         KeyFrame k = new KeyFrame(name, vertices.clone(), normals.clone());

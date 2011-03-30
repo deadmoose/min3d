@@ -198,6 +198,7 @@ public class Max3DSParser extends AParser implements IParser {
         }
     }
 
+    @Override
     public Object3dContainer getParsedObject() {
         Log.d(Min3d.TAG, "Start object creation");
         Object3dContainer obj = new Object3dContainer(0, 0);

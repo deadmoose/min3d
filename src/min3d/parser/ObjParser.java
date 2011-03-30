@@ -130,6 +130,7 @@ public class ObjParser extends AParser implements IParser {
         Log.d(Min3d.TAG, "End time " + (endTime - startTime));
     }
 
+    @Override
     public Object3dContainer getParsedObject() {
         Log.d(Min3d.TAG, "Start object creation");
         Object3dContainer obj = new Object3dContainer(0, 0);

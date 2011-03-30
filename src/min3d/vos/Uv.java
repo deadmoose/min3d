@@ -20,6 +20,7 @@ public class Uv
         v = $v;
     }
 
+    @Override
     public Uv clone()
     {
         return new Uv(u, v);

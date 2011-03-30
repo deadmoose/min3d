@@ -175,6 +175,7 @@ public class Vertices
         return _colors;
     }
 
+    @Override
     public Vertices clone()
     {
         Vertices v = new Vertices(_points.clone(), _uvs.clone(), _normals.clone(), _colors.clone());

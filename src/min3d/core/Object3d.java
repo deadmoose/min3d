@@ -465,6 +465,7 @@ public class Object3d
         return false;
     }
 
+    @Override
     public Object3d clone()
     {
         Vertices v = _vertices.clone();

@@ -128,6 +128,7 @@ public class UvBufferList
         return _b;
     }
 
+    @Override
     public UvBufferList clone()
     {
         _b.position(0);
