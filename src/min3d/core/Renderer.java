@@ -260,8 +260,7 @@ public class Renderer implements GLSurfaceView.Renderer
             _gl.glDisable(GL10.GL_FOG);
         }
 
-        for (int i = 0; i < _scene.children().size(); i++) {
-            Object3d o = _scene.children().get(i);
+        for (Object3d o : _scene.children()) {
             if (o.animationEnabled()) {
                 ((AnimationObject3d)o).update();
             }
@@ -426,8 +425,7 @@ public class Renderer implements GLSurfaceView.Renderer
         if ($o instanceof Object3dContainer) {
             Object3dContainer container = (Object3dContainer)$o;
 
-            for (int i = 0; i < container.children().size(); i++) {
-                Object3d o = container.children().get(i);
+            for (Object3d o : container.children()) {
                 drawObject(o);
             }
         }
