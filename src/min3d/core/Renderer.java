@@ -166,19 +166,14 @@ public class Renderer implements GLSurfaceView.Renderer
     protected void drawSetupLights()
     {
         // GL_LIGHTS enabled/disabled based on enabledDirty list
-        for (int glIndex = 0; glIndex < NUM_GLLIGHTS; glIndex++)
-        {
-            if (_scene.lights().glIndexEnabledDirty()[glIndex])
-            {
-                if (_scene.lights().glIndexEnabled()[glIndex])
-                {
+        for (int glIndex = 0; glIndex < NUM_GLLIGHTS; glIndex++) {
+            if (_scene.lights().glIndexEnabledDirty()[glIndex]) {
+                if (_scene.lights().glIndexEnabled()[glIndex]) {
                     _gl.glEnable(GL10.GL_LIGHT0 + glIndex);
 
                     // make light's properties dirty to force update
                     _scene.lights().getLightByGlIndex(glIndex).setAllDirty();
-                }
-                else
-                {
+                } else {
                     _gl.glDisable(GL10.GL_LIGHT0 + glIndex);
                 }
 
@@ -190,60 +185,50 @@ public class Renderer implements GLSurfaceView.Renderer
 
         Light[] lights = _scene.lights().toArray();
         for (Light light : lights) {
-            if (light.isDirty()) // .. something has changed
-            {
+            if (light.isDirty()) { // .. something has changed
                 // Check all of Light's properties for dirty
 
                 int glLightId = GL10.GL_LIGHT0 + _scene.lights().getGlIndexByLight(light);
 
-                if (light.position.isDirty())
-                {
+                if (light.position.isDirty()) {
                     light.commitPositionAndTypeBuffer();
                     _gl.glLightfv(glLightId, GL10.GL_POSITION, light._positionAndTypeBuffer);
                     light.position.clearDirtyFlag();
                 }
-                if (light.ambient.isDirty())
-                {
+                if (light.ambient.isDirty()) {
                     light.ambient.commitToFloatBuffer();
                     _gl.glLightfv(glLightId, GL10.GL_AMBIENT, light.ambient.floatBuffer());
                     light.ambient.clearDirtyFlag();
                 }
-                if (light.diffuse.isDirty())
-                {
+                if (light.diffuse.isDirty()) {
                     light.diffuse.commitToFloatBuffer();
                     _gl.glLightfv(glLightId, GL10.GL_DIFFUSE, light.diffuse.floatBuffer());
                     light.diffuse.clearDirtyFlag();
                 }
-                if (light.specular.isDirty())
-                {
+                if (light.specular.isDirty()) {
                     light.specular.commitToFloatBuffer();
                     _gl.glLightfv(glLightId, GL10.GL_SPECULAR, light.specular.floatBuffer());
                     light.specular.clearDirtyFlag();
                 }
-                if (light.emissive.isDirty())
-                {
+                if (light.emissive.isDirty()) {
                     light.emissive.commitToFloatBuffer();
                     _gl.glLightfv(glLightId, GL10.GL_EMISSION, light.emissive.floatBuffer());
                     light.emissive.clearDirtyFlag();
                 }
 
-                if (light.direction.isDirty())
-                {
+                if (light.direction.isDirty()) {
                     light.direction.commitToFloatBuffer();
                     _gl.glLightfv(glLightId, GL10.GL_SPOT_DIRECTION, light.direction.floatBuffer());
                     light.direction.clearDirtyFlag();
                 }
-                if (light._spotCutoffAngle.isDirty())
-                {
+                if (light._spotCutoffAngle.isDirty()) {
                     _gl.glLightf(glLightId, GL10.GL_SPOT_CUTOFF, light._spotCutoffAngle.get());
                 }
-                if (light._spotExponent.isDirty())
-                {
+                if (light._spotExponent.isDirty()) {
                     _gl.glLightf(glLightId, GL10.GL_SPOT_EXPONENT, light._spotExponent.get());
                 }
 
-                if (light._isVisible.isDirty())
-                {
+                if (light._isVisible.isDirty()) {
                     if (light.isVisible()) {
                         _gl.glEnable(glLightId);
                     } else {
@@ -252,8 +237,7 @@ public class Renderer implements GLSurfaceView.Renderer
                     light._isVisible.clearDirtyFlag();
                 }
 
-                if (light._attenuation.isDirty())
-                {
+                if (light._attenuation.isDirty()) {
                     _gl.glLightf(glLightId, GL10.GL_CONSTANT_ATTENUATION, light._attenuation.getX());
                     _gl.glLightf(glLightId, GL10.GL_LINEAR_ATTENUATION, light._attenuation.getY());
                     _gl.glLightf(glLightId, GL10.GL_QUADRATIC_ATTENUATION, light._attenuation.getZ());
@@ -266,7 +250,7 @@ public class Renderer implements GLSurfaceView.Renderer
 
     protected void drawScene()
     {
-        if(_scene.fogEnabled()) {
+        if (_scene.fogEnabled()) {
             _gl.glFogf(GL10.GL_FOG_MODE, _scene.fogType().glValue());
             _gl.glFogf(GL10.GL_FOG_START, _scene.fogNear());
             _gl.glFogf(GL10.GL_FOG_END, _scene.fogFar());
@@ -276,11 +260,9 @@ public class Renderer implements GLSurfaceView.Renderer
             _gl.glDisable(GL10.GL_FOG);
         }
 
-        for (int i = 0; i < _scene.children().size(); i++)
-        {
+        for (int i = 0; i < _scene.children().size(); i++) {
             Object3d o = _scene.children().get(i);
-            if(o.animationEnabled())
-            {
+            if (o.animationEnabled()) {
                 ((AnimationObject3d)o).update();
             }
             drawObject(o);
@@ -303,8 +285,7 @@ public class Renderer implements GLSurfaceView.Renderer
             $o.vertices().normals().buffer().position(0);
             _gl.glNormalPointer(GL10.GL_FLOAT, 0, $o.vertices().normals().buffer());
             _gl.glEnableClientState(GL10.GL_NORMAL_ARRAY);
-        }
-        else {
+        } else {
             _gl.glDisableClientState(GL10.GL_NORMAL_ARRAY);
         }
 
@@ -314,8 +295,7 @@ public class Renderer implements GLSurfaceView.Renderer
         // *** this version not working properly on emulator - why not? ***
         _scratchIntBuffer.position(0);
         _gl.glGetIntegerv(GL10.GL_LIGHTING, _scratchIntBuffer);
-        if (useLighting != _scratchIntBuffer.get(0))
-        {
+        if (useLighting != _scratchIntBuffer.get(0)) {
             if (useLighting == 1) {
                 _gl.glEnable(GL10.GL_LIGHTING);
             } else {
@@ -344,8 +324,7 @@ public class Renderer implements GLSurfaceView.Renderer
             $o.vertices().colors().buffer().position(0);
             _gl.glColorPointer(4, GL10.GL_UNSIGNED_BYTE, 0, $o.vertices().colors().buffer());
             _gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
-        }
-        else {
+        } else {
             _gl.glColor4f(
                 $o.defaultColor().r / 255f,
                 $o.defaultColor().g / 255f,
@@ -368,8 +347,7 @@ public class Renderer implements GLSurfaceView.Renderer
 
         // Point size
 
-        if ($o.renderType() == RenderType.POINTS)
-        {
+        if ($o.renderType() == RenderType.POINTS) {
             if ($o.pointSmoothing())
                 _gl.glEnable(GL10.GL_POINT_SMOOTH);
             else
@@ -380,12 +358,10 @@ public class Renderer implements GLSurfaceView.Renderer
 
         // Line properties
 
-        if ($o.renderType() == RenderType.LINES || $o.renderType() == RenderType.LINE_STRIP || $o.renderType() == RenderType.LINE_LOOP)
-        {
-            if ( $o.lineSmoothing()) {
+        if ($o.renderType() == RenderType.LINES || $o.renderType() == RenderType.LINE_STRIP || $o.renderType() == RenderType.LINE_LOOP) {
+            if ($o.lineSmoothing()) {
                 _gl.glEnable(GL10.GL_LINE_SMOOTH);
-            }
-            else {
+            } else {
                 _gl.glDisable(GL10.GL_LINE_SMOOTH);
             }
 
@@ -396,8 +372,7 @@ public class Renderer implements GLSurfaceView.Renderer
 
         if ($o.doubleSidedEnabled()) {
             _gl.glDisable(GL10.GL_CULL_FACE);
-        }
-        else {
+        } else {
             _gl.glEnable(GL10.GL_CULL_FACE);
         }
 
@@ -422,15 +397,13 @@ public class Renderer implements GLSurfaceView.Renderer
         $o.vertices().points().buffer().position(0);
         _gl.glVertexPointer(3, GL10.GL_FLOAT, 0, $o.vertices().points().buffer());
 
-        if (! $o.ignoreFaces())
-        {
+        if (! $o.ignoreFaces()) {
             int pos, len;
 
             if (! $o.faces().renderSubsetEnabled()) {
                 pos = 0;
                 len = $o.faces().size();
-            }
-            else {
+            } else {
                 pos = $o.faces().renderSubsetStartIndex() * FacesBufferedList.PROPERTIES_PER_ELEMENT;
                 len = $o.faces().renderSubsetLength();
             }
@@ -442,9 +415,7 @@ public class Renderer implements GLSurfaceView.Renderer
                     len * FacesBufferedList.PROPERTIES_PER_ELEMENT,
                     GL10.GL_UNSIGNED_SHORT,
                     $o.faces().buffer());
-        }
-        else
-        {
+        } else {
             _gl.glDrawArrays($o.renderType().glValue(), 0, $o.vertices().size());
         }
 
@@ -452,12 +423,10 @@ public class Renderer implements GLSurfaceView.Renderer
         // Recurse on children
         //
 
-        if ($o instanceof Object3dContainer)
-        {
+        if ($o instanceof Object3dContainer) {
             Object3dContainer container = (Object3dContainer)$o;
 
-            for (int i = 0; i < container.children().size(); i++)
-            {
+            for (int i = 0; i < container.children().size(); i++) {
                 Object3d o = container.children().get(i);
                 drawObject(o);
             }
@@ -472,20 +441,17 @@ public class Renderer implements GLSurfaceView.Renderer
     {
         // iterate thru object's textures
 
-        for (int i = 0; i < RenderCaps.maxTextureUnits(); i++)
-        {
+        for (int i = 0; i < RenderCaps.maxTextureUnits(); i++) {
             _gl.glActiveTexture(GL10.GL_TEXTURE0 + i);
             _gl.glClientActiveTexture(GL10.GL_TEXTURE0 + i);
 
-            if ($o.hasUvs() && $o.texturesEnabled())
-            {
+            if ($o.hasUvs() && $o.texturesEnabled()) {
                 $o.vertices().uvs().buffer().position(0);
                 _gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, $o.vertices().uvs().buffer());
 
                 TextureVo textureVo = ((i < $o.textures().size())) ? textureVo = $o.textures().get(i) : null;
 
-                if (textureVo != null)
-                {
+                if (textureVo != null) {
                     // activate texture
                     int glId = _textureManager.getGlTextureId(textureVo.textureId);
                     _gl.glBindTexture(GL10.GL_TEXTURE_2D, glId);
@@ -497,8 +463,7 @@ public class Renderer implements GLSurfaceView.Renderer
                     _gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR); // (OpenGL default)
 
                     // do texture environment settings
-                    for (int j = 0; j < textureVo.textureEnvs.size(); j++)
-                    {
+                    for (int j = 0; j < textureVo.textureEnvs.size(); j++) {
                         _gl.glTexEnvx(GL10.GL_TEXTURE_ENV, textureVo.textureEnvs.get(j).pname, textureVo.textureEnvs.get(j).param);
                     }
 
@@ -507,23 +472,18 @@ public class Renderer implements GLSurfaceView.Renderer
                     _gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, (textureVo.repeatV ? GL10.GL_REPEAT : GL10.GL_CLAMP_TO_EDGE));
 
                     // texture offset, if any
-                    if (textureVo.offsetU != 0 || textureVo.offsetV != 0)
-                    {
+                    if (textureVo.offsetU != 0 || textureVo.offsetV != 0) {
                         _gl.glMatrixMode(GL10.GL_TEXTURE);
                         _gl.glLoadIdentity();
                         _gl.glTranslatef(textureVo.offsetU, textureVo.offsetV, 0);
                         _gl.glMatrixMode(GL10.GL_MODELVIEW); // .. restore matrixmode
                     }
-                }
-                else
-                {
+                } else {
                     _gl.glBindTexture(GL10.GL_TEXTURE_2D, 0);
                     _gl.glDisable(GL10.GL_TEXTURE_2D);
                     _gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
                 }
-            }
-            else
-            {
+            } else {
                 _gl.glBindTexture(GL10.GL_TEXTURE_2D, 0);
                 _gl.glDisable(GL10.GL_TEXTURE_2D);
                 _gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
@@ -543,7 +503,7 @@ public class Renderer implements GLSurfaceView.Renderer
         glTextureId = a[0];
         _gl.glBindTexture(GL10.GL_TEXTURE_2D, glTextureId);
 
-        if($generateMipMap && _gl instanceof GL11) {
+        if ($generateMipMap && _gl instanceof GL11) {
             _gl.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
         } else {
             _gl.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_GENERATE_MIPMAP, GL11.GL_FALSE);
@@ -617,8 +577,7 @@ public class Renderer implements GLSurfaceView.Renderer
 
         long now = System.currentTimeMillis();
         long delta = now - _timeLastSample;
-        if (delta >= FRAMERATE_SAMPLEINTERVAL_MS)
-        {
+        if (delta >= FRAMERATE_SAMPLEINTERVAL_MS) {
             _fps = _frameCount / (delta/1000f);
 
             _activityManager.getMemoryInfo(_memoryInfo);
