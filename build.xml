@@ -36,7 +36,6 @@
 
     <target name="maven-deploy" depends="dist"
             description="Deploys our build artifacts to a Maven repository.">
-        <jar basedir="${src.dir}" destfile="${deploy.dir}/${ant.project.name}-sources.jar"/>
         <mavendeploy file="${deploy.dir}/${ant.project.name}.jar" 
                      srcdir="${src.dir}" pom="pom.xml"/>
     </target>
