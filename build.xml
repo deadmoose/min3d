@@ -14,7 +14,7 @@
         <!-- TODO - Gatherconfiguration stuff will eventually want to live here. -->
     </target>
 
-    <target name="-prepare" depends="-init-ooo,config" unless="skip.maven">
+    <target name="-prepare" depends="-init-ooo,config">
         <mavendep pom="pom.xml" destDir="${libs.dir}"/>      
     </target>
 
